@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.breeze.admin.mapper.SysUserMapper">
+
+    <!-- 可根据自己的需求，是否要使用 -->
+    <resultMap type="com.breeze.admin.entity.SysUserEntity" id="sysUserMap">
+        <result property="id" column="id"/>
+        <result property="deptId" column="dept_id"/>
+        <result property="loginAmount" column="login_amount"/>
+        <result property="password" column="password"/>
+        <result property="mainName" column="main_name"/>
+        <result property="avator" column="avator"/>
+        <result property="phone" column="phone"/>
+        <result property="sex" column="sex"/>
+        <result property="idCard" column="id_card"/>
+        <result property="amountType" column="amount_type"/>
+        <result property="isLock" column="is_lock"/>
+        <result property="openId" column="open_id"/>
+        <result property="email" column="email"/>
+        <result property="createBy" column="create_by"/>
+        <result property="createName" column="create_name"/>
+        <result property="updateBy" column="update_by"/>
+        <result property="updateTime" column="update_time"/>
+        <result property="isDel" column="is_del"/>
+        <result property="delBy" column="del_by"/>
+    </resultMap>
+
+
+</mapper>
