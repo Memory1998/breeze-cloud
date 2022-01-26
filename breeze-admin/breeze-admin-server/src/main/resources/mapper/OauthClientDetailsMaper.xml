@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="com.breeze.admin.mapper.OauthClientDetailsMapper">
+<mapper namespace="com.breeze.cloud.admin.mapper.OauthClientDetailsMapper">
 
     <!-- 可根据自己的需求，是否要使用 -->
-    <resultMap type="com.breeze.admin.entity.OauthClientDetailsEntity" id="oauthClientDetailsMap">
+    <resultMap type="com.breeze.cloud.admin.entity.OauthClientDetailsEntity" id="oauthClientDetailsMap">
         <result property="clientId" column="client_id"/>
         <result property="resourceIds" column="resource_ids"/>
         <result property="clientSecret" column="client_secret"/>

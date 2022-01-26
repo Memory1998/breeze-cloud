@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="com.breeze.admin.mapper.SysMenuRoleMapper">
+<mapper namespace="com.breeze.cloud.admin.mapper.SysMenuRoleMapper">
 
     <!-- 可根据自己的需求，是否要使用 -->
-    <resultMap type="com.breeze.admin.entity.SysMenuRoleEntity" id="sysMenuRoleMap">
+    <resultMap type="com.breeze.cloud.admin.entity.SysMenuRoleEntity" id="sysMenuRoleMap">
         <result property="id" column="id"/>
         <result property="menuId" column="menu_id"/>
         <result property="roleId" column="role_id"/>

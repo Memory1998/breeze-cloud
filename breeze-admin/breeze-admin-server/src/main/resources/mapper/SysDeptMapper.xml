@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="com.breeze.admin.mapper.SysDeptMapper">
+<mapper namespace="com.breeze.cloud.admin.mapper.SysDeptMapper">
 
     <!-- 可根据自己的需求，是否要使用 -->
-    <resultMap type="com.breeze.admin.entity.SysDeptEntity" id="sysDeptMap">
+    <resultMap type="com.breeze.cloud.admin.entity.SysDeptEntity" id="sysDeptMap">
         <result property="id" column="id"/>
         <result property="deptName" column="dept_name"/>
         <result property="parentId" column="parent_id"/>
