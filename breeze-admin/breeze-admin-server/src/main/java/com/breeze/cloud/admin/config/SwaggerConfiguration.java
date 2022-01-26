@@ -44,7 +44,7 @@ import java.util.List;
 @Import(BeanValidatorPluginsConfiguration.class)
 public class SwaggerConfiguration {
 
-    @Bean(value = "admin-service")
+    @Bean(value = "admin-server")
     @Order(value = 1)
     public Docket groupRestApi() {
         return new Docket(DocumentationType.SWAGGER_2)

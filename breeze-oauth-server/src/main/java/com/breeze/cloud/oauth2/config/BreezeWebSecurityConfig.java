@@ -34,7 +34,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
  * @author breeze
  * @date 2021/10/1
  */
-@Order(1)
+@Order(99)
 @EnableWebSecurity
 public class BreezeWebSecurityConfig extends WebSecurityConfigurerAdapter {
 
@@ -79,6 +79,14 @@ public class BreezeWebSecurityConfig extends WebSecurityConfigurerAdapter {
         // 过滤请求
         http.authorizeRequests()
                 .antMatchers(
+                        "/v2/api-docs"
+                        , "/actuator/**"
+                        , "/swaggger-ui.html"
+                        , "/doc.html"
+                        , "/v2/**"
+                        , "/swagger-resources"
+                        , "/swagger-resources/**"
+                        , "/webjars/**"
                 ).permitAll()
                 // 所有请求全部需要鉴权认证
                 .anyRequest().authenticated();

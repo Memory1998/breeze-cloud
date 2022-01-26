@@ -12,8 +12,8 @@
     <artifactId>breeze-oauth-server</artifactId>
     <packaging>jar</packaging>
 
-    <name>breeze-oauth2</name>
-    <description>breeze-oauth2</description>
+    <name>breeze-oauth-server</name>
+    <description>breeze-oauth-server 权限认证</description>
 
     <properties>
         <java.version>1.8</java.version>
