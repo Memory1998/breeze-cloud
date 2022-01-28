@@ -42,7 +42,6 @@ public class BaseModel<T> extends Model<BaseModel<T>> {
     @JsonIgnore
     @ApiModelProperty(value = "删除人工号", hidden = true)
     @ExcelIgnore
-    @TableLogic
     private String deleteBy;
 
     /**

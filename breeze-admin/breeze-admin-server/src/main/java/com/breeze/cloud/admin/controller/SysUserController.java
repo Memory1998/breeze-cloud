@@ -59,6 +59,15 @@ public class SysUserController {
     }
 
     /**
+     * 登录feign接口
+     */
+    @RequestMapping("/loadByUsername/{loginAmount}")
+    @JoinWhiteList
+    public Result<SysUserEntity> loadByLoginAmount(@PathVariable String loginAmount) {
+        return this.sysUserService.loadByLoginAmount(loginAmount);
+    }
+
+    /**
      * 列表
      */
     @RequestMapping("/list")

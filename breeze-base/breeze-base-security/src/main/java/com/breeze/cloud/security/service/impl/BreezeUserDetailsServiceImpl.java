@@ -16,6 +16,9 @@
 
 package com.breeze.cloud.security.service.impl;
 
+import com.breeze.cloud.admin.api.SysUserFeign;
+import com.breeze.cloud.admin.entity.SysUserEntity;
+import com.breeze.cloud.core.Result;
 import com.breeze.cloud.security.domain.BreezeLoginUser;
 import com.breeze.cloud.security.service.BreezeUserDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,8 +48,13 @@ public class BreezeUserDetailsServiceImpl implements BreezeUserDetailsService {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
+    @Autowired
+    private SysUserFeign sysUserFeign;
+
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        Result<SysUserEntity> sysUserEntityResult = this.sysUserFeign.loadByLoginAmount(username);
+        // todo
         Set<String> dbAuthsSet = new HashSet<>();
         dbAuthsSet.add("sys:admin");
         Collection<? extends GrantedAuthority> authorities = AuthorityUtils

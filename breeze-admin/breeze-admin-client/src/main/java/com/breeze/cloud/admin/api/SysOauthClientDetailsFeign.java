@@ -26,7 +26,7 @@ import org.springframework.web.bind.annotation.PathVariable;
  * @date 2021-12-06 22:03:39
  */
 @FeignClient(name = "breeze-admin-server", contextId = "oauthClientDetailsFeign")
-public interface OauthClientDetailsFeign {
+public interface SysOauthClientDetailsFeign {
 
     /**
      * 信息

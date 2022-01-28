@@ -22,6 +22,8 @@ import com.breeze.cloud.admin.mapper.SysRoleMapper;
 import com.breeze.cloud.admin.service.SysRoleService;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 /**
  * @author breeze
  * @date 2021-12-06 22:03:39
@@ -29,4 +31,8 @@ import org.springframework.stereotype.Service;
 @Service
 public class SysRoleServiceImpl extends ServiceImpl<SysRoleMapper, SysRoleEntity> implements SysRoleService {
 
+    @Override
+    public List<SysRoleEntity> listUserRole(Long id) {
+        return null;
+    }
 }

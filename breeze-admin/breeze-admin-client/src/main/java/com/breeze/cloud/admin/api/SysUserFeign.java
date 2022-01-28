@@ -14,18 +14,27 @@
  * limitations under the License.
  */
 
-package com.breeze.cloud.admin.service;
+package com.breeze.cloud.admin.api;
 
-import com.baomidou.mybatisplus.extension.service.IService;
+import com.breeze.cloud.admin.entity.SysOauthClientDetailsEntity;
 import com.breeze.cloud.admin.entity.SysUserEntity;
 import com.breeze.cloud.core.Result;
+import org.springframework.cloud.openfeign.FeignClient;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
 
 /**
  * @author breeze
  * @date 2021-12-06 22:03:39
  */
-public interface SysUserService extends IService<SysUserEntity> {
+@FeignClient(name = "breeze-admin-server", contextId = "sysUserFeign")
+public interface SysUserFeign {
 
-    Result<SysUserEntity> loadByLoginAmount(String username);
+    /**
+     * 登录fegin接口
+     */
+    @RequestMapping("/sys/user/loadByUsername/{loginAmount}")
+    Result<SysUserEntity> loadByLoginAmount(@PathVariable("loginAmount") String loginAmount);
 
 }

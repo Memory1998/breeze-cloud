@@ -18,11 +18,14 @@ package com.breeze.cloud.admin.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.breeze.cloud.admin.entity.SysPlatformRoleEntity;
+import com.breeze.cloud.admin.entity.SysRoleEntity;
+import org.apache.ibatis.annotations.Mapper;
 
 /**
  * @author breeze
  * @date 2021-12-06 22:03:39
  */
+@Mapper
 public interface SysPlatformRoleMapper extends BaseMapper<SysPlatformRoleEntity> {
 
 }

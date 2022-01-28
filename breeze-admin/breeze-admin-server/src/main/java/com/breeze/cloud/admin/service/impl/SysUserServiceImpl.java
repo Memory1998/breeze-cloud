@@ -16,11 +16,17 @@
 
 package com.breeze.cloud.admin.service.impl;
 
+import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.breeze.cloud.admin.entity.SysUserEntity;
 import com.breeze.cloud.admin.mapper.SysUserMapper;
+import com.breeze.cloud.admin.service.SysRoleService;
 import com.breeze.cloud.admin.service.SysUserService;
+import com.breeze.cloud.core.Result;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.Objects;
 
 /**
  * @author breeze
@@ -29,5 +35,17 @@ import org.springframework.stereotype.Service;
 @Service
 public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUserEntity> implements SysUserService {
 
+    @Autowired
+    private SysRoleService sysRoleService;
 
+    @Override
+    public Result<SysUserEntity> loadByLoginAmount(String username) {
+        SysUserEntity sysUserEntity = this.getOne(Wrappers.<SysUserEntity>lambdaQuery().eq(SysUserEntity::getLoginAmount, username));
+        if (Objects.isNull(sysUserEntity)) {
+            return Result.fail("用户名错误或不存在");
+        }
+        // todo
+        this.sysRoleService.listUserRole(sysUserEntity.getId());
+        return Result.ok(sysUserEntity);
+    }
 }

@@ -56,7 +56,7 @@ public class SysPlatformController {
     @RequestMapping("/info/{id}")
     @PreAuthorize("hasAnyAuthority('sys:platform:list')")
     public Result info(@PathVariable("id") Long id) {
-        SysPlatformEntity sysUser = sysPlatformService.getById(id);
+        SysPlatformEntity platformEntity = sysPlatformService.getById(id);
         return Result.ok();
     }
 

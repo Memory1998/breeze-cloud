@@ -8,8 +8,9 @@ public enum ResultCode {
     TOKEN_INVALID(1004, "token异常失效"),
     NO_ACCESS(403, "无权限访问"),
     INSUFFICIENT_PERMISSIONS(401, "权限不足"),
-    OK(200, "请求成功"),
-    FAIL(500, "请求失败");
+    EXPT(500, "请求异常"),
+    OK(1, "请求成功"),
+    FAIL(0, "请求失败");
 
     private int code;
 

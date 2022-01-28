@@ -77,6 +77,12 @@
             <version>1.0</version>
         </dependency>
 
+        <dependency>
+            <groupId>com.breeze</groupId>
+            <artifactId>breeze-admin-client</artifactId>
+            <version>1.0</version>
+        </dependency>
+
     </dependencies>
 
 </project>

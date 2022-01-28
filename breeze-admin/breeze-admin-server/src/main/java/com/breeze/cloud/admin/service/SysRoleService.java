@@ -19,11 +19,15 @@ package com.breeze.cloud.admin.service;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.breeze.cloud.admin.entity.SysRoleEntity;
 
+import java.util.List;
+
 /**
  * @author breeze
  * @date 2021-12-06 22:03:39
  */
 public interface SysRoleService extends IService<SysRoleEntity> {
+
+    List<SysRoleEntity> listUserRole(Long id);
 
 }
 

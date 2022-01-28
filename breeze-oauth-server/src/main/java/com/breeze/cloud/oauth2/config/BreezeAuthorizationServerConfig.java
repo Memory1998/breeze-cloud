@@ -16,7 +16,7 @@
 
 package com.breeze.cloud.oauth2.config;
 
-import com.breeze.cloud.admin.api.OauthClientDetailsFeign;
+import com.breeze.cloud.admin.api.SysOauthClientDetailsFeign;
 import com.breeze.cloud.security.config.BreezeOauthServerAuthenticationEntryPoint;
 import com.breeze.cloud.security.config.BreezeOauthServerWebResponseExceptionTranslator;
 import com.breeze.cloud.security.filter.BreezeOAuthServerClientCredentialsTokenEndpointFilter;
@@ -44,7 +44,7 @@ public class BreezeAuthorizationServerConfig extends AuthorizationServerConfigur
     private BreezeOauthServerAuthenticationEntryPoint authServerAuthenticationEntryPoint;
 
     @Autowired
-    private OauthClientDetailsFeign oauthClientDetailsFeign;
+    private SysOauthClientDetailsFeign sysOauthClientDetailsFeign;
 
     @Autowired
     private BreezeUserDetailsService userDetailsService;
@@ -59,7 +59,7 @@ public class BreezeAuthorizationServerConfig extends AuthorizationServerConfigur
      * 声明 ClientDetails实现
      */
     public BreezeRedisClientDetailsService clientDetailsService() {
-        BreezeRedisClientDetailsService clientDetailsService = new BreezeRedisClientDetailsService(oauthClientDetailsFeign);
+        BreezeRedisClientDetailsService clientDetailsService = new BreezeRedisClientDetailsService(sysOauthClientDetailsFeign);
         return clientDetailsService;
     }
 

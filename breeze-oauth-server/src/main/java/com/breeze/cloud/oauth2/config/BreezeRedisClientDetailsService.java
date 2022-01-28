@@ -19,7 +19,7 @@ package com.breeze.cloud.oauth2.config;
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.json.JSONUtil;
-import com.breeze.cloud.admin.api.OauthClientDetailsFeign;
+import com.breeze.cloud.admin.api.SysOauthClientDetailsFeign;
 import com.breeze.cloud.admin.entity.SysOauthClientDetailsEntity;
 import com.breeze.cloud.core.constants.CacheConstants;
 import org.apache.commons.logging.Log;
@@ -49,10 +49,10 @@ public class BreezeRedisClientDetailsService implements ClientDetailsService {
 
     private static final Log logger = LogFactory.getLog(BreezeRedisClientDetailsService.class);
 
-    private OauthClientDetailsFeign oauthClientDetailsFeign;
+    private SysOauthClientDetailsFeign sysOauthClientDetailsFeign;
 
-    public BreezeRedisClientDetailsService(OauthClientDetailsFeign oauthClientDetailsFeign) {
-        this.oauthClientDetailsFeign = oauthClientDetailsFeign;
+    public BreezeRedisClientDetailsService(SysOauthClientDetailsFeign sysOauthClientDetailsFeign) {
+        this.sysOauthClientDetailsFeign = sysOauthClientDetailsFeign;
     }
 
     @Override
@@ -60,7 +60,7 @@ public class BreezeRedisClientDetailsService implements ClientDetailsService {
     public ClientDetails loadClientByClientId(String clientId) throws InvalidClientException {
         ClientDetails details;
         try {
-            SysOauthClientDetailsEntity info = this.oauthClientDetailsFeign.info(clientId);
+            SysOauthClientDetailsEntity info = this.sysOauthClientDetailsFeign.info(clientId);
             if (Objects.isNull(info)) {
                 logger.info("client id is not found.");
                 throw new NoSuchClientException("No client with requested id: " + clientId);
