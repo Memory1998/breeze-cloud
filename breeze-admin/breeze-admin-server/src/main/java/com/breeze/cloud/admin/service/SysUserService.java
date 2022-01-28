@@ -26,4 +26,3 @@ import com.breeze.cloud.admin.entity.SysUserEntity;
 public interface SysUserService extends IService<SysUserEntity> {
 
 }
-

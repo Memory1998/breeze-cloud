@@ -22,24 +22,25 @@ import lombok.EqualsAndHashCode;
 
 import java.io.Serializable;
 
+
 /**
  * @author breeze
  * @date 2021-12-06 22:03:39
  */
 @Data
 @EqualsAndHashCode(callSuper = false)
-@TableName("sys_role_user")
-public class SysRoleUserEntity extends BaseModel<SysRoleUserEntity> implements Serializable {
+@TableName("sys_platform_role")
+public class SysPlatformRoleEntity extends BaseModel<SysPlatformRoleEntity> implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
     /**
-     *
+     * 平台Id
      */
-    private Long userId;
+    private Long platformId;
 
     /**
-     *
+     * 角色Id
      */
     private Long roleId;
 

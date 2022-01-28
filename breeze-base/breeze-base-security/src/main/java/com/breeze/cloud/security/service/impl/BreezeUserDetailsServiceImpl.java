@@ -16,8 +16,8 @@
 
 package com.breeze.cloud.security.service.impl;
 
-import com.breeze.cloud.security.service.BreezeUserDetailsService;
 import com.breeze.cloud.security.domain.BreezeLoginUser;
+import com.breeze.cloud.security.service.BreezeUserDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.GrantedAuthority;

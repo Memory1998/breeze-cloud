@@ -14,33 +14,19 @@
  * limitations under the License.
  */
 
-package com.breeze.cloud.admin.entity;
+package com.breeze.cloud.admin.service.impl;
 
-import com.baomidou.mybatisplus.annotation.TableName;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-
-import java.io.Serializable;
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.breeze.cloud.admin.entity.SysPlatformRoleEntity;
+import com.breeze.cloud.admin.mapper.SysPlatformRoleMapper;
+import com.breeze.cloud.admin.service.SysPlatformRoleService;
+import org.springframework.stereotype.Service;
 
 /**
  * @author breeze
  * @date 2021-12-06 22:03:39
  */
-@Data
-@EqualsAndHashCode(callSuper = false)
-@TableName("sys_role_user")
-public class SysRoleUserEntity extends BaseModel<SysRoleUserEntity> implements Serializable {
-
-    private static final long serialVersionUID = 1L;
-
-    /**
-     *
-     */
-    private Long userId;
-
-    /**
-     *
-     */
-    private Long roleId;
+@Service
+public class SysPlatformRoleServiceImpl extends ServiceImpl<SysPlatformRoleMapper, SysPlatformRoleEntity> implements SysPlatformRoleService {
 
 }

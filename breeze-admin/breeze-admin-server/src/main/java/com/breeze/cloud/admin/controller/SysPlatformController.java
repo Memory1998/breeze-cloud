@@ -16,10 +16,11 @@
 
 package com.breeze.cloud.admin.controller;
 
-import com.breeze.cloud.admin.entity.SysOauthClientDetailsEntity;
-import com.breeze.cloud.admin.service.SysOauthClientDetailsService;
+import com.breeze.cloud.admin.entity.SysPlatformEntity;
+import com.breeze.cloud.admin.service.SysPlatformService;
 import com.breeze.cloud.core.Result;
-import com.breeze.cloud.security.annotation.JoinWhiteList;
+import com.github.xiaoymin.knife4j.annotations.ApiSort;
+import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -32,17 +33,19 @@ import java.util.Map;
  * @date 2021-12-06 22:03:39
  */
 @RestController
-@RequestMapping("/sys/oauth/")
-public class SysOauthClientDetailsController {
+@ApiSort(1)
+@Api(tags = "平台管理", value = "SysPlatformController")
+@RequestMapping("/sys/platform")
+public class SysPlatformController {
 
     @Autowired
-    private SysOauthClientDetailsService sysOauthClientDetailsService;
+    private SysPlatformService sysPlatformService;
 
     /**
      * 列表
      */
     @RequestMapping("/list")
-    @PreAuthorize("hasAnyAuthority('sys:oauth:list')")
+    @PreAuthorize("hasAnyAuthority('sys:platform:list')")
     public Result list(@RequestParam Map<String, Object> params) {
         return null;
     }
@@ -50,40 +53,41 @@ public class SysOauthClientDetailsController {
     /**
      * 信息
      */
-    @RequestMapping("/info/{clientId}")
-    @JoinWhiteList
-    public SysOauthClientDetailsEntity info(@PathVariable("clientId") String clientId) {
-        return this.sysOauthClientDetailsService.getById(clientId);
+    @RequestMapping("/info/{id}")
+    @PreAuthorize("hasAnyAuthority('sys:platform:list')")
+    public Result info(@PathVariable("id") Long id) {
+        SysPlatformEntity sysUser = sysPlatformService.getById(id);
+        return Result.ok();
     }
 
     /**
      * 保存
      */
     @RequestMapping("/save")
-    @PreAuthorize("hasAnyAuthority('sys:oauth:save')")
-    public Result save(@RequestBody SysOauthClientDetailsEntity oauth) {
-        this.sysOauthClientDetailsService.save(oauth);
-        return null;
+    @PreAuthorize("hasAnyAuthority('sys:platform:list')")
+    public Result save(@RequestBody SysPlatformEntity sysUser) {
+        sysPlatformService.save(sysUser);
+        return Result.ok();
     }
 
     /**
      * 修改
      */
     @RequestMapping("/update")
-    @PreAuthorize("hasAnyAuthority('sys:oauth:update')")
-    public Result update(@RequestBody SysOauthClientDetailsEntity oauth) {
-        this.sysOauthClientDetailsService.updateById(oauth);
-        return null;
+    @PreAuthorize("hasAnyAuthority('sys:user:list')")
+    public Result update(@RequestBody SysPlatformEntity sysPlatformEntity) {
+        sysPlatformService.updateById(sysPlatformEntity);
+        return Result.ok();
     }
 
     /**
      * 删除
      */
     @RequestMapping("/delete")
-    @PreAuthorize("hasAnyAuthority('sys:oauth:delete')")
-    public Result delete(@RequestBody String[] clientIds) {
-        this.sysOauthClientDetailsService.removeByIds(Arrays.asList(clientIds));
-        return null;
+    @PreAuthorize("hasAnyAuthority('sys:platform:list')")
+    public Result delete(@RequestBody Long[] ids) {
+        sysPlatformService.removeByIds(Arrays.asList(ids));
+        return Result.ok();
     }
 
 }
