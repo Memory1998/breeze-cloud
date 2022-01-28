@@ -14,11 +14,12 @@
         <result property="keepAlive" column="keep_alive"/>
         <result property="visable" column="visable"/>
         <result property="createBy" column="create_by"/>
+        <result property="createTime" column="create_time"/>
         <result property="createName" column="create_name"/>
         <result property="updateBy" column="update_by"/>
         <result property="updateTime" column="update_time"/>
-        <result property="isDel" column="is_del"/>
-        <result property="delBy" column="del_by"/>
+        <result property="isDelete" column="is_delete"/>
+        <result property="deleteBy" column="delete_by"/>
     </resultMap>
 
 

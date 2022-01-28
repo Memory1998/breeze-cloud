@@ -37,6 +37,15 @@ public class BaseModel<T> extends Model<BaseModel<T>> {
     private Integer isDelete;
 
     /**
+     * 删除人工号
+     */
+    @JsonIgnore
+    @ApiModelProperty(value = "删除人工号", hidden = true)
+    @ExcelIgnore
+    @TableLogic
+    private String deleteBy;
+
+    /**
      * createdBy
      */
     @ApiModelProperty(value = "创建人", hidden = true)
