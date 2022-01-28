@@ -65,8 +65,8 @@ public class BreezeUserDetailsServiceImpl implements BreezeUserDetailsService {
             Collections.addAll(authSet, sysUserDTO.getPermission());
         }
 
-        Collection<? extends GrantedAuthority> authorities = AuthorityUtils
-                .createAuthorityList(authSet.toArray(new String[0]));
+        Collection<? extends GrantedAuthority> authorities
+                = AuthorityUtils.createAuthorityList(authSet.toArray(new String[0]));
 
         List<String> roleCodeList = null;
         List<Long> roleIdList = null;
@@ -74,7 +74,6 @@ public class BreezeUserDetailsServiceImpl implements BreezeUserDetailsService {
             roleCodeList = sysUserDTO.getUserRoleDTOList().stream().map(SysUserRoleDTO::getRoleCode).collect(Collectors.toList());
             roleIdList = sysUserDTO.getUserRoleDTOList().stream().map(SysUserRoleDTO::getRoleId).collect(Collectors.toList());
         }
-
 
         String password = passwordEncoder.encode("123456");
         return new BreezeLoginUser(sysUserDTO.getId(),
@@ -86,10 +85,10 @@ public class BreezeUserDetailsServiceImpl implements BreezeUserDetailsService {
                 sysUserDTO.getUsername(),
                 sysUserDTO.getLoginAmount(),
                 password,
-                Objects.equals(1, sysUserDTO.getIsLock()),
+                Objects.equals(0, sysUserDTO.getIsLock()),
                 true,
                 true,
-                Objects.equals(1, sysUserDTO.getIsLock()),
+                Objects.equals(0, sysUserDTO.getIsLock()),
                 authorities);
     }
 
