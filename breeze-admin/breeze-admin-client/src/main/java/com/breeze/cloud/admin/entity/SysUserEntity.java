@@ -41,6 +41,12 @@ public class SysUserEntity extends BaseModel<SysUserEntity> implements Serializa
      * 登录账户
      */
     private String loginAmount;
+
+    /**
+     * 用户code
+     */
+    private String userCode;
+
     /**
      * 用户名
      */

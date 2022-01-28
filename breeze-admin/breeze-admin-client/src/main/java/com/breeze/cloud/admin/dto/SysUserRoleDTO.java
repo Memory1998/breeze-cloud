@@ -16,8 +16,12 @@
 
 package com.breeze.cloud.admin.dto;
 
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
+
+import java.io.Serializable;
 
 /**
  * @author breeze
@@ -25,7 +29,11 @@ import lombok.Data;
  */
 @Data
 @Builder
-public class SysUserRoleDTO {
+@NoArgsConstructor
+@AllArgsConstructor
+public class SysUserRoleDTO implements Serializable {
+
+    private static final long serialVersionUID = 1L;
 
     /**
      * 角色Id

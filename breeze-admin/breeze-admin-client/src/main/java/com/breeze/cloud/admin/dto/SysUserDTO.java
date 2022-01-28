@@ -21,6 +21,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
@@ -31,12 +32,30 @@ import java.util.List;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class SysUserDTO {
+public class SysUserDTO implements Serializable {
+
+    private static final long serialVersionUID = 1L;
+
+    /**
+     * 用户ID
+     */
+    private Long id;
 
     /**
      * 部门ID
      */
     private Long deptId;
+
+    /**
+     * 部门名称
+     */
+    private String deptName;
+
+    /**
+     * userCode
+     */
+    private String userCode;
+
     /**
      * 登录账户
      */

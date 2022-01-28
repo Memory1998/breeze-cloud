@@ -53,9 +53,9 @@ public class BreezeLoginUser extends User {
     private List<Long> userRoleIdList;
 
     /**
-     * 主体名称
+     * 用户名称
      */
-    private String mainName;
+    private String username;
 
     /**
      * 部门ID
@@ -68,14 +68,23 @@ public class BreezeLoginUser extends User {
     private String deptName;
 
     /**
+     * UserDetails 默认提供了：
+     * 用户的权限集， 默认需要添加ROLE_ 前缀
+     * 用户的加密后的密码， 不加密会使用{noop}前缀
+     * 应用内唯一的用户名
+     * 账户是否过期
+     * 账户是否锁定
+     * 凭证是否过期
+     * 用户是否可用
+     *
      * @param userId
      * @param userCode
      * @param userCodeList
      * @param userRoleIdList
-     * @param mainName
      * @param deptId
      * @param deptName
-     * @param username
+     * @param username              用于显示用户名称
+     * @param logAmount             用户登录
      * @param password
      * @param enabled
      * @param accountNonExpired
@@ -87,23 +96,23 @@ public class BreezeLoginUser extends User {
             , String userCode
             , List<String> userCodeList
             , List<Long> userRoleIdList
-            , String mainName
             , Long deptId
             , String deptName
             , String username
+            , String logAmount
             , String password
             , boolean enabled
             , boolean accountNonExpired
             , boolean credentialsNonExpired
             , boolean accountNonLocked
             , Collection<? extends GrantedAuthority> authorities) {
-        super(username, password, enabled, accountNonExpired, credentialsNonExpired, accountNonLocked, authorities);
+        super(logAmount, password, enabled, accountNonExpired, credentialsNonExpired, accountNonLocked, authorities);
         // 扩展自定义属性
         this.userId = userId;
+        this.username = username;
         this.userCode = userCode;
         this.userCodeList = userCodeList;
         this.userRoleIdList = userRoleIdList;
-        this.mainName = mainName;
         this.deptId = deptId;
         this.deptName = deptName;
     }
@@ -140,12 +149,13 @@ public class BreezeLoginUser extends User {
         this.userRoleIdList = userRoleIdList;
     }
 
-    public String getMainName() {
-        return mainName;
+    @Override
+    public String getUsername() {
+        return username;
     }
 
-    public void setMainName(String mainName) {
-        this.mainName = mainName;
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     public Long getDeptId() {
@@ -163,5 +173,4 @@ public class BreezeLoginUser extends User {
     public void setDeptName(String deptName) {
         this.deptName = deptName;
     }
-
 }

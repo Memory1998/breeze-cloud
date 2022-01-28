@@ -28,11 +28,10 @@
         LEFT JOIN sys_menu_role AS mr ON menu.id = mr.menu_id
         AND mr.is_delete = 0
         WHERE menu.is_delete = 0
-        AND mr.user_id IN
+        AND mr.role_id IN
         <foreach collection="roleDTOList" open="(" separator="," close=")" item="roleDTOItem" index="index">
             #{roleDTOItem.roleId}
         </foreach>
     </select>
-
 
 </mapper>

@@ -30,7 +30,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public interface SysUserFeign {
 
     /**
-     * 登录fegin接口
+     * 登录feign接口
      */
     @RequestMapping("/sys/user/loadByUsername/{loginAmount}")
     Result<SysUserDTO> loadByLoginAmount(@PathVariable("loginAmount") String loginAmount);

@@ -16,8 +16,10 @@
 
 package com.breeze.cloud.security.service.impl;
 
+import com.baomidou.mybatisplus.core.toolkit.CollectionUtils;
 import com.breeze.cloud.admin.api.SysUserFeign;
 import com.breeze.cloud.admin.dto.SysUserDTO;
+import com.breeze.cloud.admin.dto.SysUserRoleDTO;
 import com.breeze.cloud.core.Result;
 import com.breeze.cloud.core.enums.ResultCode;
 import com.breeze.cloud.security.domain.BreezeLoginUser;
@@ -34,10 +36,8 @@ import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.Objects;
-import java.util.Set;
+import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * @author breeze
@@ -59,16 +59,37 @@ public class BreezeUserDetailsServiceImpl implements BreezeUserDetailsService {
         if (Objects.equals(userEntityResult.getCode(), ResultCode.FAIL.getCode()) || Objects.isNull(userEntityResult.getData())) {
             throw new UsernameNotFoundException("用户不存在");
         }
-        Set<String> dbAuthsSet = new HashSet<>();
+        Set<String> authSet = new HashSet<>();
         SysUserDTO sysUserDTO = userEntityResult.getData();
         if (Objects.nonNull(sysUserDTO.getPermission())) {
-
+            Collections.addAll(authSet, sysUserDTO.getPermission());
         }
-        dbAuthsSet.add("sys:admin");
+
         Collection<? extends GrantedAuthority> authorities = AuthorityUtils
-                .createAuthorityList(dbAuthsSet.toArray(new String[0]));
+                .createAuthorityList(authSet.toArray(new String[0]));
+
+        List<String> roleCodeList = null;
+        List<Long> roleIdList = null;
+        if (CollectionUtils.isNotEmpty(sysUserDTO.getUserRoleDTOList())) {
+            roleCodeList = sysUserDTO.getUserRoleDTOList().stream().map(SysUserRoleDTO::getRoleCode).collect(Collectors.toList());
+            roleIdList = sysUserDTO.getUserRoleDTOList().stream().map(SysUserRoleDTO::getRoleId).collect(Collectors.toList());
+        }
+
+
         String password = passwordEncoder.encode("123456");
-        return new BreezeLoginUser(0L, "", null, null, "", 0L, "", "admin", password, true, true, true, true,
+        return new BreezeLoginUser(sysUserDTO.getId(),
+                sysUserDTO.getUserCode(),
+                roleCodeList,
+                roleIdList,
+                sysUserDTO.getDeptId(),
+                sysUserDTO.getDeptName(),
+                sysUserDTO.getUsername(),
+                sysUserDTO.getLoginAmount(),
+                password,
+                Objects.equals(1, sysUserDTO.getIsLock()),
+                true,
+                true,
+                Objects.equals(1, sysUserDTO.getIsLock()),
                 authorities);
     }
 
