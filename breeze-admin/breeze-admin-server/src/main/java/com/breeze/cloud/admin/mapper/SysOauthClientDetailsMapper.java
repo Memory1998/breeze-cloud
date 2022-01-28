@@ -14,15 +14,17 @@
  * limitations under the License.
  */
 
-package com.breeze.cloud.admin.service;
+package com.breeze.cloud.admin.mapper;
 
-import com.baomidou.mybatisplus.extension.service.IService;
-import com.breeze.cloud.admin.entity.OauthClientDetailsEntity;
+import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.breeze.cloud.admin.entity.SysOauthClientDetailsEntity;
+import org.apache.ibatis.annotations.Mapper;
 
 /**
  * @author breeze
  * @date 2021-12-06 22:03:39
  */
-public interface OauthClientDetailsService extends IService<OauthClientDetailsEntity> {
-}
+@Mapper
+public interface SysOauthClientDetailsMapper extends BaseMapper<SysOauthClientDetailsEntity> {
 
+}

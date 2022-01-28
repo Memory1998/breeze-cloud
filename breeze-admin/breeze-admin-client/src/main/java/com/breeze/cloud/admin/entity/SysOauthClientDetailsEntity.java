@@ -27,8 +27,8 @@ import java.io.Serializable;
  * @date 2021-12-06 22:03:39
  */
 @Data
-@TableName("oauth_client_details")
-public class OauthClientDetailsEntity implements Serializable {
+@TableName("sys_oauth_client_details")
+public class SysOauthClientDetailsEntity implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @TableId

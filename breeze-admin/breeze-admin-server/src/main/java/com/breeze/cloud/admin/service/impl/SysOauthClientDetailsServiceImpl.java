@@ -17,9 +17,9 @@
 package com.breeze.cloud.admin.service.impl;
 
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.breeze.cloud.admin.entity.OauthClientDetailsEntity;
-import com.breeze.cloud.admin.mapper.OauthClientDetailsMapper;
-import com.breeze.cloud.admin.service.OauthClientDetailsService;
+import com.breeze.cloud.admin.entity.SysOauthClientDetailsEntity;
+import com.breeze.cloud.admin.mapper.SysOauthClientDetailsMapper;
+import com.breeze.cloud.admin.service.SysOauthClientDetailsService;
 import org.springframework.stereotype.Service;
 
 /**
@@ -27,6 +27,6 @@ import org.springframework.stereotype.Service;
  * @date 2021-12-06 22:03:39
  */
 @Service
-public class OauthClientDetailsServiceImpl extends ServiceImpl<OauthClientDetailsMapper, OauthClientDetailsEntity> implements OauthClientDetailsService {
+public class SysOauthClientDetailsServiceImpl extends ServiceImpl<SysOauthClientDetailsMapper, SysOauthClientDetailsEntity> implements SysOauthClientDetailsService {
 
 }

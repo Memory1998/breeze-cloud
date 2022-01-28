@@ -16,7 +16,7 @@
 
 package com.breeze.cloud.admin.api;
 
-import com.breeze.cloud.admin.entity.OauthClientDetailsEntity;
+import com.breeze.cloud.admin.entity.SysOauthClientDetailsEntity;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -32,5 +32,5 @@ public interface OauthClientDetailsFeign {
      * 信息
      */
     @GetMapping("/sys/oauth/info/{clientId}")
-    OauthClientDetailsEntity info(@PathVariable("clientId") String clientId);
+    SysOauthClientDetailsEntity info(@PathVariable("clientId") String clientId);
 }

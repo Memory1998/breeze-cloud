@@ -20,7 +20,7 @@ import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.json.JSONUtil;
 import com.breeze.cloud.admin.api.OauthClientDetailsFeign;
-import com.breeze.cloud.admin.entity.OauthClientDetailsEntity;
+import com.breeze.cloud.admin.entity.SysOauthClientDetailsEntity;
 import com.breeze.cloud.core.constants.CacheConstants;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -60,7 +60,7 @@ public class BreezeRedisClientDetailsService implements ClientDetailsService {
     public ClientDetails loadClientByClientId(String clientId) throws InvalidClientException {
         ClientDetails details;
         try {
-            OauthClientDetailsEntity info = this.oauthClientDetailsFeign.info(clientId);
+            SysOauthClientDetailsEntity info = this.oauthClientDetailsFeign.info(clientId);
             if (Objects.isNull(info)) {
                 logger.info("client id is not found.");
                 throw new NoSuchClientException("No client with requested id: " + clientId);
@@ -72,7 +72,7 @@ public class BreezeRedisClientDetailsService implements ClientDetailsService {
         return details;
     }
 
-    private BaseClientDetails getFieldsForSelect(OauthClientDetailsEntity clientDetails) {
+    private BaseClientDetails getFieldsForSelect(SysOauthClientDetailsEntity clientDetails) {
 
         BaseClientDetails baseClientDetails = new BaseClientDetails();
 
