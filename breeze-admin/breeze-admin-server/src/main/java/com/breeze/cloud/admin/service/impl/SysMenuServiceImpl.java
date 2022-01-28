@@ -17,10 +17,13 @@
 package com.breeze.cloud.admin.service.impl;
 
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.breeze.cloud.admin.dto.SysUserRoleDTO;
 import com.breeze.cloud.admin.entity.SysMenuEntity;
 import com.breeze.cloud.admin.mapper.SysMenuMapper;
 import com.breeze.cloud.admin.service.SysMenuService;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 /**
  * @author breeze
@@ -29,4 +32,8 @@ import org.springframework.stereotype.Service;
 @Service
 public class SysMenuServiceImpl extends ServiceImpl<SysMenuMapper, SysMenuEntity> implements SysMenuService {
 
+    @Override
+    public String[] listUserMenuPermission(List<SysUserRoleDTO> roleDTOList) {
+        return this.baseMapper.listUserMenuPermission(roleDTOList);
+    }
 }

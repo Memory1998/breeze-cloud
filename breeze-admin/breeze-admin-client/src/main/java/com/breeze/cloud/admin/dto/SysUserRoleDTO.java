@@ -14,22 +14,33 @@
  * limitations under the License.
  */
 
-package com.breeze.cloud.admin.mapper;
+package com.breeze.cloud.admin.dto;
 
-import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.breeze.cloud.admin.dto.SysUserRoleDTO;
-import com.breeze.cloud.admin.entity.SysRoleEntity;
-import org.apache.ibatis.annotations.Mapper;
-
-import java.util.List;
+import lombok.Builder;
+import lombok.Data;
 
 /**
  * @author breeze
- * @date 2021-12-06 22:03:39
+ * @date 2022-01-28
  */
-@Mapper
-public interface SysRoleMapper extends BaseMapper<SysRoleEntity> {
+@Data
+@Builder
+public class SysUserRoleDTO {
 
-    List<SysUserRoleDTO> listUserRole(Long id);
+    /**
+     * 角色Id
+     */
+    private Long roleId;
+
+    /**
+     * 角色CODE
+     */
+    private String roleCode;
+
+    /**
+     * 角色名称
+     */
+    private String roleName;
+
 
 }

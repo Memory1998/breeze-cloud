@@ -17,6 +17,7 @@
 package com.breeze.cloud.admin.service.impl;
 
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.breeze.cloud.admin.dto.SysUserRoleDTO;
 import com.breeze.cloud.admin.entity.SysRoleEntity;
 import com.breeze.cloud.admin.mapper.SysRoleMapper;
 import com.breeze.cloud.admin.service.SysRoleService;
@@ -32,7 +33,8 @@ import java.util.List;
 public class SysRoleServiceImpl extends ServiceImpl<SysRoleMapper, SysRoleEntity> implements SysRoleService {
 
     @Override
-    public List<SysRoleEntity> listUserRole(Long id) {
-        return null;
+    public List<SysUserRoleDTO> listUserRole(Long id) {
+        return this.baseMapper.listUserRole(id);
     }
+
 }

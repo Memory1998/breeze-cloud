@@ -17,13 +17,18 @@
 package com.breeze.cloud.admin.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.breeze.cloud.admin.dto.SysUserRoleDTO;
 import com.breeze.cloud.admin.entity.SysMenuEntity;
+
+import java.util.List;
 
 /**
  * @author breeze
  * @date 2021-12-06 22:03:39
  */
 public interface SysMenuService extends IService<SysMenuEntity> {
+
+    String[] listUserMenuPermission(List<SysUserRoleDTO> roleDTOList);
 
 }
 

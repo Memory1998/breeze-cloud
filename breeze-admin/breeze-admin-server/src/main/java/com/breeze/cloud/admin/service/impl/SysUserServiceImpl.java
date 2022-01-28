@@ -16,16 +16,21 @@
 
 package com.breeze.cloud.admin.service.impl;
 
+import cn.hutool.core.bean.BeanUtil;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.breeze.cloud.admin.dto.SysUserDTO;
+import com.breeze.cloud.admin.dto.SysUserRoleDTO;
 import com.breeze.cloud.admin.entity.SysUserEntity;
 import com.breeze.cloud.admin.mapper.SysUserMapper;
+import com.breeze.cloud.admin.service.SysMenuService;
 import com.breeze.cloud.admin.service.SysRoleService;
 import com.breeze.cloud.admin.service.SysUserService;
 import com.breeze.cloud.core.Result;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Objects;
 
 /**
@@ -38,14 +43,21 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUserEntity
     @Autowired
     private SysRoleService sysRoleService;
 
+    @Autowired
+    private SysMenuService sysMenuService;
+
     @Override
-    public Result<SysUserEntity> loadByLoginAmount(String username) {
+    public Result<SysUserDTO> loadByLoginAmount(String username) {
         SysUserEntity sysUserEntity = this.getOne(Wrappers.<SysUserEntity>lambdaQuery().eq(SysUserEntity::getLoginAmount, username));
         if (Objects.isNull(sysUserEntity)) {
             return Result.fail("用户名错误或不存在");
         }
-        // todo
-        this.sysRoleService.listUserRole(sysUserEntity.getId());
-        return Result.ok(sysUserEntity);
+        SysUserDTO sysUserDTO = new SysUserDTO();
+        BeanUtil.copyProperties(sysUserEntity, sysUserDTO);
+        List<SysUserRoleDTO> userRoleDTOList = this.sysRoleService.listUserRole(sysUserEntity.getId());
+        sysUserDTO.setUserRoleDTOList(userRoleDTOList);
+        String[] permissionList = this.sysMenuService.listUserMenuPermission(userRoleDTOList);
+        sysUserDTO.setPermission(permissionList);
+        return Result.ok(sysUserDTO);
     }
 }

@@ -17,8 +17,9 @@
 package com.breeze.cloud.security.service.impl;
 
 import com.breeze.cloud.admin.api.SysUserFeign;
-import com.breeze.cloud.admin.entity.SysUserEntity;
+import com.breeze.cloud.admin.dto.SysUserDTO;
 import com.breeze.cloud.core.Result;
+import com.breeze.cloud.core.enums.ResultCode;
 import com.breeze.cloud.security.domain.BreezeLoginUser;
 import com.breeze.cloud.security.service.BreezeUserDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -53,9 +54,16 @@ public class BreezeUserDetailsServiceImpl implements BreezeUserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        Result<SysUserEntity> sysUserEntityResult = this.sysUserFeign.loadByLoginAmount(username);
         // todo
+        Result<SysUserDTO> userEntityResult = this.sysUserFeign.loadByLoginAmount(username);
+        if (Objects.equals(userEntityResult.getCode(), ResultCode.FAIL.getCode()) || Objects.isNull(userEntityResult.getData())) {
+            throw new UsernameNotFoundException("用户不存在");
+        }
         Set<String> dbAuthsSet = new HashSet<>();
+        SysUserDTO sysUserDTO = userEntityResult.getData();
+        if (Objects.nonNull(sysUserDTO.getPermission())) {
+
+        }
         dbAuthsSet.add("sys:admin");
         Collection<? extends GrantedAuthority> authorities = AuthorityUtils
                 .createAuthorityList(dbAuthsSet.toArray(new String[0]));

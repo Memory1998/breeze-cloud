@@ -16,6 +16,7 @@
 
 package com.breeze.cloud.admin.controller;
 
+import com.breeze.cloud.admin.dto.SysUserDTO;
 import com.breeze.cloud.admin.entity.SysUserEntity;
 import com.breeze.cloud.admin.service.SysUserService;
 import com.breeze.cloud.core.Result;
@@ -63,7 +64,7 @@ public class SysUserController {
      */
     @RequestMapping("/loadByUsername/{loginAmount}")
     @JoinWhiteList
-    public Result<SysUserEntity> loadByLoginAmount(@PathVariable String loginAmount) {
+    public Result<SysUserDTO> loadByLoginAmount(@PathVariable("loginAmount") String loginAmount) {
         return this.sysUserService.loadByLoginAmount(loginAmount);
     }
 

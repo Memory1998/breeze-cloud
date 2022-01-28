@@ -21,6 +21,8 @@ import com.breeze.cloud.core.enums.ResultCode;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.InternalAuthenticationServiceException;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.oauth2.common.exceptions.InvalidGrantException;
 import org.springframework.security.oauth2.common.exceptions.UnsupportedGrantTypeException;
 import org.springframework.security.oauth2.provider.error.WebResponseExceptionTranslator;
@@ -48,6 +50,12 @@ public class BreezeOauthServerWebResponseExceptionTranslator implements WebRespo
         } else if (ex instanceof InvalidGrantException) {
             logger.info("用户名或者密码错误 {}", ResultCode.WRONG_USERNAME_OR_PASSWORD.getCode());
             return Result.fail(ResultCode.WRONG_USERNAME_OR_PASSWORD);
+        } else if (ex instanceof UsernameNotFoundException) {
+            logger.info("用户不存在 {}", ResultCode.USERNAME_NOT_FOUND_EXCEPTION.getCode());
+            return Result.fail(ResultCode.USERNAME_NOT_FOUND_EXCEPTION);
+        } else if (ex instanceof InternalAuthenticationServiceException) {
+            logger.info("内部身份验证服务异常 {}", ResultCode.FEIGN_INTERNAL_AUTHENTICATION_SERVICE_EXCEPTION.getCode());
+            return Result.fail(ResultCode.FEIGN_INTERNAL_AUTHENTICATION_SERVICE_EXCEPTION);
         }
         logger.info("权限不足 {}", ResultCode.INSUFFICIENT_PERMISSIONS.getCode());
         return Result.fail(ResultCode.INSUFFICIENT_PERMISSIONS);

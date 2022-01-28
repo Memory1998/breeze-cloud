@@ -17,8 +17,12 @@
 package com.breeze.cloud.admin.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.breeze.cloud.admin.dto.SysUserRoleDTO;
 import com.breeze.cloud.admin.entity.SysMenuEntity;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
+
+import java.util.List;
 
 /**
  * @author breeze
@@ -26,5 +30,7 @@ import org.apache.ibatis.annotations.Mapper;
  */
 @Mapper
 public interface SysMenuMapper extends BaseMapper<SysMenuEntity> {
+
+    String[] listUserMenuPermission(@Param("roleDTOList") List<SysUserRoleDTO> roleDTOList);
 
 }

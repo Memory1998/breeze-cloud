@@ -17,6 +17,7 @@
 package com.breeze.cloud.admin.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.breeze.cloud.admin.dto.SysUserDTO;
 import com.breeze.cloud.admin.entity.SysUserEntity;
 import com.breeze.cloud.core.Result;
 
@@ -26,6 +27,6 @@ import com.breeze.cloud.core.Result;
  */
 public interface SysUserService extends IService<SysUserEntity> {
 
-    Result<SysUserEntity> loadByLoginAmount(String username);
+    Result<SysUserDTO> loadByLoginAmount(String username);
 
 }

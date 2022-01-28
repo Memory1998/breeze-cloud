@@ -48,7 +48,7 @@ public class SysMenuEntity extends BaseModel<SysMenuEntity> implements Serializa
     /**
      * 权限
      */
-    private String per;
+    private String permission;
     /**
      * 路径
      */
@@ -57,9 +57,10 @@ public class SysMenuEntity extends BaseModel<SysMenuEntity> implements Serializa
      * 保活
      */
     private Integer keepAlive;
+
     /**
      * 隐藏
      */
-    private Integer visable;
+    private Integer visible;
 
 }

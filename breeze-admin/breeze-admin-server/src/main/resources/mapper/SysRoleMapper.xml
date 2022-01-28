@@ -17,5 +17,16 @@
         <result property="deleteBy" column="delete_by"/>
     </resultMap>
 
+    <select id="listUserRole" resultType="com.breeze.cloud.admin.dto.SysUserRoleDTO">
+        SELECT role.id role_id,
+               role.role_code,
+               role.role_name
+        FROM sys_role AS role
+                 LEFT JOIN sys_role_user AS ru ON ru.role_id = role.id
+            AND ru.is_delete = 0
+        WHERE role.is_delete = 0
+          AND ru.user_id = #{id}
+    </select>
+
 
 </mapper>

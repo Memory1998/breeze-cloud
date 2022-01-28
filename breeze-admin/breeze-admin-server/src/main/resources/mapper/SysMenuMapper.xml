@@ -9,10 +9,10 @@
         <result property="menuName" column="menu_name"/>
         <result property="sort" column="sort"/>
         <result property="parentId" column="parent_id"/>
-        <result property="per" column="per"/>
+        <result property="permission" column="permission"/>
         <result property="path" column="path"/>
         <result property="keepAlive" column="keep_alive"/>
-        <result property="visable" column="visable"/>
+        <result property="visible" column="visible"/>
         <result property="createBy" column="create_by"/>
         <result property="createTime" column="create_time"/>
         <result property="createName" column="create_name"/>
@@ -21,6 +21,18 @@
         <result property="isDelete" column="is_delete"/>
         <result property="deleteBy" column="delete_by"/>
     </resultMap>
+
+    <select id="listUserMenuPermission" resultType="java.lang.String">
+        SELECT DISTINCT menu.permission
+        FROM sys_menu AS menu
+        LEFT JOIN sys_menu_role AS mr ON menu.id = mr.menu_id
+        AND mr.is_delete = 0
+        WHERE menu.is_delete = 0
+        AND mr.user_id IN
+        <foreach collection="roleDTOList" open="(" separator="," close=")" item="roleDTOItem" index="index">
+            #{roleDTOItem.roleId}
+        </foreach>
+    </select>
 
 
 </mapper>
