@@ -30,7 +30,6 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
@@ -62,15 +61,20 @@ public class BreezeUserDetailsServiceImpl implements BreezeUserDetailsService {
             Collections.addAll(authSet, sysUserDTO.getPermission());
         }
 
+        List<String> roleCodeList = null;
+        List<String> roleIdList = null;
+        if (CollectionUtils.isNotEmpty(sysUserDTO.getUserRoleDTOList())) {
+
+            // 角色必须使用ROLE_前缀后生效
+            roleCodeList = sysUserDTO.getUserRoleDTOList().stream().map(role -> "ROLE_" + role.getRoleCode()).collect(Collectors.toList());
+            authSet.addAll(roleCodeList);
+
+            roleIdList = sysUserDTO.getUserRoleDTOList().stream().map(role -> "ROLE_" + role.getRoleId()).map(String::valueOf).collect(Collectors.toList());
+            authSet.addAll(roleIdList);
+        }
+
         Collection<? extends GrantedAuthority> authorities
                 = AuthorityUtils.createAuthorityList(authSet.toArray(new String[0]));
-
-        List<String> roleCodeList = null;
-        List<Long> roleIdList = null;
-        if (CollectionUtils.isNotEmpty(sysUserDTO.getUserRoleDTOList())) {
-            roleCodeList = sysUserDTO.getUserRoleDTOList().stream().map(SysUserRoleDTO::getRoleCode).collect(Collectors.toList());
-            roleIdList = sysUserDTO.getUserRoleDTOList().stream().map(SysUserRoleDTO::getRoleId).collect(Collectors.toList());
-        }
 
         return new BreezeLoginUser(sysUserDTO.getId(),
                 sysUserDTO.getUserCode(),
