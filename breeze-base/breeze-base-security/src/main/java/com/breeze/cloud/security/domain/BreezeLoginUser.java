@@ -50,7 +50,7 @@ public class BreezeLoginUser extends User {
     /**
      * 用户的角色ID
      */
-    private List<Long> userRoleIdList;
+    private List<String> userRoleIdList;
 
     /**
      * 登录后显示的账户名称
@@ -86,7 +86,7 @@ public class BreezeLoginUser extends User {
     public BreezeLoginUser(Long userId
             , String userCode
             , List<String> roleCodeList
-            , List<Long> userRoleIdList
+            , List<String> userRoleIdList
             , Long deptId
             , String deptName
             , String username
@@ -132,11 +132,11 @@ public class BreezeLoginUser extends User {
         this.roleCodeList = roleCodeList;
     }
 
-    public List<Long> getUserRoleIdList() {
+    public List<String> getUserRoleIdList() {
         return userRoleIdList;
     }
 
-    public void setUserRoleIdList(List<Long> userRoleIdList) {
+    public void setUserRoleIdList(List<String> userRoleIdList) {
         this.userRoleIdList = userRoleIdList;
     }
 
