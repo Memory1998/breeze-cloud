@@ -65,12 +65,11 @@ public class BreezeUserDetailsServiceImpl implements BreezeUserDetailsService {
         List<String> roleIdList = null;
         if (CollectionUtils.isNotEmpty(sysUserDTO.getUserRoleDTOList())) {
 
-            // 角色必须使用ROLE_前缀后生效
+            // 按照角色权限必须使用ROLE_前缀后生效
             roleCodeList = sysUserDTO.getUserRoleDTOList().stream().map(role -> "ROLE_" + role.getRoleCode()).collect(Collectors.toList());
             authSet.addAll(roleCodeList);
-
-            roleIdList = sysUserDTO.getUserRoleDTOList().stream().map(role -> "ROLE_" + role.getRoleId()).map(String::valueOf).collect(Collectors.toList());
-            authSet.addAll(roleIdList);
+            // 角色ID集合
+            roleIdList = sysUserDTO.getUserRoleDTOList().stream().map(SysUserRoleDTO::getRoleId).map(String::valueOf).collect(Collectors.toList());
         }
 
         Collection<? extends GrantedAuthority> authorities
