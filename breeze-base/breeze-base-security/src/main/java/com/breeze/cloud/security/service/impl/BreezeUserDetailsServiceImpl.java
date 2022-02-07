@@ -47,9 +47,6 @@ import java.util.stream.Collectors;
 public class BreezeUserDetailsServiceImpl implements BreezeUserDetailsService {
 
     @Autowired
-    private PasswordEncoder passwordEncoder;
-
-    @Autowired
     private SysUserFeign sysUserFeign;
 
     @Override
@@ -75,16 +72,15 @@ public class BreezeUserDetailsServiceImpl implements BreezeUserDetailsService {
             roleIdList = sysUserDTO.getUserRoleDTOList().stream().map(SysUserRoleDTO::getRoleId).collect(Collectors.toList());
         }
 
-        String password = passwordEncoder.encode("123456");
         return new BreezeLoginUser(sysUserDTO.getId(),
                 sysUserDTO.getUserCode(),
                 roleCodeList,
                 roleIdList,
                 sysUserDTO.getDeptId(),
                 sysUserDTO.getDeptName(),
+                sysUserDTO.getAmountName(),
                 sysUserDTO.getUsername(),
-                sysUserDTO.getLoginAmount(),
-                password,
+                sysUserDTO.getPassword(),
                 Objects.equals(0, sysUserDTO.getIsLock()),
                 true,
                 true,

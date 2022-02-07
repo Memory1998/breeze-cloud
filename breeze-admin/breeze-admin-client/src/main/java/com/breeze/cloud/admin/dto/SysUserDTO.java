@@ -57,9 +57,9 @@ public class SysUserDTO implements Serializable {
     private String userCode;
 
     /**
-     * 登录账户
+     * 登录后显示的账户名称
      */
-    private String loginAmount;
+    private String amountName;
     /**
      * 用户名
      */
