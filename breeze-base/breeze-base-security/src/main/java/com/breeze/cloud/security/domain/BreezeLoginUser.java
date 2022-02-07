@@ -45,7 +45,7 @@ public class BreezeLoginUser extends User {
     /**
      * 用户的角色CODE
      */
-    private List<String> roleCodeList;
+    private List<String> userRoleCodeList;
 
     /**
      * 用户的角色ID
@@ -70,7 +70,7 @@ public class BreezeLoginUser extends User {
     /**
      * @param userId                用户ID
      * @param userCode              用户CODE
-     * @param roleCodeList          角色CODE
+     * @param userRoleCodeList          角色CODE
      * @param userRoleIdList        角色Id
      * @param deptId                部门ID
      * @param deptName              部门名称
@@ -85,7 +85,7 @@ public class BreezeLoginUser extends User {
      */
     public BreezeLoginUser(Long userId
             , String userCode
-            , List<String> roleCodeList
+            , List<String> userRoleCodeList
             , List<String> userRoleIdList
             , Long deptId
             , String deptName
@@ -102,7 +102,7 @@ public class BreezeLoginUser extends User {
         this.userId = userId;
         this.amountName = amountName;
         this.userCode = userCode;
-        this.roleCodeList = roleCodeList;
+        this.userRoleCodeList = userRoleCodeList;
         this.userRoleIdList = userRoleIdList;
         this.deptId = deptId;
         this.deptName = deptName;
@@ -124,12 +124,12 @@ public class BreezeLoginUser extends User {
         this.userCode = userCode;
     }
 
-    public List<String> getRoleCodeList() {
-        return roleCodeList;
+    public List<String> getUserRoleCodeList() {
+        return userRoleCodeList;
     }
 
-    public void setGetRoleCodeList(List<String> roleCodeList) {
-        this.roleCodeList = roleCodeList;
+    public void setGetRoleCodeList(List<String> userRoleCodeList) {
+        this.userRoleCodeList = userRoleCodeList;
     }
 
     public List<String> getUserRoleIdList() {

@@ -31,6 +31,8 @@ public class SecurityUtils {
 
     /**
      * 获取Authentication
+     *
+     * @return Authentication
      */
     public static Authentication getAuthentication() {
         return SecurityContextHolder.getContext().getAuthentication();
@@ -72,13 +74,17 @@ public class SecurityUtils {
 
     /**
      * 获取当前登录者的权限集CODE
+     *
+     * @return UserRoleCodeList
      */
-    public static List<String> getRoleCodes() {
-        return Objects.requireNonNull(getBreezeLoginUser()).getRoleCodeList();
+    public static List<String> getUserRoleCodes() {
+        return Objects.requireNonNull(getBreezeLoginUser()).getUserRoleCodeList();
     }
 
     /**
      * 获取当前登录者的权限集ID
+     *
+     * @return UserRoleIdList
      */
     public static List<String> getUserRoleIds() {
         return Objects.requireNonNull(getBreezeLoginUser()).getUserRoleIdList();
