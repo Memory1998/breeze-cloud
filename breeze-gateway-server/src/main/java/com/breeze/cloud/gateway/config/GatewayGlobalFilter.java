@@ -25,8 +25,7 @@ import org.springframework.web.server.ServerWebExchange;
 import reactor.core.publisher.Mono;
 
 /**
- * 拦截进行密码验证 和 验证码验证等
- * RemoveRequestHeader
+ * RemoveRequestHeader todo
  *
  * @author breeze
  * @date 2022-02-07
