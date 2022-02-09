@@ -48,15 +48,14 @@ public class VerificationCodeGatewayFilterFactory extends AbstractGatewayFilterF
             String rawPath = newUri.getRawPath();
             log.info("{}", rawPath);
 
-            if (Objects.equals("/oauth/token", rawPath)) {
-                // todo yanzhangma
+            if (!Objects.equals("/oauth/token", rawPath) || !Objects.equals("/oauth/sms", rawPath)) {
                 return chain.filter(exchange);
             }
 
-            if (Objects.equals("/oauth/sms", rawPath)) {
+            if (Objects.equals("/oauth/token", rawPath) && Objects.equals("refresh_token", queryParams.get("grant_type"))) {
                 return chain.filter(exchange);
             }
-
+            // todo yanzhangma
             return chain.filter(exchange);
         };
     }
