@@ -25,9 +25,9 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.BeanIds;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 /**
@@ -64,33 +64,58 @@ public class BreezeWebSecurityConfig extends WebSecurityConfigurerAdapter {
         auth.userDetailsService(userDetailsService).passwordEncoder(passwordEncoder);
     }
 
+    @Override
+    public void configure(WebSecurity web) throws Exception {
+        web.ignoring().antMatchers("/assets/**","/resources/**", "/error", "/css/**", "/images/**", "/favicon.ico");
+    }
+
     /**
      * @param http
      * @throws Exception
      */
     @Override
     protected void configure(HttpSecurity http) throws Exception {
+
+//        http.formLogin()
+//                .loginPage("/login/page")
+//                .loginProcessingUrl("/login/form")
+//                .and()
+//                .authorizeRequests()
+//                .antMatchers("/login/**").permitAll()
+//                .anyRequest()
+//                .authenticated()
+//                .and().csrf().disable().cors();
+
         http.apply(smsCodeAuthenticationSecurityConfig);
         // 不需要session
-        http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
-        // 不使用session CSRF禁用
-        http.csrf().disable();
-        http.formLogin();
+        // http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+
+        http.formLogin()
+                .loginPage("/login/page")
+                .loginProcessingUrl("/login/form")
+//                .defaultSuccessUrl("/login/success")
+                // 用户密码错误跳转接口
+//                .failureUrl("/login/fail")
+
+        ;
         // 过滤请求
         http.authorizeRequests()
                 .antMatchers(
                         "/v2/api-docs"
                         , "/actuator/**"
-                        , "/swaggger-ui.html"
+                        , "/swagger-ui.html"
                         , "/doc.html"
                         , "/v2/**"
                         , "/swagger-resources"
                         , "/swagger-resources/**"
                         , "/webjars/**"
+                        , "/login/**"
                 ).permitAll()
                 // 所有请求全部需要鉴权认证
                 .anyRequest().authenticated();
         http.headers().frameOptions().disable();
+        // CSRF禁用
+        http.csrf().disable().cors();
     }
 
 }

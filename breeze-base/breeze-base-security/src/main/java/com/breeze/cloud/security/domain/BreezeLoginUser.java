@@ -90,8 +90,8 @@ public class BreezeLoginUser extends User {
             , Long deptId
             , String deptName
             , String username
-            , String amountName
             , String password
+            , String amountName
             , boolean enabled
             , boolean accountNonExpired
             , boolean credentialsNonExpired

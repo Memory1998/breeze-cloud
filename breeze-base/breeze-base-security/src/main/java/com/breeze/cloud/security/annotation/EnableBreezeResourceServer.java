@@ -36,7 +36,7 @@ import java.lang.annotation.*;
 @EnableAspectJAutoProxy(exposeProxy = true)
 @Import({BreezeSecurityImportBeanDefinitionRegistrar.class})
 @EnableGlobalMethodSecurity(prePostEnabled = true)
-public @interface EnableBreezeResourceServerConfig {
+public @interface EnableBreezeResourceServer {
 
 }
 

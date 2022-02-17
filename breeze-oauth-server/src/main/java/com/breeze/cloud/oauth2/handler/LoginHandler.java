@@ -14,24 +14,32 @@
  * limitations under the License.
  */
 
-package com.breeze.cloud.admin;
+package com.breeze.cloud.oauth2.handler;
 
-import com.breeze.cloud.security.annotation.EnableBreezeResourceServer;
-import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.cloud.openfeign.EnableFeignClients;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.security.oauth2.OAuth2ClientProperties;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
+
+import javax.servlet.http.HttpServletResponse;
 
 /**
  * @author breeze
- * @date 2021/10/1
+ * @date 2021/02/13
  */
-@EnableBreezeResourceServer
-@EnableFeignClients
-@SpringBootApplication
-public class BreezeAdminApplication {
+@Controller
+@Slf4j
+public class LoginHandler {
 
-    public static void main(String[] args) {
-        SpringApplication.run(BreezeAdminApplication.class, args);
+    @GetMapping("/login/page")
+    public String login() {
+        return "login";
+    }
+
+    @GetMapping("/login/fail")
+    public String fail() {
+        return "fail";
     }
 
 }

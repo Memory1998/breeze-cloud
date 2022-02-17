@@ -21,8 +21,10 @@ import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.breeze.cloud.admin.dto.SysUserDTO;
 import com.breeze.cloud.admin.dto.SysUserRoleDTO;
+import com.breeze.cloud.admin.entity.SysDeptEntity;
 import com.breeze.cloud.admin.entity.SysUserEntity;
 import com.breeze.cloud.admin.mapper.SysUserMapper;
+import com.breeze.cloud.admin.service.SysDeptService;
 import com.breeze.cloud.admin.service.SysMenuService;
 import com.breeze.cloud.admin.service.SysRoleService;
 import com.breeze.cloud.admin.service.SysUserService;
@@ -46,13 +48,18 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUserEntity
     @Autowired
     private SysMenuService sysMenuService;
 
+    @Autowired
+    private SysDeptService sysDeptService;
+
     @Override
     public Result<SysUserDTO> loadByLoginAmount(String username) {
-        SysUserEntity sysUserEntity = this.getOne(Wrappers.<SysUserEntity>lambdaQuery().eq(SysUserEntity::getLoginAmount, username));
+        SysUserEntity sysUserEntity = this.getOne(Wrappers.<SysUserEntity>lambdaQuery().eq(SysUserEntity::getUsername, username));
         if (Objects.isNull(sysUserEntity)) {
             return Result.fail("用户名错误或不存在");
         }
         SysUserDTO sysUserDTO = new SysUserDTO();
+        SysDeptEntity dept = this.sysDeptService.getById(sysUserEntity.getDeptId());
+        sysUserDTO.setDeptName(dept.getDeptName());
         BeanUtil.copyProperties(sysUserEntity, sysUserDTO);
         List<SysUserRoleDTO> userRoleDTOList = this.sysRoleService.listUserRole(sysUserEntity.getId());
         sysUserDTO.setUserRoleDTOList(userRoleDTOList);

@@ -30,7 +30,6 @@ import org.springframework.web.bind.annotation.GetMapping;
  */
 @EnableCaching
 @SpringBootApplication
-@EnableAuthorizationServer
 @EnableFeignClients(basePackages = "com.breeze")
 public class BreezeOauth2Application {
 
