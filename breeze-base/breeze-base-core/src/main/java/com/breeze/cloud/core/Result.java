@@ -35,6 +35,10 @@ public class Result<T> implements Serializable {
 
     private T data;
 
+    private Result(){
+
+    }
+
     public static <T> Result<T> ok(T data) {
         Result<T> result = new Result();
         result.setCode(ResultCode.OK.getCode());
