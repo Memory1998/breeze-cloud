@@ -27,7 +27,7 @@ public class RoutingConfig {
 
     /**
      * 参考：com.anji.captcha.controller.CaptchaController
-     *
+     * <p>
      * webflux项目中 开发 webMVC 接口会报错
      *
      * @return
@@ -52,8 +52,11 @@ public class RoutingConfig {
                 .andRoute(RequestPredicates.path("/checkCode").and(RequestPredicates.accept(MediaType.TEXT_PLAIN)),
                         request -> {
                             CaptchaVO data = new CaptchaVO();
-                            data.setPointJson(request.queryParam("pointJson").get());
-                            data.setToken(request.queryParam("token").get());
+                            // todo 不知道原因接受不到参数
+                            // data.setPointJson(request.queryParam("pointJson").orElse(""));
+                            data.setPointJson(request.headers().header("pointJson").get(0));
+                            // data.setToken(request.queryParam("token").orElse(""));
+                            data.setToken(request.headers().header("token").get(0));
                             data.setBrowserInfo(getRemoteId(request));
                             data.setCaptchaType("blockPuzzle");
                             try {
