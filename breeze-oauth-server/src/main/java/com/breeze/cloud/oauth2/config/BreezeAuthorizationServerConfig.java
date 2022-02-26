@@ -30,6 +30,7 @@ import org.springframework.security.oauth2.config.annotation.web.configuration.A
 import org.springframework.security.oauth2.config.annotation.web.configuration.EnableAuthorizationServer;
 import org.springframework.security.oauth2.config.annotation.web.configurers.AuthorizationServerEndpointsConfigurer;
 import org.springframework.security.oauth2.config.annotation.web.configurers.AuthorizationServerSecurityConfigurer;
+import org.springframework.security.oauth2.provider.token.TokenEnhancer;
 import org.springframework.security.oauth2.provider.token.TokenStore;
 
 /**
@@ -56,6 +57,9 @@ public class BreezeAuthorizationServerConfig extends AuthorizationServerConfigur
 
     @Autowired
     private TokenStore redisTokenStore;
+
+    @Autowired
+    private TokenEnhancer breezeTokenEnhancer;
 
     /**
      * 声明 ClientDetails实现
@@ -136,6 +140,7 @@ public class BreezeAuthorizationServerConfig extends AuthorizationServerConfigur
                 .allowedTokenEndpointRequestMethods(HttpMethod.POST)
                 // 指定token存储位置
                 .tokenStore(redisTokenStore)
+                .tokenEnhancer(breezeTokenEnhancer)
                 // 用户账号密码认证
                 .userDetailsService(userDetailsService)
                 // 指定认证管理器

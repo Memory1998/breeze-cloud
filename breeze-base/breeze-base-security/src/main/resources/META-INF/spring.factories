@@ -1,5 +1,6 @@
 org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
   com.breeze.cloud.security.config.BreezePasswordConfig,\
+  com.breeze.cloud.security.config.BreezeTokenEnhancer,\
   com.breeze.cloud.security.config.BreezeTokenStoreConfig,\
   com.breeze.cloud.security.sms.config.BreezeSmsCodeAuthenticationSecurityConfig,\
   com.breeze.cloud.security.config.BreezeOauthServerAuthenticationEntryPoint,\

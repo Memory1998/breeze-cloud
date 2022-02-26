@@ -78,7 +78,7 @@ public class SecurityUtils {
      * @return UserRoleCodeList
      */
     public static List<String> getUserRoleCodes() {
-        return Objects.requireNonNull(getBreezeLoginUser()).getUserRoleCodeList();
+        return Objects.requireNonNull(getBreezeLoginUser()).getUserRoleCodes();
     }
 
     /**
@@ -87,7 +87,7 @@ public class SecurityUtils {
      * @return UserRoleIdList
      */
     public static List<String> getUserRoleIds() {
-        return Objects.requireNonNull(getBreezeLoginUser()).getUserRoleIdList();
+        return Objects.requireNonNull(getBreezeLoginUser()).getUserRoleIds();
     }
 
 }

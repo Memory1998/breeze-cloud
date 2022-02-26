@@ -45,12 +45,12 @@ public class BreezeLoginUser extends User {
     /**
      * 用户的角色CODE
      */
-    private List<String> userRoleCodeList;
+    private List<String> userRoleCodes;
 
     /**
      * 用户的角色ID
      */
-    private List<String> userRoleIdList;
+    private List<String> userRoleIds;
 
     /**
      * 登录后显示的账户名称
@@ -70,8 +70,8 @@ public class BreezeLoginUser extends User {
     /**
      * @param userId                用户ID
      * @param userCode              用户CODE
-     * @param userRoleCodeList          角色CODE
-     * @param userRoleIdList        角色Id
+     * @param userRoleCodes          角色CODE
+     * @param userRoleIds        角色Id
      * @param deptId                部门ID
      * @param deptName              部门名称
      * @param username              应用内唯一的用户名
@@ -85,8 +85,8 @@ public class BreezeLoginUser extends User {
      */
     public BreezeLoginUser(Long userId
             , String userCode
-            , List<String> userRoleCodeList
-            , List<String> userRoleIdList
+            , List<String> userRoleCodes
+            , List<String> userRoleIds
             , Long deptId
             , String deptName
             , String username
@@ -102,8 +102,8 @@ public class BreezeLoginUser extends User {
         this.userId = userId;
         this.amountName = amountName;
         this.userCode = userCode;
-        this.userRoleCodeList = userRoleCodeList;
-        this.userRoleIdList = userRoleIdList;
+        this.userRoleCodes = userRoleCodes;
+        this.userRoleIds = userRoleIds;
         this.deptId = deptId;
         this.deptName = deptName;
     }
@@ -124,20 +124,20 @@ public class BreezeLoginUser extends User {
         this.userCode = userCode;
     }
 
-    public List<String> getUserRoleCodeList() {
-        return userRoleCodeList;
+    public List<String> getUserRoleCodes() {
+        return userRoleCodes;
     }
 
     public void setGetRoleCodeList(List<String> userRoleCodeList) {
-        this.userRoleCodeList = userRoleCodeList;
+        this.userRoleCodes = userRoleCodeList;
     }
 
-    public List<String> getUserRoleIdList() {
-        return userRoleIdList;
+    public List<String> getUserRoleIds() {
+        return userRoleIds;
     }
 
-    public void setUserRoleIdList(List<String> userRoleIdList) {
-        this.userRoleIdList = userRoleIdList;
+    public void setUserRoleIds(List<String> userRoleIds) {
+        this.userRoleIds = userRoleIds;
     }
 
     public String getAmountName() {

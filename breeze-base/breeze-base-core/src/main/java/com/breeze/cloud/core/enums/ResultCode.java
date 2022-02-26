@@ -5,7 +5,7 @@ public enum ResultCode {
     CLIENT_AUTHENTICATION_FAILED(1001, "客户端认证失败"),
     WRONG_USERNAME_OR_PASSWORD(1002, "用户名或者密码错误"),
     UNSUPPORTED_GRANT_TYPE(1003, "不支持的认证模式"),
-    TOKEN_INVALID(1004, "token异常失效"),
+    TOKEN_INVALID(1004, "验证失效"),
     USERNAME_NOT_FOUND_EXCEPTION(1005, "用户名或者密码错误"),
     FEIGN_INTERNAL_AUTHENTICATION_SERVICE_EXCEPTION(5003, "内部身份验证服务异常"),
     NO_ACCESS(403, "无权限访问"),
