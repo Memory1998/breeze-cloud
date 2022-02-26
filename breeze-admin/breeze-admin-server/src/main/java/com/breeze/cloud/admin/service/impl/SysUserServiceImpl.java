@@ -52,7 +52,7 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUserEntity
     private SysDeptService sysDeptService;
 
     @Override
-    public Result<SysUserDTO> loadByLoginAmount(String username) {
+    public Result<SysUserDTO> loadByLoginUsername(String username) {
         SysUserEntity sysUserEntity = this.getOne(Wrappers.<SysUserEntity>lambdaQuery().eq(SysUserEntity::getUsername, username));
         if (Objects.isNull(sysUserEntity)) {
             return Result.fail("用户名错误或不存在");

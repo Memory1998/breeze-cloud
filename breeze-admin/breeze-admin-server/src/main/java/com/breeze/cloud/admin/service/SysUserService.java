@@ -27,6 +27,6 @@ import com.breeze.cloud.core.Result;
  */
 public interface SysUserService extends IService<SysUserEntity> {
 
-    Result<SysUserDTO> loadByLoginAmount(String username);
+    Result<SysUserDTO> loadByLoginUsername(String username);
 
 }

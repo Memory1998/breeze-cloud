@@ -64,7 +64,6 @@ public class BreezeUserDetailsServiceImpl implements BreezeUserDetailsService {
         List<String> roleCodeList = null;
         List<String> roleIdList = null;
         if (CollectionUtils.isNotEmpty(sysUserDTO.getUserRoleDTOList())) {
-
             // 按照角色权限必须使用ROLE_前缀后生效
             roleCodeList = sysUserDTO.getUserRoleDTOList().stream().map(role -> "ROLE_" + role.getRoleCode()).collect(Collectors.toList());
             authSet.addAll(roleCodeList);

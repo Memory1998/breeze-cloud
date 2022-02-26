@@ -32,10 +32,7 @@ import org.springframework.security.config.annotation.web.configurers.Expression
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.oauth2.config.annotation.web.configuration.ResourceServerConfigurerAdapter;
 import org.springframework.security.oauth2.config.annotation.web.configurers.ResourceServerSecurityConfigurer;
-import org.springframework.security.oauth2.provider.token.DefaultAccessTokenConverter;
-import org.springframework.security.oauth2.provider.token.RemoteTokenServices;
-import org.springframework.security.oauth2.provider.token.ResourceServerTokenServices;
-import org.springframework.security.oauth2.provider.token.TokenStore;
+import org.springframework.security.oauth2.provider.token.*;
 import org.springframework.web.client.RestTemplate;
 
 /**
@@ -83,6 +80,9 @@ public class BreezeResourceServerConfig extends ResourceServerConfigurerAdapter 
     @Autowired
     private BreezeAccessDeniedHandler requestAccessDeniedHandler;
 
+    @Autowired
+    protected RemoteTokenServices remoteTokenServices;
+
     @Bean
     @LoadBalanced
     public RestTemplate restTemplate() {
@@ -94,12 +94,13 @@ public class BreezeResourceServerConfig extends ResourceServerConfigurerAdapter 
     @Bean
     @Primary
     public ResourceServerTokenServices resourceServerTokenServices() {
-        RemoteTokenServices remoteTokenServices = new RemoteTokenServices();
-        DefaultAccessTokenConverter accessTokenConverter = new DefaultAccessTokenConverter();
         remoteTokenServices.setCheckTokenEndpointUrl(resourceServerProperties.getTokenInfoUri());
         remoteTokenServices.setClientId(oAuth2ClientProperties.getClientId());
         remoteTokenServices.setClientSecret(oAuth2ClientProperties.getClientSecret());
         remoteTokenServices.setRestTemplate(restTemplate());
+        DefaultAccessTokenConverter accessTokenConverter = new DefaultAccessTokenConverter();
+        UserAuthenticationConverter breezeDefaultUserAuthenticationConverter = new BreezeDefaultUserAuthenticationConverter();
+        accessTokenConverter.setUserTokenConverter(breezeDefaultUserAuthenticationConverter);
         remoteTokenServices.setAccessTokenConverter(accessTokenConverter);
         return remoteTokenServices;
     }

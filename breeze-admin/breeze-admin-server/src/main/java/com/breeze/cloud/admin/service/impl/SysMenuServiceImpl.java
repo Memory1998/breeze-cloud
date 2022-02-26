@@ -16,11 +16,18 @@
 
 package com.breeze.cloud.admin.service.impl;
 
+import cn.hutool.core.lang.tree.Tree;
+import cn.hutool.json.JSONUtil;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.breeze.cloud.admin.dto.SysUserRoleDTO;
 import com.breeze.cloud.admin.entity.SysMenuEntity;
 import com.breeze.cloud.admin.mapper.SysMenuMapper;
 import com.breeze.cloud.admin.service.SysMenuService;
+import com.breeze.cloud.admin.service.SysPlatformRoleService;
+import com.breeze.cloud.security.domain.BreezeLoginUser;
+import com.breeze.cloud.security.utils.SecurityUtils;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -30,10 +37,21 @@ import java.util.List;
  * @date 2021-12-06 22:03:39
  */
 @Service
+@Slf4j
 public class SysMenuServiceImpl extends ServiceImpl<SysMenuMapper, SysMenuEntity> implements SysMenuService {
+
+    @Autowired
+    private SysPlatformRoleService platformRoleService;
 
     @Override
     public String[] listUserMenuPermission(List<SysUserRoleDTO> roleDTOList) {
         return this.baseMapper.listUserMenuPermission(roleDTOList);
+    }
+
+    @Override
+    public List<Tree> menuTree(String platformCode) {
+        BreezeLoginUser breezeLoginUser = SecurityUtils.getBreezeLoginUser();
+        log.info("用户的角色 ===> {}", JSONUtil.parse(breezeLoginUser));
+        return null;
     }
 }

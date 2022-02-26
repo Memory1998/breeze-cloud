@@ -19,6 +19,7 @@ package com.breeze.cloud.admin.controller;
 import com.breeze.cloud.admin.entity.SysMenuEntity;
 import com.breeze.cloud.admin.service.SysMenuService;
 import com.breeze.cloud.core.Result;
+import com.breeze.cloud.security.annotation.JoinWhiteList;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -49,6 +50,16 @@ public class SysMenuController {
     @PreAuthorize("hasAnyAuthority('sys:menu:list')")
     public Result list(@RequestParam Map<String, Object> params) {
         return Result.ok();
+    }
+
+    /**
+     * 树形菜单
+     */
+    @ApiOperation(value = "树形菜单")
+    @GetMapping("/menuTree")
+    @PreAuthorize("hasAnyAuthority('sys:menu:list')")
+    public Result menuTree(@RequestParam String platformCode) {
+        return Result.ok(this.sysMenuService.menuTree(platformCode));
     }
 
 

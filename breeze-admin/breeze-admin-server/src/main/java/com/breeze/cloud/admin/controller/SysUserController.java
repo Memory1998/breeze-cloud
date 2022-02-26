@@ -62,10 +62,10 @@ public class SysUserController {
     /**
      * 登录feign接口
      */
-    @RequestMapping("/loadByUsername/{loginAmount}")
+    @RequestMapping("/loadByUsername/{username}")
     @JoinWhiteList
-    public Result<SysUserDTO> loadByLoginAmount(@PathVariable("loginAmount") String loginAmount) {
-        return this.sysUserService.loadByLoginAmount(loginAmount);
+    public Result<SysUserDTO> loadByLoginUsername(@PathVariable("username") String username) {
+        return this.sysUserService.loadByLoginUsername(username);
     }
 
     /**
