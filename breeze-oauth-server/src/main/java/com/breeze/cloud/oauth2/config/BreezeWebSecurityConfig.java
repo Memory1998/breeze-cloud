@@ -76,16 +76,6 @@ public class BreezeWebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
 
-//        http.formLogin()
-//                .loginPage("/login/page")
-//                .loginProcessingUrl("/login/form")
-//                .and()
-//                .authorizeRequests()
-//                .antMatchers("/login/**").permitAll()
-//                .anyRequest()
-//                .authenticated()
-//                .and().csrf().disable().cors();
-
         http.apply(smsCodeAuthenticationSecurityConfig);
         // 不需要session
         // http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
@@ -93,10 +83,6 @@ public class BreezeWebSecurityConfig extends WebSecurityConfigurerAdapter {
         http.formLogin()
                 .loginPage("/login/page")
                 .loginProcessingUrl("/login/form")
-//                .defaultSuccessUrl("/login/success")
-                // 用户密码错误跳转接口
-//                .failureUrl("/login/fail")
-
         ;
         // 过滤请求
         http.authorizeRequests()

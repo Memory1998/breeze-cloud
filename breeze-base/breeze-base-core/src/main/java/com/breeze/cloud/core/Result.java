@@ -51,7 +51,6 @@ public class Result<T> implements Serializable {
         Result result = new Result();
         result.setCode(ResultCode.OK.getCode());
         result.setMessage(ResultCode.OK.getDesc());
-        result.setData(Boolean.TRUE);
         return result;
     }
 

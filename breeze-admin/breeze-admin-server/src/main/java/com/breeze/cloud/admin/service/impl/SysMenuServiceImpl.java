@@ -16,21 +16,34 @@
 
 package com.breeze.cloud.admin.service.impl;
 
+import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.lang.tree.Tree;
+import cn.hutool.core.lang.tree.TreeNode;
+import cn.hutool.core.lang.tree.TreeUtil;
 import cn.hutool.json.JSONUtil;
+import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.breeze.cloud.admin.dto.SysUserRoleDTO;
 import com.breeze.cloud.admin.entity.SysMenuEntity;
+import com.breeze.cloud.admin.entity.SysMenuRoleEntity;
+import com.breeze.cloud.admin.entity.SysPlatformEntity;
 import com.breeze.cloud.admin.mapper.SysMenuMapper;
+import com.breeze.cloud.admin.service.SysMenuRoleService;
 import com.breeze.cloud.admin.service.SysMenuService;
-import com.breeze.cloud.admin.service.SysPlatformRoleService;
+import com.breeze.cloud.admin.service.SysPlatformService;
+import com.breeze.cloud.core.Result;
 import com.breeze.cloud.security.domain.BreezeLoginUser;
 import com.breeze.cloud.security.utils.SecurityUtils;
+import com.google.common.collect.Maps;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Locale;
+import java.util.Map;
+import java.util.Objects;
+import java.util.stream.Collectors;
 
 /**
  * @author breeze
@@ -41,7 +54,13 @@ import java.util.List;
 public class SysMenuServiceImpl extends ServiceImpl<SysMenuMapper, SysMenuEntity> implements SysMenuService {
 
     @Autowired
-    private SysPlatformRoleService platformRoleService;
+    private SysPlatformService platformService;
+
+    @Autowired
+    private SysMenuService menuService;
+
+    @Autowired
+    private SysMenuRoleService menuRoleService;
 
     @Override
     public String[] listUserMenuPermission(List<SysUserRoleDTO> roleDTOList) {
@@ -49,9 +68,43 @@ public class SysMenuServiceImpl extends ServiceImpl<SysMenuMapper, SysMenuEntity
     }
 
     @Override
-    public List<Tree> menuTree(String platformCode) {
+    public Result menuTree(String platformCode) {
         BreezeLoginUser breezeLoginUser = SecurityUtils.getBreezeLoginUser();
-        log.info("用户的角色 ===> {}", JSONUtil.parse(breezeLoginUser));
-        return null;
+        log.info("用户信息 ===> {}", JSONUtil.parse(breezeLoginUser));
+        List<SysMenuRoleEntity> menuRoleList = this.menuRoleService.list(Wrappers.<SysMenuRoleEntity>lambdaQuery()
+                .in(SysMenuRoleEntity::getRoleId, breezeLoginUser.getUserRoleIds()));
+        if (CollUtil.isEmpty(menuRoleList)) {
+            return Result.ok();
+        }
+        SysPlatformEntity platformEntity = this.platformService.getOne(Wrappers.<SysPlatformEntity>lambdaQuery().eq(SysPlatformEntity::getPlatformCode, platformCode));
+        if (Objects.isNull(platformEntity)) {
+            return Result.ok();
+        }
+        List<Long> menuIdList = menuRoleList.stream().map(SysMenuRoleEntity::getMenuId).collect(Collectors.toList());
+        List<SysMenuEntity> menuList = this.menuService.list(
+                Wrappers.<SysMenuEntity>lambdaQuery()
+                        .in(SysMenuEntity::getId, menuIdList)
+                        .eq(SysMenuEntity::getPlatformId, platformEntity.getId())
+                        .orderByAsc(SysMenuEntity::getSort));
+        if (CollUtil.isEmpty(menuList)) {
+            return Result.ok();
+        }
+        List<TreeNode<Long>> collect = menuList.stream().map(menu -> {
+            TreeNode<Long> node = new TreeNode<>();
+            node.setId(menu.getId());
+            node.setName(menu.getName());
+            node.setParentId(menu.getParentId());
+            node.setWeight(menu.getSort());
+            Map<String, Object> leafMap = Maps.newHashMap();
+            leafMap.put("title", menu.getTitle());
+            leafMap.put("path", menu.getPath());
+            leafMap.put("url", menu.getName().substring(0,1).toLowerCase(Locale.ROOT) + menu.getName().substring(1));
+            leafMap.put("visible", menu.getVisible());
+            leafMap.put("icon", menu.getIcon());
+            node.setExtra(leafMap);
+            return node;
+        }).collect(Collectors.toList());
+        List<Tree<Long>> build = TreeUtil.build(collect, 0L);
+        return Result.ok(build);
     }
 }

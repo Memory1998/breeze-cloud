@@ -59,7 +59,7 @@ public class SysMenuController {
     @GetMapping("/menuTree")
     @PreAuthorize("hasAnyAuthority('sys:menu:list')")
     public Result menuTree(@RequestParam String platformCode) {
-        return Result.ok(this.sysMenuService.menuTree(platformCode));
+        return this.sysMenuService.menuTree(platformCode);
     }
 
 

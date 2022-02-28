@@ -44,6 +44,7 @@ public class BreezeOauthServerWebResponseExceptionTranslator implements WebRespo
     }
 
     private Result getResponseEntity(Exception ex) {
+        ex.printStackTrace();
         if (ex instanceof UnsupportedGrantTypeException) {
             logger.info("不支持的认证模式 {}", ResultCode.UNSUPPORTED_GRANT_TYPE.getCode());
             return Result.fail(ResultCode.UNSUPPORTED_GRANT_TYPE);

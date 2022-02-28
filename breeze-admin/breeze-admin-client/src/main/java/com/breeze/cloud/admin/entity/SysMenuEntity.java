@@ -34,9 +34,11 @@ public class SysMenuEntity extends BaseModel<SysMenuEntity> implements Serializa
     private static final long serialVersionUID = 1L;
 
     /**
-     * 菜单名称
+     *
      */
-    private String menuName;
+    private String name;
+    private String icon;
+    private Long platformId;
     /**
      * 顺序
      */
@@ -53,6 +55,7 @@ public class SysMenuEntity extends BaseModel<SysMenuEntity> implements Serializa
      * 路径
      */
     private String path;
+    private String title;
     /**
      * 保活
      */
