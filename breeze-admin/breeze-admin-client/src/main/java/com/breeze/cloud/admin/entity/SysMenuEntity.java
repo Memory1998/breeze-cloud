@@ -55,7 +55,10 @@ public class SysMenuEntity extends BaseModel<SysMenuEntity> implements Serializa
      * 路径
      */
     private String path;
+
     private String title;
+
+    private String url;
     /**
      * 保活
      */

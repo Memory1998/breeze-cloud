@@ -98,7 +98,7 @@ public class SysMenuServiceImpl extends ServiceImpl<SysMenuMapper, SysMenuEntity
             Map<String, Object> leafMap = Maps.newHashMap();
             leafMap.put("title", menu.getTitle());
             leafMap.put("path", menu.getPath());
-            leafMap.put("url", menu.getName().substring(0,1).toLowerCase(Locale.ROOT) + menu.getName().substring(1));
+            leafMap.put("url", menu.getUrl());
             leafMap.put("visible", menu.getVisible());
             leafMap.put("icon", menu.getIcon());
             node.setExtra(leafMap);
