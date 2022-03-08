@@ -11,7 +11,7 @@
  Target Server Version : 50733
  File Encoding         : 65001
 
- Date: 07/03/2022 07:39:45
+ Date: 08/03/2022 10:46:24
 */
 
 SET NAMES utf8mb4;
@@ -84,10 +84,10 @@ CREATE TABLE `sys_menu` (
 -- Records of sys_menu
 -- ----------------------------
 BEGIN;
-INSERT INTO `sys_menu` VALUES (1, 1, '系统设置', 'System', 1, NULL, 0, '', '/', '/admin', 0, 0, NULL, NULL, '2022-01-28 02:49:34', NULL, NULL, '2022-03-05 14:02:07', 0, NULL);
-INSERT INTO `sys_menu` VALUES (2, 1, '平台管理', 'Platform', 1, NULL, 1, 'sys:platform:list', '/platform', '/admin/platform', 0, 0, NULL, NULL, '2022-02-26 17:31:51', NULL, NULL, '2022-03-02 12:29:39', 0, NULL);
-INSERT INTO `sys_menu` VALUES (3, 1, '用户管理', 'User', 2, NULL, 1, 'sys:user:list', '/user', '/admin/user', 0, 0, NULL, NULL, '2022-02-27 00:06:55', NULL, NULL, '2022-03-02 12:29:46', 0, NULL);
-INSERT INTO `sys_menu` VALUES (4, 1, '菜单管理', 'Menu', 3, NULL, 1, 'sys:menu:list', '/menu', '/admin/menu', 0, 0, NULL, NULL, '2022-02-27 00:08:30', NULL, NULL, '2022-03-02 12:29:58', 0, NULL);
+INSERT INTO `sys_menu` VALUES (1, 1, '系统设置', 'System', 1, NULL, 0, '', '/', '', 0, 0, NULL, NULL, '2022-01-28 02:49:34', NULL, NULL, '2022-03-07 14:56:56', 0, NULL);
+INSERT INTO `sys_menu` VALUES (2, 1, '平台管理', 'Platform', 1, NULL, 1, 'sys:platform:list', '/platform', '/admin/platform/Platform', 0, 0, NULL, NULL, '2022-02-26 17:31:51', NULL, NULL, '2022-03-07 15:01:36', 0, NULL);
+INSERT INTO `sys_menu` VALUES (3, 1, '用户管理', 'User', 2, NULL, 1, 'sys:user:list', '/user', '/admin/user/User', 0, 0, NULL, NULL, '2022-02-27 00:06:55', NULL, NULL, '2022-03-07 15:01:40', 0, NULL);
+INSERT INTO `sys_menu` VALUES (4, 1, '菜单管理', 'Menu', 3, NULL, 1, 'sys:menu:list', '/menu', '/admin/menu/Menu', 0, 0, NULL, NULL, '2022-02-27 00:08:30', NULL, NULL, '2022-03-07 15:01:43', 0, NULL);
 COMMIT;
 
 -- ----------------------------
