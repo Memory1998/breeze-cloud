@@ -75,6 +75,8 @@ public class BreezeRedisClientDetailsService implements ClientDetailsService {
     private BaseClientDetails getFieldsForSelect(SysOauthClientDetailsEntity clientDetails) {
 
         BaseClientDetails baseClientDetails = new BaseClientDetails();
+        baseClientDetails.setClientId(clientDetails.getClientId());
+        baseClientDetails.setClientSecret(clientDetails.getClientSecret());
 
         if (StrUtil.isNotBlank(clientDetails.getResourceIds())) {
             baseClientDetails.setResourceIds(StringUtils.commaDelimitedListToSet(clientDetails.getResourceIds()));
@@ -110,22 +112,9 @@ public class BreezeRedisClientDetailsService implements ClientDetailsService {
             baseClientDetails.setRefreshTokenValiditySeconds(clientDetails.getRefreshTokenValidity());
         }
 
-        if (Objects.nonNull(clientDetails.getRefreshTokenValidity())) {
-            baseClientDetails.setRefreshTokenValiditySeconds(clientDetails.getRefreshTokenValidity());
-        }
-
-        if (Objects.nonNull(clientDetails.getRefreshTokenValidity())) {
-            baseClientDetails.setRefreshTokenValiditySeconds(clientDetails.getRefreshTokenValidity());
-        }
-
         if (StrUtil.isNotBlank(clientDetails.getAutoapprove())) {
             baseClientDetails.setAutoApproveScopes(StringUtils.commaDelimitedListToSet(clientDetails.getAutoapprove()));
         }
-
-        baseClientDetails.setClientId(clientDetails.getClientId());
-
-        baseClientDetails.setClientSecret(clientDetails.getClientSecret());
-
         return baseClientDetails;
     }
 

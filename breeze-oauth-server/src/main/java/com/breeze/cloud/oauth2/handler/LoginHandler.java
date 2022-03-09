@@ -33,7 +33,7 @@ public class LoginHandler {
         return "login";
     }
 
-    @GetMapping("/login/fail")
+    @GetMapping("/error")
     public String fail() {
         return "fail";
     }
