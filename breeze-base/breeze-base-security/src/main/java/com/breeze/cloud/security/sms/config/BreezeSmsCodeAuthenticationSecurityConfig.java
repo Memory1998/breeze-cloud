@@ -18,15 +18,12 @@ package com.breeze.cloud.security.sms.config;
 
 import com.breeze.cloud.security.service.BreezeUserDetailsService;
 import com.breeze.cloud.security.sms.BreezeSmsCodeAuthenticationProvider;
-import com.breeze.cloud.security.sms.filter.BreezeSmsCodeDaoAuthenticationFilter;
 import com.breeze.cloud.security.sms.handler.BreezeAuthenticationFailureHandler;
 import com.breeze.cloud.security.sms.handler.BreezeAuthenticationSuccessHandler;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.SecurityConfigurerAdapter;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.web.DefaultSecurityFilterChain;
-import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 /**
  * @author breeze
@@ -45,14 +42,6 @@ public class BreezeSmsCodeAuthenticationSecurityConfig extends SecurityConfigure
 
     @Override
     public void configure(HttpSecurity http) throws Exception {
-
-        BreezeSmsCodeDaoAuthenticationFilter smsCodeAuthenticationFilter = new BreezeSmsCodeDaoAuthenticationFilter();
-        smsCodeAuthenticationFilter.setAuthenticationManager(http.getSharedObject(AuthenticationManager.class));
-        smsCodeAuthenticationFilter.setAuthenticationSuccessHandler(authenticationSuccessHandler);
-        smsCodeAuthenticationFilter.setAuthenticationFailureHandler(authenticationFailureHandler);
-
-        http.authenticationProvider(new BreezeSmsCodeAuthenticationProvider(userDetailsService))
-                // 过滤器在 BreezeSmsCodeAuthenticationFilter 之前增加
-                .addFilterAfter(smsCodeAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
+        http.authenticationProvider(new BreezeSmsCodeAuthenticationProvider(userDetailsService));
     }
 }

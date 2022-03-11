@@ -57,8 +57,8 @@ public class BreezeSmsCodeTokenGranter extends AbstractTokenGranter {
         Map<String, String> parameters = new LinkedHashMap<String, String>(tokenRequest.getRequestParameters());
         String phone = parameters.get("phone");
         String code = parameters.get("code");
-        // Protect from downstream leaks of password
-        // parameters.remove("password");
+        // Protect from downstream leaks of code
+         parameters.remove("code");
 
         Authentication userAuth = new BreezeSmsCodeAuthenticationToken(phone, code);
         ((AbstractAuthenticationToken) userAuth).setDetails(parameters);

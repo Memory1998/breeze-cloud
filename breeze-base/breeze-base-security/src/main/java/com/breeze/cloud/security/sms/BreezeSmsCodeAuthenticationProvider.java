@@ -21,6 +21,8 @@ import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.InternalAuthenticationServiceException;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.core.authority.mapping.GrantedAuthoritiesMapper;
+import org.springframework.security.core.authority.mapping.NullAuthoritiesMapper;
 import org.springframework.security.core.userdetails.UserDetails;
 
 /**
@@ -34,6 +36,8 @@ public class BreezeSmsCodeAuthenticationProvider implements AuthenticationProvid
      * String)} on when the user is not found to avoid SEC-2056.
      */
     private static final String PHONE_NOT_FOUND_CODE = "phoneNotFoundCode";
+
+    private GrantedAuthoritiesMapper authoritiesMapper = new NullAuthoritiesMapper();
 
     private BreezeUserDetailsService userDetailsService;
 
@@ -61,7 +65,8 @@ public class BreezeSmsCodeAuthenticationProvider implements AuthenticationProvid
             throw new InternalAuthenticationServiceException(PHONE_NOT_FOUND_CODE);
         }
 
-        BreezeSmsCodeAuthenticationToken authenticationResult = new BreezeSmsCodeAuthenticationToken(user, user.getAuthorities());
+        BreezeSmsCodeAuthenticationToken authenticationResult = new BreezeSmsCodeAuthenticationToken(principal, credentials,
+                this.authoritiesMapper.mapAuthorities(user.getAuthorities()));
         authenticationResult.setDetails(authenticationToken.getDetails());
         return authenticationResult;
     }

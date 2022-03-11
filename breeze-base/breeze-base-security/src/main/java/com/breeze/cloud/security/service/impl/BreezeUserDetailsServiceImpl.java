@@ -30,6 +30,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 import org.springframework.web.context.request.RequestContextHolder;
@@ -45,6 +46,9 @@ import java.util.stream.Collectors;
  */
 @Service
 public class BreezeUserDetailsServiceImpl implements BreezeUserDetailsService {
+
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     @Autowired
     private SysUserFeign sysUserFeign;
@@ -95,9 +99,8 @@ public class BreezeUserDetailsServiceImpl implements BreezeUserDetailsService {
     public UserDetails loadUserByPhone(String phone, String code) throws UsernameNotFoundException {
         HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
         String inputCode = request.getParameter("code");
-
-        // todo code
         String smsCode = "123456";
+
         if ("".equals(smsCode)) {
             throw new BadCredentialsException("请先获取验证码");
         }
@@ -105,6 +108,44 @@ public class BreezeUserDetailsServiceImpl implements BreezeUserDetailsService {
         if (!Objects.equals(smsCode, inputCode)) {
             throw new BadCredentialsException("验证码错误");
         }
-        return null;
+
+        Result<SysUserDTO> userEntityResult = this.sysUserFeign.loadByLoginAmount("admin");
+        if (Objects.equals(userEntityResult.getCode(), ResultCode.FAIL.getCode()) || Objects.isNull(userEntityResult.getData())) {
+            throw new UsernameNotFoundException("用户不存在");
+        }
+        Set<String> authSet = new HashSet<>();
+        SysUserDTO sysUserDTO = userEntityResult.getData();
+        if (Objects.nonNull(sysUserDTO.getPermission())) {
+            authSet.addAll(Arrays.stream(sysUserDTO.getPermission()).filter(StringUtils::hasLength).collect(Collectors.toList()));
+        }
+
+        List<String> roleCodeList = null;
+        List<String> roleIdList = null;
+        if (CollectionUtils.isNotEmpty(sysUserDTO.getUserRoleDTOList())) {
+            // 按照角色权限必须使用ROLE_前缀后生效
+            roleCodeList = sysUserDTO.getUserRoleDTOList().stream().map(role -> "ROLE_" + role.getRoleCode()).filter(StringUtils::hasLength).collect(Collectors.toList());
+            authSet.addAll(roleCodeList);
+            // 角色ID集合
+            roleIdList = sysUserDTO.getUserRoleDTOList().stream().map(SysUserRoleDTO::getRoleId).map(String::valueOf).filter(StringUtils::hasLength).collect(Collectors.toList());
+        }
+
+        Collection<? extends GrantedAuthority> authorities
+                = AuthorityUtils.createAuthorityList(authSet.toArray(new String[0]));
+
+
+        return new BreezeLoginUser(sysUserDTO.getId(),
+                sysUserDTO.getUserCode(),
+                null,
+                null,
+                sysUserDTO.getDeptId(),
+                sysUserDTO.getDeptName(),
+                sysUserDTO.getUsername(),
+                passwordEncoder.encode("123456"),
+                sysUserDTO.getAmountName(),
+                Objects.equals(0, sysUserDTO.getIsLock()),
+                true,
+                true,
+                Objects.equals(0, sysUserDTO.getIsLock()),
+                authorities);
     }
 }

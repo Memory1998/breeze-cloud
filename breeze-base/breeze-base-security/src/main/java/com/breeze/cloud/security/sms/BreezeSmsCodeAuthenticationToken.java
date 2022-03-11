@@ -52,6 +52,7 @@ public class BreezeSmsCodeAuthenticationToken extends AbstractAuthenticationToke
      *                    represented by this authentication object.
      */
     public BreezeSmsCodeAuthenticationToken(Object principal,
+                                            Object credentials,
                                             Collection<? extends GrantedAuthority> authorities) {
         super(authorities);
         if (authorities == null) {
@@ -59,7 +60,8 @@ public class BreezeSmsCodeAuthenticationToken extends AbstractAuthenticationToke
             return;
         }
         this.principal = principal;
-        this.setAuthenticated(true);
+        this.credentials = credentials;
+        super.setAuthenticated(Boolean.TRUE);
 
         for (GrantedAuthority a : authorities) {
             Assert.notNull(a, "Authorities collection cannot contain any null elements");
@@ -111,11 +113,9 @@ public class BreezeSmsCodeAuthenticationToken extends AbstractAuthenticationToke
     }
 
     @Override
-    public void setAuthenticated(boolean authenticated) {
-        if (authenticated) {
-            throw new IllegalArgumentException(
-                    "Cannot set this token to trusted - use constructor which takes a GrantedAuthority list instead");
-        }
+    public void setAuthenticated(boolean isAuthenticated) {
+        Assert.isTrue(!isAuthenticated,
+                "Cannot set this token to trusted - use constructor which takes a GrantedAuthority list instead");
         super.setAuthenticated(Boolean.FALSE);
     }
 
