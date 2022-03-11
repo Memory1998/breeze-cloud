@@ -4,8 +4,8 @@
     <meta charset="utf-8">
     <title>登 录</title>
     <!-- 新 Bootstrap 核心 CSS 文件 -->
-    <link type="text/css" href="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/css/bootstrap.min.css"
-          rel="stylesheet">
+    <link href="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet"
+          type="text/css">
     <style>
         .login-content {
             width: 16vw;
@@ -32,14 +32,14 @@
                 <h1>登录中心</h1>
             </div>
             <div class="login-form">
-                <form th:action="@{/login/form}" method="post">
+                <form method="post" th:action="@{/login/form}">
                     <div class="form-group">
-                        <input type="text" class="form-control" name="username" placeholder="Username">
+                        <input class="form-control" name="username" placeholder="Username" type="text">
                     </div>
                     <div class="form-group">
-                        <input type="password" class="form-control" name="password" placeholder="Password">
+                        <input class="form-control" name="password" placeholder="Password" type="password">
                     </div>
-                    <button type="submit" class="login_btn btn btn-success">登录</button>
+                    <button class="login_btn btn btn-success" type="submit">登录</button>
                 </form>
             </div>
         </div>

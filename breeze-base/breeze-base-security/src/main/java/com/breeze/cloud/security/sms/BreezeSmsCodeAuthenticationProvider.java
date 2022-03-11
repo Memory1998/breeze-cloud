@@ -54,10 +54,9 @@ public class BreezeSmsCodeAuthenticationProvider implements AuthenticationProvid
         BreezeSmsCodeAuthenticationToken authenticationToken = (BreezeSmsCodeAuthenticationToken) authentication;
 
         Object principal = authenticationToken.getPrincipal();
+        Object credentials = authenticationToken.getCredentials();
 
-        this.userDetailsService.checkSmsCode((String) principal);
-
-        UserDetails user = this.userDetailsService.loadUserByPhone((String) principal);
+        UserDetails user = this.userDetailsService.loadUserByPhone((String) principal, (String) credentials);
         if (null == user) {
             throw new InternalAuthenticationServiceException(PHONE_NOT_FOUND_CODE);
         }

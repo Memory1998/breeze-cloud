@@ -18,7 +18,7 @@ package com.breeze.cloud.security.sms.config;
 
 import com.breeze.cloud.security.service.BreezeUserDetailsService;
 import com.breeze.cloud.security.sms.BreezeSmsCodeAuthenticationProvider;
-import com.breeze.cloud.security.sms.filter.BreezeSmsCodeAuthenticationFilter;
+import com.breeze.cloud.security.sms.filter.BreezeSmsCodeDaoAuthenticationFilter;
 import com.breeze.cloud.security.sms.handler.BreezeAuthenticationFailureHandler;
 import com.breeze.cloud.security.sms.handler.BreezeAuthenticationSuccessHandler;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -46,7 +46,7 @@ public class BreezeSmsCodeAuthenticationSecurityConfig extends SecurityConfigure
     @Override
     public void configure(HttpSecurity http) throws Exception {
 
-        BreezeSmsCodeAuthenticationFilter smsCodeAuthenticationFilter = new BreezeSmsCodeAuthenticationFilter();
+        BreezeSmsCodeDaoAuthenticationFilter smsCodeAuthenticationFilter = new BreezeSmsCodeDaoAuthenticationFilter();
         smsCodeAuthenticationFilter.setAuthenticationManager(http.getSharedObject(AuthenticationManager.class));
         smsCodeAuthenticationFilter.setAuthenticationSuccessHandler(authenticationSuccessHandler);
         smsCodeAuthenticationFilter.setAuthenticationFailureHandler(authenticationFailureHandler);

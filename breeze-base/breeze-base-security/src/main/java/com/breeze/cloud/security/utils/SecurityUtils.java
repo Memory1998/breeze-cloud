@@ -39,24 +39,6 @@ public class SecurityUtils {
     }
 
     /**
-     * 获取用户编码
-     *
-     * @return userCode
-     */
-    public String getUserCode() {
-        return Objects.requireNonNull(getBreezeLoginUser()).getUserCode();
-    }
-
-    /**
-     * 获取用户ID
-     *
-     * @return userId
-     */
-    public Long getUserId() {
-        return Objects.requireNonNull(getBreezeLoginUser()).getUserId();
-    }
-
-    /**
      * 获取当前登录者对象
      */
     public static BreezeLoginUser getBreezeLoginUser() {
@@ -88,6 +70,24 @@ public class SecurityUtils {
      */
     public static List<String> getUserRoleIds() {
         return Objects.requireNonNull(getBreezeLoginUser()).getUserRoleIds();
+    }
+
+    /**
+     * 获取用户编码
+     *
+     * @return userCode
+     */
+    public String getUserCode() {
+        return Objects.requireNonNull(getBreezeLoginUser()).getUserCode();
+    }
+
+    /**
+     * 获取用户ID
+     *
+     * @return userId
+     */
+    public Long getUserId() {
+        return Objects.requireNonNull(getBreezeLoginUser()).getUserId();
     }
 
 }

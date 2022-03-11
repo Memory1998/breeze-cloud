@@ -38,6 +38,8 @@ public class BreezeSmsCodeAuthenticationToken extends AbstractAuthenticationToke
      */
     private Object principal;
 
+    private Object credentials;
+
     /**
      * authorities 权限信息列表，默认是GrantedAuthority接口的一些实现类，通常是代表权限信息的一系 列字符串
      */
@@ -71,9 +73,10 @@ public class BreezeSmsCodeAuthenticationToken extends AbstractAuthenticationToke
      * @param phone the collection of <tt>GrantedAuthority</tt>s for the principal
      *              represented by this authentication object.
      */
-    public BreezeSmsCodeAuthenticationToken(String phone) {
+    public BreezeSmsCodeAuthenticationToken(String phone, String code) {
         super(null);
         this.principal = phone;
+        this.credentials = code;
         this.setAuthenticated(Boolean.FALSE);
     }
 
@@ -89,7 +92,7 @@ public class BreezeSmsCodeAuthenticationToken extends AbstractAuthenticationToke
      */
     @Override
     public Object getCredentials() {
-        return null;
+        return this.credentials;
     }
 
     /**

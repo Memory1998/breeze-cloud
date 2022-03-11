@@ -67,7 +67,7 @@ public class BreezeWebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     public void configure(WebSecurity web) throws Exception {
-        web.ignoring().antMatchers("/assets/**","/resources/**", "/error", "/css/**", "/images/**", "/favicon.ico");
+        web.ignoring().antMatchers("/assets/**", "/resources/**", "/error", "/css/**", "/images/**", "/favicon.ico");
     }
 
     /**

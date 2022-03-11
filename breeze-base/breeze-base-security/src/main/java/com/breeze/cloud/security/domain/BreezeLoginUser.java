@@ -70,8 +70,8 @@ public class BreezeLoginUser extends User {
     /**
      * @param userId                用户ID
      * @param userCode              用户CODE
-     * @param userRoleCodes          角色CODE
-     * @param userRoleIds        角色Id
+     * @param userRoleCodes         角色CODE
+     * @param userRoleIds           角色Id
      * @param deptId                部门ID
      * @param deptName              部门名称
      * @param username              应用内唯一的用户名

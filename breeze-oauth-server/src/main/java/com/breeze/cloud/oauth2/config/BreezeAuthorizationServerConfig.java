@@ -21,6 +21,8 @@ import com.breeze.cloud.security.config.BreezeOauthServerAuthenticationEntryPoin
 import com.breeze.cloud.security.config.BreezeOauthServerWebResponseExceptionTranslator;
 import com.breeze.cloud.security.filter.BreezeOAuthServerClientCredentialsTokenEndpointFilter;
 import com.breeze.cloud.security.service.BreezeUserDetailsService;
+import com.breeze.cloud.security.sms.config.BreezeSmsCodeTokenGranter;
+import com.google.common.collect.Lists;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -30,8 +32,14 @@ import org.springframework.security.oauth2.config.annotation.web.configuration.A
 import org.springframework.security.oauth2.config.annotation.web.configuration.EnableAuthorizationServer;
 import org.springframework.security.oauth2.config.annotation.web.configurers.AuthorizationServerEndpointsConfigurer;
 import org.springframework.security.oauth2.config.annotation.web.configurers.AuthorizationServerSecurityConfigurer;
+import org.springframework.security.oauth2.provider.CompositeTokenGranter;
+import org.springframework.security.oauth2.provider.TokenGranter;
+import org.springframework.security.oauth2.provider.request.DefaultOAuth2RequestFactory;
+import org.springframework.security.oauth2.provider.token.DefaultTokenServices;
 import org.springframework.security.oauth2.provider.token.TokenEnhancer;
 import org.springframework.security.oauth2.provider.token.TokenStore;
+
+import java.util.List;
 
 /**
  * @author breeze
@@ -42,6 +50,9 @@ import org.springframework.security.oauth2.provider.token.TokenStore;
 @EnableAuthorizationServer
 @Configuration
 public class BreezeAuthorizationServerConfig extends AuthorizationServerConfigurerAdapter {
+
+    @Autowired
+    public DefaultTokenServices tokenService;
 
     @Autowired
     private BreezeOauthServerAuthenticationEntryPoint authServerAuthenticationEntryPoint;
@@ -135,6 +146,12 @@ public class BreezeAuthorizationServerConfig extends AuthorizationServerConfigur
      */
     @Override
     public void configure(AuthorizationServerEndpointsConfigurer endpoints) {
+        TokenGranter tokenGranter = endpoints.getTokenGranter();
+        List<TokenGranter> granterList = Lists.newArrayList(tokenGranter);
+        BreezeSmsCodeTokenGranter smsCodeTokenGranter = new BreezeSmsCodeTokenGranter(authenticationManagerBean,
+                tokenService, clientDetailsService(), new DefaultOAuth2RequestFactory(clientDetailsService()));
+        granterList.add(smsCodeTokenGranter);
+        CompositeTokenGranter compositeTokenGranter = new CompositeTokenGranter(granterList);
         endpoints
                 // 请求方式
                 .allowedTokenEndpointRequestMethods(HttpMethod.POST)
@@ -145,6 +162,7 @@ public class BreezeAuthorizationServerConfig extends AuthorizationServerConfigur
                 .userDetailsService(userDetailsService)
                 // 指定认证管理器
                 .authenticationManager(authenticationManagerBean)
+                .tokenGranter(compositeTokenGranter)
                 // 是否重复使用 refresh_token
                 .reuseRefreshTokens(Boolean.FALSE)
                 .exceptionTranslator(new BreezeOauthServerWebResponseExceptionTranslator())

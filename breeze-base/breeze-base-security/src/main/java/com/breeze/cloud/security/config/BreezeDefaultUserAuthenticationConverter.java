@@ -52,7 +52,7 @@ public class BreezeDefaultUserAuthenticationConverter implements UserAuthenticat
             Long userId = Long.valueOf(userMap.get("userId").toString());
             String userCode = String.valueOf(userMap.get("userCode"));
             List<String> userRoleCodes = (ArrayList) userMap.get("userRoleCodes");
-            List<String> userRoleIds = (ArrayList)userMap.get("userRoleIds");
+            List<String> userRoleIds = (ArrayList) userMap.get("userRoleIds");
             String amountName = (String) userMap.get("amountName");
             Long deptId = Long.valueOf(userMap.get("deptId").toString());
             String deptName = (String) userMap.get("deptName");

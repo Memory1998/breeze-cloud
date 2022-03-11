@@ -31,16 +31,18 @@ import javax.servlet.http.HttpServletResponse;
  * @author breeze
  * @date 2022/01/11
  */
-public class BreezeSmsCodeAuthenticationFilter extends AbstractAuthenticationProcessingFilter {
+public class BreezeSmsCodeDaoAuthenticationFilter extends AbstractAuthenticationProcessingFilter {
 
-    private String mobileParameter = "phone";
+    private String phoneParameter = "phone";
+
+    private String codeParameter = "code";
 
     private boolean postOnly = true;
 
     /**
      * 请求接口的url
      */
-    public BreezeSmsCodeAuthenticationFilter() {
+    public BreezeSmsCodeDaoAuthenticationFilter() {
         super(new AntPathRequestMatcher("/oauth/sms", "POST"));
     }
 
@@ -51,12 +53,16 @@ public class BreezeSmsCodeAuthenticationFilter extends AbstractAuthenticationPro
             throw new AuthenticationServiceException("Authentication method not supported: " + request.getMethod());
         }
         // 根据请求参数名，获取请求value
-        String phone = obtainPhone(request);
+        String phone = this.obtainPhone(request);
         phone = (phone != null) ? phone : "";
         phone = phone.trim();
 
+        String code = this.obtainCode(request);
+        code = (code != null) ? code : "";
+        code = code.trim();
+
         // 生成对应的AuthenticationToken
-        BreezeSmsCodeAuthenticationToken authRequest = new BreezeSmsCodeAuthenticationToken(phone);
+        BreezeSmsCodeAuthenticationToken authRequest = new BreezeSmsCodeAuthenticationToken(phone, code);
         // Allow subclasses to set the "details" property
         setDetails(request, authRequest);
         return this.getAuthenticationManager().authenticate(authRequest);
@@ -91,6 +97,26 @@ public class BreezeSmsCodeAuthenticationFilter extends AbstractAuthenticationPro
      */
     @Nullable
     protected String obtainPhone(HttpServletRequest request) {
-        return request.getParameter(mobileParameter);
+        return request.getParameter(phoneParameter);
     }
+
+    /**
+     * Enables subclasses to override the composition of the phone, such as by
+     * including additional values and a separator.
+     * <p>
+     * This might be used for example if a postcode/zipcode was required in addition to
+     * the code. A delimiter such as a pipe (|) should be used to separate the
+     * password and extended value(s). The <code>AuthenticationDao</code> will need to
+     * generate the expected password in a corresponding manner.
+     * </p>
+     *
+     * @param request so that request attributes can be retrieved
+     * @return the phone that will be presented in the <code>Authentication</code>
+     * request token to the <code>AuthenticationManager</code>
+     */
+    @Nullable
+    protected String obtainCode(HttpServletRequest request) {
+        return request.getParameter(codeParameter);
+    }
+
 }

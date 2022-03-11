@@ -92,12 +92,7 @@ public class BreezeUserDetailsServiceImpl implements BreezeUserDetailsService {
     }
 
     @Override
-    public UserDetails loadUserByPhone(String phone) throws UsernameNotFoundException {
-        return null;
-    }
-
-    @Override
-    public void checkSmsCode(String phone) throws UsernameNotFoundException {
+    public UserDetails loadUserByPhone(String phone, String code) throws UsernameNotFoundException {
         HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
         String inputCode = request.getParameter("code");
 
@@ -107,8 +102,9 @@ public class BreezeUserDetailsServiceImpl implements BreezeUserDetailsService {
             throw new BadCredentialsException("请先获取验证码");
         }
 
-        if (Objects.equals(smsCode, inputCode)) {
+        if (!Objects.equals(smsCode, inputCode)) {
             throw new BadCredentialsException("验证码错误");
         }
+        return null;
     }
 }

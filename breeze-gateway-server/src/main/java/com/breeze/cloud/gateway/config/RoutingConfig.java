@@ -25,6 +25,22 @@ public class RoutingConfig {
     @Autowired
     private CaptchaService captchaService;
 
+    public static final String getRemoteId(ServerRequest request) {
+        Optional<String> xfwd = request.queryParam("X-Forwarded-For");
+        String ip = getRemoteIpFromXfwd(xfwd.orElse(""));
+        Optional<String> ua = request.queryParam("user-agent");
+        return StringUtils.isNotBlank(ip) ? ip + ua : request.remoteAddress().get().getHostString() + ua.orElse("");
+    }
+
+    private static String getRemoteIpFromXfwd(String xfwd) {
+        if (StringUtils.isNotBlank(xfwd)) {
+            String[] ipList = xfwd.split(",");
+            return StringUtils.trim(ipList[0]);
+        } else {
+            return null;
+        }
+    }
+
     /**
      * 参考：com.anji.captcha.controller.CaptchaController
      * <p>
@@ -67,22 +83,6 @@ public class RoutingConfig {
                             }
                             return null;
                         });
-    }
-
-    public static final String getRemoteId(ServerRequest request) {
-        Optional<String> xfwd = request.queryParam("X-Forwarded-For");
-        String ip = getRemoteIpFromXfwd(xfwd.orElse(""));
-        Optional<String> ua = request.queryParam("user-agent");
-        return StringUtils.isNotBlank(ip) ? ip + ua : request.remoteAddress().get().getHostString() + ua.orElse("");
-    }
-
-    private static String getRemoteIpFromXfwd(String xfwd) {
-        if (StringUtils.isNotBlank(xfwd)) {
-            String[] ipList = xfwd.split(",");
-            return StringUtils.trim(ipList[0]);
-        } else {
-            return null;
-        }
     }
 
 

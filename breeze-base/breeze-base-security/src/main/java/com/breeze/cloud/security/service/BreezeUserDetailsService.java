@@ -35,12 +35,11 @@ public interface BreezeUserDetailsService extends UserDetailsService {
      * was actually requested..
      *
      * @param phone the phone identifying the user whose data is required.
+     * @param code
      * @return a fully populated user record (never <code>null</code>)
      * @throws UsernameNotFoundException if the phone could not be found or the user has no
      *                                   GrantedAuthority
      */
-    UserDetails loadUserByPhone(String phone) throws UsernameNotFoundException;
-
-    void checkSmsCode(String phone) throws UsernameNotFoundException;
+    UserDetails loadUserByPhone(String phone, String code) throws UsernameNotFoundException;
 
 }

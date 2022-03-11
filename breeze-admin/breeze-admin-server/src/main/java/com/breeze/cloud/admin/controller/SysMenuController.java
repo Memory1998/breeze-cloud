@@ -19,7 +19,6 @@ package com.breeze.cloud.admin.controller;
 import com.breeze.cloud.admin.entity.SysMenuEntity;
 import com.breeze.cloud.admin.service.SysMenuService;
 import com.breeze.cloud.core.Result;
-import com.breeze.cloud.security.annotation.JoinWhiteList;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
