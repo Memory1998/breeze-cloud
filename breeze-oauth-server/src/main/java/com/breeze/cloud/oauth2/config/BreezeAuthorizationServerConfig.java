@@ -35,7 +35,7 @@ import org.springframework.security.oauth2.config.annotation.web.configurers.Aut
 import org.springframework.security.oauth2.provider.CompositeTokenGranter;
 import org.springframework.security.oauth2.provider.TokenGranter;
 import org.springframework.security.oauth2.provider.request.DefaultOAuth2RequestFactory;
-import org.springframework.security.oauth2.provider.token.DefaultTokenServices;
+import org.springframework.security.oauth2.provider.token.AuthorizationServerTokenServices;
 import org.springframework.security.oauth2.provider.token.TokenEnhancer;
 import org.springframework.security.oauth2.provider.token.TokenStore;
 
@@ -52,7 +52,7 @@ import java.util.List;
 public class BreezeAuthorizationServerConfig extends AuthorizationServerConfigurerAdapter {
 
     @Autowired
-    public DefaultTokenServices tokenService;
+    public AuthorizationServerTokenServices tokenService;
 
     @Autowired
     private BreezeOauthServerAuthenticationEntryPoint authServerAuthenticationEntryPoint;

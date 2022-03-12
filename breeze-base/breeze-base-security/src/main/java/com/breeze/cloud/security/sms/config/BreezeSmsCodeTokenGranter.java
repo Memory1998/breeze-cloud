@@ -58,7 +58,7 @@ public class BreezeSmsCodeTokenGranter extends AbstractTokenGranter {
         String phone = parameters.get("phone");
         String code = parameters.get("code");
         // Protect from downstream leaks of code
-         parameters.remove("code");
+        parameters.remove("code");
 
         Authentication userAuth = new BreezeSmsCodeAuthenticationToken(phone, code);
         ((AbstractAuthenticationToken) userAuth).setDetails(parameters);
