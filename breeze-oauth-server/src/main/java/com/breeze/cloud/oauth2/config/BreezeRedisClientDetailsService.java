@@ -73,7 +73,6 @@ public class BreezeRedisClientDetailsService implements ClientDetailsService {
     }
 
     private BaseClientDetails getFieldsForSelect(SysOauthClientDetailsEntity clientDetails) {
-
         BaseClientDetails baseClientDetails = new BaseClientDetails();
         baseClientDetails.setClientId(clientDetails.getClientId());
         baseClientDetails.setClientSecret(clientDetails.getClientSecret());

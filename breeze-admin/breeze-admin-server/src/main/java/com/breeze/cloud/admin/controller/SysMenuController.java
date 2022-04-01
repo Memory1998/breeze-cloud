@@ -33,7 +33,7 @@ import java.util.Map;
  * @author breeze
  * @date 2021-12-06 22:03:39
  */
-@Api(tags = "模块")
+@Api(tags = "菜单管理模块", value = "菜单管理模块")
 @RestController
 @RequestMapping("/sys/menu")
 public class SysMenuController {
@@ -45,10 +45,10 @@ public class SysMenuController {
      * 列表
      */
     @ApiOperation(value = "列表")
-    @RequestMapping("/list")
+    @GetMapping("/list")
     @PreAuthorize("hasAnyAuthority('sys:menu:list')")
     public Result list(@RequestParam Map<String, Object> params) {
-        return Result.ok();
+        return Result.ok(this.sysMenuService.list());
     }
 
     /**
@@ -65,41 +65,38 @@ public class SysMenuController {
     /**
      * 信息
      */
-    @RequestMapping("/info/{id}")
-    @PreAuthorize("hasAnyAuthority('sys:menu:list')")
+    @GetMapping("/info/{id}")
+    @PreAuthorize("hasAnyAuthority('sys:menu:info')")
     public Result info(@PathVariable("id") Long id) {
         SysMenuEntity sysMenu = sysMenuService.getById(id);
-        return Result.ok();
+        return Result.ok(sysMenu);
     }
 
     /**
      * 保存
      */
-    @RequestMapping("/save")
-    @PreAuthorize("hasAnyAuthority('sys:menu:list')")
+    @PostMapping("/save")
+    @PreAuthorize("hasAnyAuthority('sys:menu:save')")
     public Result<Boolean> save(@RequestBody SysMenuEntity sysMenu) {
-        sysMenuService.save(sysMenu);
-        return Result.ok();
+        return Result.ok(sysMenuService.save(sysMenu));
     }
 
     /**
      * 修改
      */
-    @RequestMapping("/update")
-    @PreAuthorize("hasAnyAuthority('sys:menu:list')")
+    @PutMapping("/update")
+    @PreAuthorize("hasAnyAuthority('sys:menu:update')")
     public Result<Boolean> update(@RequestBody SysMenuEntity sysMenu) {
-        sysMenuService.updateById(sysMenu);
-        return Result.ok();
+        return Result.ok(sysMenuService.updateById(sysMenu));
     }
 
     /**
      * 删除
      */
-    @RequestMapping("/delete")
-    @PreAuthorize("hasAnyAuthority('sys:menu:list')")
+    @DeleteMapping("/delete")
+    @PreAuthorize("hasAnyAuthority('sys:menu:delete')")
     public Result<Boolean> delete(@RequestBody Long[] ids) {
-        sysMenuService.removeByIds(Arrays.asList(ids));
-        return Result.ok();
+        return Result.ok(sysMenuService.removeByIds(Arrays.asList(ids)));
     }
 
 }

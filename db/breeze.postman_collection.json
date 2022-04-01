@@ -1,0 +1,326 @@
+{
+	"info": {
+		"_postman_id": "65392204-f90d-4b46-8862-b8f8455ca650",
+		"name": "breeze",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "http://localhost:9999/oauth2/oauth/token?grant_type=authorization_code&code=Ezqc2u&client_id=web&client_secret=web&redirect_uri=http://www.baidu.com&state=54VVBM",
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "password",
+							"value": "web",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "web",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Basic d2ViOndlYg==",
+						"type": "default",
+						"disabled": true
+					}
+				],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "username",
+							"value": "admin",
+							"type": "default"
+						},
+						{
+							"key": "password",
+							"value": "123456",
+							"type": "default"
+						},
+						{
+							"key": "client_id",
+							"value": "web",
+							"type": "default"
+						},
+						{
+							"key": "client_secret",
+							"value": "web",
+							"type": "default"
+						},
+						{
+							"key": "scope",
+							"value": "server",
+							"type": "default"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost:9999/oauth2/oauth/token?grant_type=authorization_code&code=czXKEw&client_id=web&client_secret=web&redirect_uri=http://www.baidu.com&state=54VVBM",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "9999",
+					"path": [
+						"oauth2",
+						"oauth",
+						"token"
+					],
+					"query": [
+						{
+							"key": "grant_type",
+							"value": "authorization_code"
+						},
+						{
+							"key": "code",
+							"value": "czXKEw"
+						},
+						{
+							"key": "client_id",
+							"value": "web"
+						},
+						{
+							"key": "client_secret",
+							"value": "web"
+						},
+						{
+							"key": "redirect_uri",
+							"value": "http://www.baidu.com"
+						},
+						{
+							"key": "state",
+							"value": "54VVBM"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "http://localhost:8888/oauth/authorize?response_type=code&redirect_uri=http://www.baidu.com&scope=server&state=54VVBM",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8888/oauth/authorize?response_type=code&redirect_uri=http://www.baidu.com&scope=server&state=54VVBM&client_id=web&client_secret=web",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8888",
+					"path": [
+						"oauth",
+						"authorize"
+					],
+					"query": [
+						{
+							"key": "response_type",
+							"value": "code"
+						},
+						{
+							"key": "redirect_uri",
+							"value": "http://www.baidu.com"
+						},
+						{
+							"key": "scope",
+							"value": "server"
+						},
+						{
+							"key": "state",
+							"value": "54VVBM"
+						},
+						{
+							"key": "client_id",
+							"value": "web"
+						},
+						{
+							"key": "client_secret",
+							"value": "web"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "http://localhost:9999/oauth2/oauth/token?grant_type=password",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Basic d2ViOndlYg==",
+						"type": "default",
+						"disabled": true
+					}
+				],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "username",
+							"value": "admin",
+							"type": "default"
+						},
+						{
+							"key": "password",
+							"value": "123456",
+							"type": "default"
+						},
+						{
+							"key": "client_id",
+							"value": "web",
+							"type": "default"
+						},
+						{
+							"key": "client_secret",
+							"value": "web",
+							"type": "default"
+						},
+						{
+							"key": "scope",
+							"value": "server",
+							"type": "default"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost:9999/oauth2/oauth/token?grant_type=password",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "9999",
+					"path": [
+						"oauth2",
+						"oauth",
+						"token"
+					],
+					"query": [
+						{
+							"key": "grant_type",
+							"value": "password"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "http://localhost:9999/admin/sys/dept/page?size=10&current=1",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "bearer 9ffb6f63-0ac0-4e92-ac48-eb8428be178f",
+						"type": "default"
+					}
+				],
+				"url": {
+					"raw": "http://localhost:9999/admin/sys/dept/page?size=10&current=1",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "9999",
+					"path": [
+						"admin",
+						"sys",
+						"dept",
+						"page"
+					],
+					"query": [
+						{
+							"key": "size",
+							"value": "10"
+						},
+						{
+							"key": "current",
+							"value": "1"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "http://localhost:9999/oauth2/oauth/token?grant_type=sms_code",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Basic d2ViOndlYg==",
+						"type": "default",
+						"disabled": true
+					}
+				],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "phone",
+							"value": "17812341234",
+							"type": "default"
+						},
+						{
+							"key": "code",
+							"value": "123456",
+							"type": "default"
+						},
+						{
+							"key": "client_id",
+							"value": "web",
+							"type": "default"
+						},
+						{
+							"key": "client_secret",
+							"value": "web",
+							"type": "default"
+						},
+						{
+							"key": "scope",
+							"value": "server",
+							"type": "default"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost:9999/oauth2/oauth/token?grant_type=sms_code",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "9999",
+					"path": [
+						"oauth2",
+						"oauth",
+						"token"
+					],
+					"query": [
+						{
+							"key": "grant_type",
+							"value": "sms_code"
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

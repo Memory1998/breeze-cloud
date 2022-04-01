@@ -21,7 +21,6 @@ import com.breeze.cloud.admin.entity.SysUserEntity;
 import com.breeze.cloud.admin.service.SysUserService;
 import com.breeze.cloud.core.Result;
 import com.breeze.cloud.security.annotation.JoinWhiteList;
-import com.github.xiaoymin.knife4j.annotations.ApiSort;
 import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -38,23 +37,21 @@ import java.util.Map;
  * @date 2021-12-06 22:03:39
  */
 @RestController
-@ApiSort(1)
-@Api(tags = "用户管理", value = "SysUserController")
+@Api(tags = "用户管理模块", value = "用户管理模块")
 @RequestMapping("/sys/user")
 public class SysUserController {
 
     @Autowired
     private SysUserService sysUserService;
 
-    @GetMapping("/v1/getUser")
     @JoinWhiteList
+    @GetMapping("/v1/getUser")
     public Authentication getUser() {
         return SecurityContextHolder.getContext().getAuthentication();
     }
 
-    @GetMapping("/v2/getUser")
     @JoinWhiteList
-    @PreAuthorize("hasAnyAuthority('sys:admin')")
+    @GetMapping("/v2/getUser")
     public Principal getUser2(Principal principal) {
         return principal;
     }
@@ -62,7 +59,7 @@ public class SysUserController {
     /**
      * 登录feign接口
      */
-    @RequestMapping("/loadByUsername/{username}")
+    @GetMapping("/loadByUsername/{username}")
     @JoinWhiteList
     public Result<SysUserDTO> loadByLoginUsername(@PathVariable("username") String username) {
         return this.sysUserService.loadByLoginUsername(username);
@@ -71,51 +68,47 @@ public class SysUserController {
     /**
      * 列表
      */
-    @RequestMapping("/list")
+    @GetMapping("/list")
     @PreAuthorize("hasAnyAuthority('sys:user:list')")
     public Result list(@RequestParam Map<String, Object> params) {
-        return null;
+        return Result.ok(this.sysUserService.list());
     }
-
 
     /**
      * 信息
      */
-    @RequestMapping("/info/{id}")
-    @PreAuthorize("hasAnyAuthority('sys:user:list')")
+    @GetMapping("/info/{id}")
+    @PreAuthorize("hasAnyAuthority('sys:user:info')")
     public Result info(@PathVariable("id") Long id) {
         SysUserEntity sysUser = sysUserService.getById(id);
-        return Result.ok();
+        return Result.ok(sysUser);
     }
 
     /**
      * 保存
      */
-    @RequestMapping("/save")
-    @PreAuthorize("hasAnyAuthority('sys:user:list')")
+    @PostMapping("/save")
+    @PreAuthorize("hasAnyAuthority('sys:user:save')")
     public Result save(@RequestBody SysUserEntity sysUser) {
-        sysUserService.save(sysUser);
-        return Result.ok();
+        return Result.ok(sysUserService.save(sysUser));
     }
 
     /**
      * 修改
      */
-    @RequestMapping("/update")
-    @PreAuthorize("hasAnyAuthority('sys:user:list')")
+    @PutMapping("/update")
+    @PreAuthorize("hasAnyAuthority('sys:user:update')")
     public Result update(@RequestBody SysUserEntity sysUser) {
-        sysUserService.updateById(sysUser);
-        return Result.ok();
+        return Result.ok(sysUserService.updateById(sysUser));
     }
 
     /**
      * 删除
      */
-    @RequestMapping("/delete")
-    @PreAuthorize("hasAnyAuthority('sys:user:list')")
+    @DeleteMapping("/delete")
+    @PreAuthorize("hasAnyAuthority('sys:user:delete')")
     public Result delete(@RequestBody Long[] ids) {
-        sysUserService.removeByIds(Arrays.asList(ids));
-        return Result.ok();
+        return Result.ok(sysUserService.removeByIds(Arrays.asList(ids)));
     }
 
 }

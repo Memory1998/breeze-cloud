@@ -20,6 +20,7 @@ import com.breeze.cloud.admin.entity.SysOauthClientDetailsEntity;
 import com.breeze.cloud.admin.service.SysOauthClientDetailsService;
 import com.breeze.cloud.core.Result;
 import com.breeze.cloud.security.annotation.JoinWhiteList;
+import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -31,6 +32,7 @@ import java.util.Map;
  * @author breeze
  * @date 2021-12-06 22:03:39
  */
+@Api(tags = "授权管理模块", value = "授权管理模块")
 @RestController
 @RequestMapping("/sys/oauth/")
 public class SysOauthClientDetailsController {
@@ -41,16 +43,16 @@ public class SysOauthClientDetailsController {
     /**
      * 列表
      */
-    @RequestMapping("/list")
+    @GetMapping("/list")
     @PreAuthorize("hasAnyAuthority('sys:oauth:list')")
     public Result list(@RequestParam Map<String, Object> params) {
-        return null;
+        return Result.ok(this.sysOauthClientDetailsService.list());
     }
 
     /**
      * 信息
      */
-    @RequestMapping("/info/{clientId}")
+    @GetMapping("/info/{clientId}")
     @JoinWhiteList
     public SysOauthClientDetailsEntity info(@PathVariable("clientId") String clientId) {
         return this.sysOauthClientDetailsService.getById(clientId);
@@ -59,31 +61,28 @@ public class SysOauthClientDetailsController {
     /**
      * 保存
      */
-    @RequestMapping("/save")
+    @PostMapping("/save")
     @PreAuthorize("hasAnyAuthority('sys:oauth:save')")
     public Result save(@RequestBody SysOauthClientDetailsEntity oauth) {
-        this.sysOauthClientDetailsService.save(oauth);
-        return null;
+        return Result.ok(this.sysOauthClientDetailsService.save(oauth));
     }
 
     /**
      * 修改
      */
-    @RequestMapping("/update")
+    @PutMapping("/update")
     @PreAuthorize("hasAnyAuthority('sys:oauth:update')")
     public Result update(@RequestBody SysOauthClientDetailsEntity oauth) {
-        this.sysOauthClientDetailsService.updateById(oauth);
-        return null;
+        return Result.ok(this.sysOauthClientDetailsService.updateById(oauth));
     }
 
     /**
      * 删除
      */
-    @RequestMapping("/delete")
+    @DeleteMapping("/delete")
     @PreAuthorize("hasAnyAuthority('sys:oauth:delete')")
     public Result delete(@RequestBody String[] clientIds) {
-        this.sysOauthClientDetailsService.removeByIds(Arrays.asList(clientIds));
-        return null;
+        return Result.ok(this.sysOauthClientDetailsService.removeByIds(Arrays.asList(clientIds)));
     }
 
 }

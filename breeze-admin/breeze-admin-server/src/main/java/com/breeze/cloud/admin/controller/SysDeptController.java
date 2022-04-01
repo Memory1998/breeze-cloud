@@ -22,6 +22,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.breeze.cloud.admin.entity.SysDeptEntity;
 import com.breeze.cloud.admin.service.SysDeptService;
 import com.breeze.cloud.core.Result;
+import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -32,6 +33,7 @@ import java.util.Arrays;
  * @author breeze
  * @date 2021-12-06 22:03:39
  */
+@Api(tags = "部门管理模块", value = "部门管理模块")
 @RestController
 @RequestMapping("/sys/dept")
 public class SysDeptController {
@@ -42,8 +44,8 @@ public class SysDeptController {
     /**
      * 列表
      */
-    @GetMapping("/page")
-    @PreAuthorize("hasAnyAuthority('sys:dept:page')")
+    @GetMapping("/list")
+    @PreAuthorize("hasAnyAuthority('sys:dept:list')")
     public Result<IPage<SysDeptEntity>> listPage(Page<SysDeptEntity> page, SysDeptEntity deptEntity) {
         return Result.ok(this.sysDeptService.page(page, Wrappers.query(deptEntity)));
     }
@@ -51,41 +53,37 @@ public class SysDeptController {
     /**
      * 信息
      */
-    @RequestMapping("/info/{id}")
+    @GetMapping("/info/{id}")
     @PreAuthorize("hasAnyAuthority('sys:dept:info')")
     public Result info(@PathVariable("id") Long id) {
-        SysDeptEntity sysDept = sysDeptService.getById(id);
-        return Result.ok(sysDept);
+        return Result.ok(sysDeptService.getById(id));
     }
 
     /**
      * 保存
      */
-    @RequestMapping("/save")
+    @PostMapping("/save")
     @PreAuthorize("hasAnyAuthority('sys:dept:save')")
     public Result save(@RequestBody SysDeptEntity sysDept) {
-        boolean save = sysDeptService.save(sysDept);
-        return Result.ok(save);
+        return Result.ok(sysDeptService.save(sysDept));
     }
 
     /**
      * 修改
      */
-    @RequestMapping("/update")
+    @PutMapping("/update")
     @PreAuthorize("hasAnyAuthority('sys:dept:update')")
     public Result update(@RequestBody SysDeptEntity sysDept) {
-        boolean updateById = this.sysDeptService.updateById(sysDept);
-        return Result.ok(updateById);
+        return Result.ok(this.sysDeptService.updateById(sysDept));
     }
 
     /**
      * 删除
      */
-    @RequestMapping("/delete")
+    @DeleteMapping("/delete")
     @PreAuthorize("hasAnyAuthority('sys:dept:delete')")
     public Result delete(@RequestBody Long[] ids) {
-        boolean remove = this.sysDeptService.removeByIds(Arrays.asList(ids));
-        return Result.ok(remove);
+        return Result.ok(this.sysDeptService.removeByIds(Arrays.asList(ids)));
     }
 
 }

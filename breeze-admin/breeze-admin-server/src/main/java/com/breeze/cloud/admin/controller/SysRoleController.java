@@ -19,6 +19,7 @@ package com.breeze.cloud.admin.controller;
 import com.breeze.cloud.admin.entity.SysRoleEntity;
 import com.breeze.cloud.admin.service.SysRoleService;
 import com.breeze.cloud.core.Result;
+import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -30,6 +31,7 @@ import java.util.Map;
  * @author breeze
  * @date 2021-12-06 22:03:39
  */
+@Api(tags = "角色管理模块", value = "角色管理模块")
 @RestController
 @RequestMapping("/sys/role")
 public class SysRoleController {
@@ -39,7 +41,7 @@ public class SysRoleController {
     /**
      * 列表
      */
-    @RequestMapping("/list")
+    @GetMapping("/list")
     @PreAuthorize("hasAnyAuthority('sys:role:list')")
     public Result list(@RequestParam Map<String, Object> params) {
         return Result.ok();
@@ -49,41 +51,38 @@ public class SysRoleController {
     /**
      * 信息
      */
-    @RequestMapping("/info/{id}")
-    @PreAuthorize("hasAnyAuthority('sys:role:list')")
+    @GetMapping("/info/{id}")
+    @PreAuthorize("hasAnyAuthority('sys:role:info')")
     public Result info(@PathVariable("id") Long id) {
-        SysRoleEntity sysRole = sysRoleService.getById(id);
-        return Result.ok();
+        SysRoleEntity role = sysRoleService.getById(id);
+        return Result.ok(role);
     }
 
     /**
      * 保存
      */
-    @RequestMapping("/save")
-    @PreAuthorize("hasAnyAuthority('sys:role:list')")
+    @PostMapping("/save")
+    @PreAuthorize("hasAnyAuthority('sys:role:save')")
     public Result save(@RequestBody SysRoleEntity sysRole) {
-        sysRoleService.save(sysRole);
-        return Result.ok();
+        return Result.ok(sysRoleService.save(sysRole));
     }
 
     /**
      * 修改
      */
-    @RequestMapping("/update")
-    @PreAuthorize("hasAnyAuthority('sys:role:list')")
+    @PutMapping("/update")
+    @PreAuthorize("hasAnyAuthority('sys:role:update')")
     public Result update(@RequestBody SysRoleEntity sysRole) {
-        sysRoleService.updateById(sysRole);
-        return Result.ok();
+        return Result.ok(sysRoleService.updateById(sysRole));
     }
 
     /**
      * 删除
      */
-    @RequestMapping("/delete")
-    @PreAuthorize("hasAnyAuthority('sys:role:list')")
+    @DeleteMapping("/delete")
+    @PreAuthorize("hasAnyAuthority('sys:role:delete')")
     public Result delete(@RequestBody Long[] ids) {
-        sysRoleService.removeByIds(Arrays.asList(ids));
-        return Result.ok();
+        return Result.ok(sysRoleService.removeByIds(Arrays.asList(ids)));
     }
 
 }

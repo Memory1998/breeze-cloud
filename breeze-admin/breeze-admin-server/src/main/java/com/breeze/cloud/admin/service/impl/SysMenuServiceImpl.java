@@ -56,9 +56,6 @@ public class SysMenuServiceImpl extends ServiceImpl<SysMenuMapper, SysMenuEntity
     private SysPlatformService platformService;
 
     @Autowired
-    private SysMenuService menuService;
-
-    @Autowired
     private SysMenuRoleService menuRoleService;
 
     @Override
@@ -80,11 +77,10 @@ public class SysMenuServiceImpl extends ServiceImpl<SysMenuMapper, SysMenuEntity
             return Result.ok();
         }
         List<Long> menuIdList = menuRoleList.stream().map(SysMenuRoleEntity::getMenuId).collect(Collectors.toList());
-        List<SysMenuEntity> menuList = this.menuService.list(
-                Wrappers.<SysMenuEntity>lambdaQuery()
-                        .in(SysMenuEntity::getId, menuIdList)
-                        .eq(SysMenuEntity::getPlatformId, platformEntity.getId())
-                        .orderByAsc(SysMenuEntity::getSort));
+        List<SysMenuEntity> menuList = this.list(Wrappers.<SysMenuEntity>lambdaQuery()
+                .in(SysMenuEntity::getId, menuIdList)
+                .eq(SysMenuEntity::getPlatformId, platformEntity.getId())
+                .orderByAsc(SysMenuEntity::getSort));
         if (CollUtil.isEmpty(menuList)) {
             return Result.ok();
         }

@@ -47,8 +47,8 @@ import java.util.List;
  * <p>
  * extents AuthorizationServerConfigurerAdapter
  */
-@EnableAuthorizationServer
 @Configuration
+@EnableAuthorizationServer
 public class BreezeAuthorizationServerConfig extends AuthorizationServerConfigurerAdapter {
 
     @Autowired

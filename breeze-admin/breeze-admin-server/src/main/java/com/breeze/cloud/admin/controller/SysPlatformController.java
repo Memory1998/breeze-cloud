@@ -34,7 +34,7 @@ import java.util.Map;
  */
 @RestController
 @ApiSort(1)
-@Api(tags = "平台管理", value = "SysPlatformController")
+@Api(tags = "平台管理模块", value = "平台管理模块")
 @RequestMapping("/sys/platform")
 public class SysPlatformController {
 
@@ -44,37 +44,35 @@ public class SysPlatformController {
     /**
      * 列表
      */
-    @RequestMapping("/list")
+    @GetMapping("/list")
     @PreAuthorize("hasAnyAuthority('sys:platform:list')")
     public Result list(@RequestParam Map<String, Object> params) {
-        return null;
+        return Result.ok(this.sysPlatformService.list());
     }
 
     /**
      * 信息
      */
-    @RequestMapping("/info/{id}")
-    @PreAuthorize("hasAnyAuthority('sys:platform:list')")
+    @GetMapping("/info/{id}")
+    @PreAuthorize("hasAnyAuthority('sys:platform:info')")
     public Result info(@PathVariable("id") Long id) {
-        SysPlatformEntity platformEntity = sysPlatformService.getById(id);
-        return Result.ok();
+        return Result.ok(sysPlatformService.getById(id));
     }
 
     /**
      * 保存
      */
-    @RequestMapping("/save")
-    @PreAuthorize("hasAnyAuthority('sys:platform:list')")
+    @PostMapping("/save")
+    @PreAuthorize("hasAnyAuthority('sys:platform:save')")
     public Result save(@RequestBody SysPlatformEntity sysUser) {
-        sysPlatformService.save(sysUser);
-        return Result.ok();
+        return Result.ok(sysPlatformService.save(sysUser));
     }
 
     /**
      * 修改
      */
-    @RequestMapping("/update")
-    @PreAuthorize("hasAnyAuthority('sys:user:list')")
+    @PutMapping("/update")
+    @PreAuthorize("hasAnyAuthority('sys:user:update')")
     public Result update(@RequestBody SysPlatformEntity sysPlatformEntity) {
         sysPlatformService.updateById(sysPlatformEntity);
         return Result.ok();
@@ -83,8 +81,8 @@ public class SysPlatformController {
     /**
      * 删除
      */
-    @RequestMapping("/delete")
-    @PreAuthorize("hasAnyAuthority('sys:platform:list')")
+    @DeleteMapping("/delete")
+    @PreAuthorize("hasAnyAuthority('sys:platform:delete')")
     public Result delete(@RequestBody Long[] ids) {
         sysPlatformService.removeByIds(Arrays.asList(ids));
         return Result.ok();
