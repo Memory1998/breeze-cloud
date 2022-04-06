@@ -14,28 +14,21 @@
  * limitations under the License.
  */
 
-package com.breeze.cloud.admin;
+package com.example.dynamic.datasource;
 
-import com.breeze.cloud.security.annotation.EnableBreezeResourceServer;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.boot.web.servlet.ServletComponentScan;
-import org.springframework.cloud.openfeign.EnableFeignClients;
 
 /**
- * druid监控页面是一个servlet，需要让SpringBoot支持servlet
  *
  * @author breeze
- * @date 2021/10/1
+ * @date 2022/04/06
  */
-@EnableBreezeResourceServer
-@EnableFeignClients
 @SpringBootApplication
-@ServletComponentScan
-public class BreezeAdminApplication {
+public class DynamicDatasourceDemoApplication {
 
     public static void main(String[] args) {
-        SpringApplication.run(BreezeAdminApplication.class, args);
+        SpringApplication.run(DynamicDatasourceDemoApplication.class, args);
     }
 
 }

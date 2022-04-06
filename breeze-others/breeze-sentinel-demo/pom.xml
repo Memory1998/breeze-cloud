@@ -13,7 +13,7 @@
     <artifactId>breeze-sentinel-demo</artifactId>
     <packaging>jar</packaging>
 
-    <name>breeze-sentinel-demo</name>
+    <name>${project.artifactId}</name>
     <description>breeze-sentinel-demo</description>
 
     <properties>

@@ -23,6 +23,7 @@
     <modules>
         <module>sentinel-dashboard</module>
         <module>breeze-sentinel-demo</module>
+        <module>breeze-dynamic-datasource</module>
     </modules>
 
     <dependencyManagement>

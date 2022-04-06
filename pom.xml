@@ -70,6 +70,7 @@
         <module>breeze-admin</module>
         <module>breeze-base</module>
         <module>breeze-oauth-server</module>
+        <module>breeze-others</module>
     </modules>
 
     <dependencyManagement>
