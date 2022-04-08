@@ -9,11 +9,11 @@
         <version>1.0</version>
     </parent>
 
-    <artifactId>breeze-sso-server</artifactId>
+    <artifactId>breeze-sso-client</artifactId>
     <packaging>jar</packaging>
     <version>1.0</version>
 
-    <name>sso</name>
+    <name>breeze-sso-client</name>
     <description>Demo project for sso</description>
 
     <properties>
@@ -21,6 +21,16 @@
     </properties>
 
     <dependencies>
+        <dependency>
+            <groupId>com.alibaba.cloud</groupId>
+            <artifactId>spring-cloud-starter-alibaba-nacos-discovery</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>com.alibaba.cloud</groupId>
+            <artifactId>spring-cloud-starter-alibaba-nacos-config</artifactId>
+        </dependency>
+
         <dependency>
             <groupId>org.springframework.security.oauth.boot</groupId>
             <artifactId>spring-security-oauth2-autoconfigure</artifactId>

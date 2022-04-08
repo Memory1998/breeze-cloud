@@ -1,9 +1,0 @@
-FROM java:8
-
-MAINTAINER breeze-cloud@foxmail.qq.com
-
-ADD sentinel-dashboard-1.8.3.jar sentinel-dashboard-1.8.3.jar
-
-EXPOSE 8080
-
-ENTRYPOINT ["java", "-Dserver.port=8080","-Dcsp.sentinel.dashboard.server=localhost:8080","-Dproject.name=sentinel-dashboard-1.8.3","-jar","sentinel-dashboard-1.8.3.jar"]

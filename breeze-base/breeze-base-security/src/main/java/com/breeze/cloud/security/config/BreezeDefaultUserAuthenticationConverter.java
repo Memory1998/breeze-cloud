@@ -47,15 +47,15 @@ public class BreezeDefaultUserAuthenticationConverter implements UserAuthenticat
     public Authentication extractAuthentication(Map<String, ?> map) {
         if (map.containsKey(USERNAME)) {
             Collection<? extends GrantedAuthority> authorities = getAuthorities(map);
-            String username = String.valueOf(map.get(USERNAME));
             Map<String, Object> userMap = (LinkedHashMap) map.get("breezeLoginUser");
-            Long userId = Long.valueOf(userMap.get("userId").toString());
-            String userCode = String.valueOf(userMap.get("userCode"));
             List<String> userRoleCodes = (ArrayList) userMap.get("userRoleCodes");
             List<String> userRoleIds = (ArrayList) userMap.get("userRoleIds");
             String amountName = (String) userMap.get("amountName");
+            Long userId = Long.valueOf(userMap.get("userId").toString());
             Long deptId = Long.valueOf(userMap.get("deptId").toString());
+            String userCode = String.valueOf(userMap.get("userCode"));
             String deptName = (String) userMap.get("deptName");
+            String username = String.valueOf(map.get(USERNAME));
             BreezeLoginUser user = new BreezeLoginUser(
                     userId,
                     userCode,

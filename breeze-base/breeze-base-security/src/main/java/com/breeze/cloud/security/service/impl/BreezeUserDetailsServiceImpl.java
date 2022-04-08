@@ -56,12 +56,12 @@ public class BreezeUserDetailsServiceImpl implements BreezeUserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         // todo
-        Result<SysUserDTO> userEntityResult = this.sysUserFeign.loadByLoginAmount(username);
-        if (Objects.equals(userEntityResult.getCode(), ResultCode.FAIL.getCode()) || Objects.isNull(userEntityResult.getData())) {
+        Result<SysUserDTO> userResult = this.sysUserFeign.loadByLoginAmount(username);
+        if (Objects.equals(userResult.getCode(), ResultCode.FAIL.getCode()) || Objects.isNull(userResult.getData())) {
             throw new UsernameNotFoundException("用户不存在");
         }
         Set<String> authSet = new HashSet<>();
-        SysUserDTO sysUserDTO = userEntityResult.getData();
+        SysUserDTO sysUserDTO = userResult.getData();
         if (Objects.nonNull(sysUserDTO.getPermission())) {
             authSet.addAll(Arrays.stream(sysUserDTO.getPermission()).filter(StringUtils::hasLength).collect(Collectors.toList()));
         }

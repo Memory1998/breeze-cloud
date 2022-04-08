@@ -9,11 +9,11 @@
         <version>1.0</version>
     </parent>
 
-    <artifactId>breeze-oauth-server</artifactId>
+    <artifactId>breeze-auth-server</artifactId>
     <packaging>jar</packaging>
 
-    <name>breeze-oauth-server</name>
-    <description>breeze-oauth-server 权限认证</description>
+    <name>breeze-auth-server</name>
+    <description>breeze-auth-server 权限认证</description>
 
     <properties>
         <java.version>1.8</java.version>

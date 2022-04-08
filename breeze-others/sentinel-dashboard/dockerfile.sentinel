@@ -1,0 +1,9 @@
+FROM breezeworker/breeze-java:8
+
+MAINTAINER breeze breeze-cloud@foxmail.com
+
+ADD sentinel-dashboard.jar sentinel-dashboard-1.8.3.jar   
+
+EXPOSE 8080
+
+ENTRYPOINT ["java","-jar","sentinel-dashboard-1.8.3.jar"]

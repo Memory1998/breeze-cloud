@@ -19,7 +19,7 @@ package com.breeze.cloud.oauth2.config;
 import com.breeze.cloud.admin.api.SysOauthClientDetailsFeign;
 import com.breeze.cloud.security.config.BreezeOauthServerAuthenticationEntryPoint;
 import com.breeze.cloud.security.config.BreezeOauthServerWebResponseExceptionTranslator;
-import com.breeze.cloud.security.filter.BreezeOAuthServerClientCredentialsTokenEndpointFilter;
+import com.breeze.cloud.security.filter.BreezeClientCredentialsTokenEndpointFilter;
 import com.breeze.cloud.security.service.BreezeUserDetailsService;
 import com.breeze.cloud.security.sms.config.BreezeSmsCodeTokenGranter;
 import com.google.common.collect.Lists;
@@ -49,19 +49,19 @@ import java.util.List;
  */
 @Configuration
 @EnableAuthorizationServer
-public class BreezeAuthorizationServerConfig extends AuthorizationServerConfigurerAdapter {
+public class BreezeAuthorizationServerConfigurerAdapter extends AuthorizationServerConfigurerAdapter {
 
     @Autowired
-    public AuthorizationServerTokenServices tokenService;
+    public AuthorizationServerTokenServices breezeTokenService;
 
     @Autowired
-    private BreezeOauthServerAuthenticationEntryPoint authServerAuthenticationEntryPoint;
+    private BreezeOauthServerAuthenticationEntryPoint breezeOauthServerAuthenticationEntryPoint;
 
     @Autowired
     private SysOauthClientDetailsFeign sysOauthClientDetailsFeign;
 
     @Autowired
-    private BreezeUserDetailsService userDetailsService;
+    private BreezeUserDetailsService breezeUserDetailsService;
 
     @Autowired
     private AuthenticationManager authenticationManagerBean;
@@ -88,51 +88,51 @@ public class BreezeAuthorizationServerConfig extends AuthorizationServerConfigur
      */
     @Override
     public void configure(ClientDetailsServiceConfigurer clients) throws Exception {
-//        clients.inMemory()
-//                .withClient("web")
-//                .secret(passwordEncoder.encode("web-secret"))
-//                .scopes("all")
-//                .authorizedGrantTypes("authorization_code") //code授权
-//                .accessTokenValiditySeconds(7200)
-//                .redirectUris("https://www.baidu.com")
-//
-//                .and()
-//                .withClient("wx")
-//                .secret(passwordEncoder.encode("wx-secret"))
-//                .scopes("readOnly")
-//                .authorizedGrantTypes("implicit") //静默授权
-//                .accessTokenValiditySeconds(7200)
-//                .redirectUris("https://www.baidu.com")
-//
-//                .and()
-//                .withClient("qq")
-//                .secret(passwordEncoder.encode("qq-secret"))
-//                .scopes("all")
-//                .authorizedGrantTypes("password") //授权模式标识
-//                .accessTokenValiditySeconds(7200)
-//                .redirectUris("https://www.baidu.com")
-//
-//
-//                .and()
-//                .withClient("client")
-//                .secret(passwordEncoder.encode("client-secret"))
-//                .scopes("readOnly")
-//                .authorizedGrantTypes("client_credentials") //授权模式标识
-//                .accessTokenValiditySeconds(3600)
-//                .redirectUris("https://www.baidu.com")        ;
+        // clients.inMemory()
+        //      .withClient("web")
+        //      .secret(passwordEncoder.encode("web-secret"))
+        //      .scopes("all")
+        //      .authorizedGrantTypes("authorization_code") //code授权
+        //      .accessTokenValiditySeconds(7200)
+        //      .redirectUris("https://www.baidu.com")
+
+        //      .and()
+        //      .withClient("wx")
+        //      .secret(passwordEncoder.encode("wx-secret"))
+        //      .scopes("readOnly")
+        //      .authorizedGrantTypes("implicit") //静默授权
+        //      .accessTokenValiditySeconds(7200)
+        //      .redirectUris("https://www.baidu.com")
+
+        //      .and()
+        //      .withClient("qq")
+        //      .secret(passwordEncoder.encode("qq-secret"))
+        //      .scopes("all")
+        //      .authorizedGrantTypes("password") //授权模式标识
+        //      .accessTokenValiditySeconds(7200)
+        //      .redirectUris("https://www.baidu.com")
+
+        //      .and()
+        //      .withClient("client")
+        //      .secret(passwordEncoder.encode("client-secret"))
+        //      .scopes("readOnly")
+        //      .authorizedGrantTypes("client_credentials") //授权模式标识
+        //      .accessTokenValiditySeconds(3600)
+        //      .redirectUris("https://www.baidu.com");
+
         clients.withClientDetails(clientDetailsService());
     }
 
     @Override
     public void configure(AuthorizationServerSecurityConfigurer security) {
         // 自定义 BreezeClientCredentialsTokenEndpointFilter，用于处理客户端id，密码错误的异常
-        BreezeOAuthServerClientCredentialsTokenEndpointFilter endpointFilter
-                = new BreezeOAuthServerClientCredentialsTokenEndpointFilter(security, authServerAuthenticationEntryPoint);
+        BreezeClientCredentialsTokenEndpointFilter endpointFilter
+                = new BreezeClientCredentialsTokenEndpointFilter(security, breezeOauthServerAuthenticationEntryPoint);
         endpointFilter.afterPropertiesSet();
         security.addTokenEndpointAuthenticationFilter(endpointFilter);
 
         security
-                .authenticationEntryPoint(authServerAuthenticationEntryPoint)
+                .authenticationEntryPoint(breezeOauthServerAuthenticationEntryPoint)
                 // 开启/oauth/token_key验证端口认证权限访问
                 .tokenKeyAccess("isAuthenticated()")
                 //  开启/oauth/check_token验证端口认证权限访问
@@ -149,7 +149,7 @@ public class BreezeAuthorizationServerConfig extends AuthorizationServerConfigur
         TokenGranter tokenGranter = endpoints.getTokenGranter();
         List<TokenGranter> granterList = Lists.newArrayList(tokenGranter);
         BreezeSmsCodeTokenGranter smsCodeTokenGranter = new BreezeSmsCodeTokenGranter(authenticationManagerBean,
-                tokenService, clientDetailsService(), new DefaultOAuth2RequestFactory(clientDetailsService()));
+                breezeTokenService, clientDetailsService(), new DefaultOAuth2RequestFactory(clientDetailsService()));
         granterList.add(smsCodeTokenGranter);
         CompositeTokenGranter compositeTokenGranter = new CompositeTokenGranter(granterList);
         endpoints
@@ -159,7 +159,7 @@ public class BreezeAuthorizationServerConfig extends AuthorizationServerConfigur
                 .tokenStore(redisTokenStore)
                 .tokenEnhancer(breezeTokenEnhancer)
                 // 用户账号密码认证
-                .userDetailsService(userDetailsService)
+                .userDetailsService(breezeUserDetailsService)
                 // 指定认证管理器
                 .authenticationManager(authenticationManagerBean)
                 .tokenGranter(compositeTokenGranter)

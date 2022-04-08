@@ -18,7 +18,6 @@ package com.breeze.cloud.security.config;
 
 import com.breeze.cloud.security.handler.BreezeAccessDeniedHandler;
 import com.breeze.cloud.security.handler.BreezeResponseErrorHandler;
-import com.breeze.cloud.security.sms.BreezeSmsCodeAuthenticationProvider;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,7 +40,7 @@ import org.springframework.web.client.RestTemplate;
  * @date 2021/10/1
  */
 @Configuration
-public class BreezeResourceServerConfig extends ResourceServerConfigurerAdapter {
+public class BreezeResourceServerConfigurerAdapter extends ResourceServerConfigurerAdapter {
 
     private final Logger logger = LoggerFactory.getLogger(BreezeAccessDeniedHandler.class);
 
@@ -70,7 +69,7 @@ public class BreezeResourceServerConfig extends ResourceServerConfigurerAdapter 
     private OAuth2ClientProperties oAuth2ClientProperties;
 
     /**
-     * token的存放
+     * token的存放 RedisTokenStore
      */
     @Autowired
     private TokenStore redisTokenStore;
@@ -80,9 +79,6 @@ public class BreezeResourceServerConfig extends ResourceServerConfigurerAdapter 
      */
     @Autowired
     private BreezeAccessDeniedHandler requestAccessDeniedHandler;
-
-    @Autowired
-    protected RemoteTokenServices remoteTokenServices;
 
     @Bean
     @LoadBalanced
@@ -95,6 +91,7 @@ public class BreezeResourceServerConfig extends ResourceServerConfigurerAdapter 
     @Bean
     @Primary
     public ResourceServerTokenServices resourceServerTokenServices() {
+        RemoteTokenServices remoteTokenServices = new RemoteTokenServices();
         remoteTokenServices.setCheckTokenEndpointUrl(resourceServerProperties.getTokenInfoUri());
         remoteTokenServices.setClientId(oAuth2ClientProperties.getClientId());
         remoteTokenServices.setClientSecret(oAuth2ClientProperties.getClientSecret());

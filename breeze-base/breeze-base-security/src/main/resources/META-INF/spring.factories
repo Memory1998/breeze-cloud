@@ -1,11 +1,11 @@
 org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
-  com.breeze.cloud.security.config.BreezePasswordConfig,\
+  com.breeze.cloud.security.config.BreezePasswordConfigurer,\
   com.breeze.cloud.security.config.BreezeTokenEnhancer,\
-  com.breeze.cloud.security.config.BreezeTokenStoreConfig,\
-  com.breeze.cloud.security.sms.config.BreezeSmsCodeAuthenticationSecurityConfig,\
+  com.breeze.cloud.security.config.BreezeTokenStoreConfigurer,\
+  com.breeze.cloud.security.sms.config.BreezeSmsCodeAuthenticationSecurityConfigurerAdapter,\
   com.breeze.cloud.security.config.BreezeOauthServerAuthenticationEntryPoint,\
   com.breeze.cloud.security.config.BreezeOauthResourceAuthenticationEntryPoint,\
-  com.breeze.cloud.security.config.BreezeJoinTheWhiteListConfig, \
+  com.breeze.cloud.security.config.BreezeJoinTheWhiteListConfigurer, \
   com.breeze.cloud.security.service.impl.BreezeUserDetailsServiceImpl,\
   com.breeze.cloud.security.config.BreezeOauth2ClientIgnoreProperties,\
   com.breeze.cloud.security.handler.BreezeAccessDeniedHandler,\

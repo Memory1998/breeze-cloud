@@ -32,7 +32,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class TestController {
 
     @Autowired
-    TestService testService;
+    private TestService testService;
 
     /**
      * 列表

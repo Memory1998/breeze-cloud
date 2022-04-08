@@ -26,7 +26,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
  * @date 2021/10/1
  */
 @Configuration
-public class BreezePasswordConfig {
+public class BreezePasswordConfigurer {
 
     @Bean
     public PasswordEncoder passwordEncoder() {

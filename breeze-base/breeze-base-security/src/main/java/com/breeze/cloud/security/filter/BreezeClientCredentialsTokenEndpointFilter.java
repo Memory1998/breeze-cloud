@@ -29,7 +29,7 @@ import org.springframework.security.web.AuthenticationEntryPoint;
  * @author breeze
  * @date 2021/10/1
  */
-public class BreezeOAuthServerClientCredentialsTokenEndpointFilter extends ClientCredentialsTokenEndpointFilter {
+public class BreezeClientCredentialsTokenEndpointFilter extends ClientCredentialsTokenEndpointFilter {
 
     private AuthorizationServerSecurityConfigurer configurer;
 
@@ -39,8 +39,8 @@ public class BreezeOAuthServerClientCredentialsTokenEndpointFilter extends Clien
      * @param configurer               AuthorizationServerSecurityConfigurer
      * @param authenticationEntryPoint 自定义的 AuthenticationEntryPoint
      */
-    public BreezeOAuthServerClientCredentialsTokenEndpointFilter(AuthorizationServerSecurityConfigurer configurer,
-                                                                 AuthenticationEntryPoint authenticationEntryPoint) {
+    public BreezeClientCredentialsTokenEndpointFilter(AuthorizationServerSecurityConfigurer configurer,
+                                                      AuthenticationEntryPoint authenticationEntryPoint) {
         this.configurer = configurer;
         this.authenticationEntryPoint = authenticationEntryPoint;
     }

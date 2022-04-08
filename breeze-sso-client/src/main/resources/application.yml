@@ -1,0 +1,11 @@
+security:
+  oauth2:
+    client:
+      client-id: web
+      client-secret: web
+      access-token-uri: http://breeze-auth-server:8888/oauth/token
+      user-authorization-uri: http://breeze-auth-server:8888/oauth/authorize
+      scope: server
+    resource:
+      loadBalanced: true
+      token-info-uri: http://breeze-auth-server:8888/oauth/check_token

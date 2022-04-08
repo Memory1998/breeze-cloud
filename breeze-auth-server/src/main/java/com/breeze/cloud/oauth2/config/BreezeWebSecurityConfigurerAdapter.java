@@ -17,7 +17,7 @@
 package com.breeze.cloud.oauth2.config;
 
 import com.breeze.cloud.security.service.BreezeUserDetailsService;
-import com.breeze.cloud.security.sms.config.BreezeSmsCodeAuthenticationSecurityConfig;
+import com.breeze.cloud.security.sms.config.BreezeSmsCodeAuthenticationSecurityConfigurerAdapter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.core.annotation.Order;
@@ -37,10 +37,10 @@ import org.springframework.security.crypto.password.PasswordEncoder;
  */
 @Order(99)
 @EnableWebSecurity
-public class BreezeWebSecurityConfig extends WebSecurityConfigurerAdapter {
+public class BreezeWebSecurityConfigurerAdapter extends WebSecurityConfigurerAdapter {
 
     @Autowired
-    public BreezeSmsCodeAuthenticationSecurityConfig smsCodeAuthenticationSecurityConfig;
+    public BreezeSmsCodeAuthenticationSecurityConfigurerAdapter smsCodeAuthenticationSecurityConfigurerAdapter;
 
     @Autowired
     private PasswordEncoder passwordEncoder;
@@ -77,7 +77,7 @@ public class BreezeWebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
 
-        http.apply(smsCodeAuthenticationSecurityConfig);
+        http.apply(smsCodeAuthenticationSecurityConfigurerAdapter);
         http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED);
 
         http.formLogin()

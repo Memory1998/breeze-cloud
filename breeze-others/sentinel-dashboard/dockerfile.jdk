@@ -1,0 +1,9 @@
+FROM centos:7
+
+MAINTAINER breeze breeze-cloud@foxmail.com
+
+ADD jdk-8u202-linux-x64.tar.gz /usr/local
+
+ENV JAVA_HOME /usr/local/jdk1.8.0_202
+ENV JRE_HOME /usr/local/jdk1.8.0_202/jre
+ENV PATH $JAVA_HOME/bin:$PATH

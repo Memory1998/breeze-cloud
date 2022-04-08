@@ -29,7 +29,7 @@ import org.springframework.security.web.DefaultSecurityFilterChain;
  * @author breeze
  * @date 2022/01/11
  */
-public class BreezeSmsCodeAuthenticationSecurityConfig extends SecurityConfigurerAdapter<DefaultSecurityFilterChain, HttpSecurity> {
+public class BreezeSmsCodeAuthenticationSecurityConfigurerAdapter extends SecurityConfigurerAdapter<DefaultSecurityFilterChain, HttpSecurity> {
 
     @Autowired
     private BreezeAuthenticationSuccessHandler authenticationSuccessHandler;

@@ -30,10 +30,10 @@ import org.springframework.web.bind.annotation.GetMapping;
 @EnableCaching
 @SpringBootApplication
 @EnableFeignClients(basePackages = "com.breeze")
-public class BreezeOauth2Application {
+public class BreezeOauthApplication {
 
     public static void main(String[] args) {
-        SpringApplication.run(BreezeOauth2Application.class, args);
+        SpringApplication.run(BreezeOauthApplication.class, args);
     }
 
     @GetMapping("/getCurrentUser")

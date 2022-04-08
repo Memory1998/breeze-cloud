@@ -36,8 +36,8 @@ public class BreezeSecurityImportBeanDefinitionRegistrar implements ImportBeanDe
      */
     @Override
     public void registerBeanDefinitions(AnnotationMetadata metadata, BeanDefinitionRegistry registry) {
-        String beanName = StringUtils.uncapitalize(BreezeResourceServerConfig.class.getSimpleName());
-        BeanDefinitionBuilder beanDefinitionBuilder = BeanDefinitionBuilder.genericBeanDefinition(BreezeResourceServerConfig.class);
+        String beanName = StringUtils.uncapitalize(BreezeResourceServerConfigurerAdapter.class.getSimpleName());
+        BeanDefinitionBuilder beanDefinitionBuilder = BeanDefinitionBuilder.genericBeanDefinition(BreezeResourceServerConfigurerAdapter.class);
         registry.registerBeanDefinition(beanName, beanDefinitionBuilder.getBeanDefinition());
     }
 

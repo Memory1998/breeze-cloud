@@ -42,7 +42,7 @@ import java.util.Set;
  * @date 2021/10/1
  */
 @Configuration
-public class BreezeJoinTheWhiteListConfig implements InitializingBean {
+public class BreezeJoinTheWhiteListConfigurer implements InitializingBean {
 
     @Autowired
     private BreezeOauth2ClientIgnoreProperties oAuth2ClientIgnoreProperties;
