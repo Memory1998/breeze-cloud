@@ -74,8 +74,7 @@ public class SysPlatformController {
     @PutMapping("/update")
     @PreAuthorize("hasAnyAuthority('sys:user:update')")
     public Result update(@RequestBody SysPlatformEntity sysPlatformEntity) {
-        sysPlatformService.updateById(sysPlatformEntity);
-        return Result.ok();
+        return Result.ok(sysPlatformService.updateById(sysPlatformEntity));
     }
 
     /**
@@ -84,8 +83,7 @@ public class SysPlatformController {
     @DeleteMapping("/delete")
     @PreAuthorize("hasAnyAuthority('sys:platform:delete')")
     public Result delete(@RequestBody Long[] ids) {
-        sysPlatformService.removeByIds(Arrays.asList(ids));
-        return Result.ok();
+        return Result.ok(sysPlatformService.removeByIds(Arrays.asList(ids)));
     }
 
 }

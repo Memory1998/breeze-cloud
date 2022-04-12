@@ -60,7 +60,7 @@ public class AuthController {
         }
 
         /*
-         * If auth.username or auth.password is blank(set in application.properties or VM arguments),
+         * If auth.username or auth.password is blank(set in application.yml or VM arguments),
          * auth will pass, as the front side validate the input which can't be blank,
          * so user can input any username or password(both are not blank) to login in that case.
          */
