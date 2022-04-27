@@ -16,6 +16,7 @@
 
 package com.breeze.cloud.admin.controller;
 
+import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.breeze.cloud.admin.entity.SysRoleEntity;
 import com.breeze.cloud.admin.service.SysRoleService;
 import com.breeze.cloud.core.Result;
@@ -25,7 +26,6 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Arrays;
-import java.util.Map;
 
 /**
  * @author breeze
@@ -35,6 +35,7 @@ import java.util.Map;
 @RestController
 @RequestMapping("/sys/role")
 public class SysRoleController {
+
     @Autowired
     private SysRoleService sysRoleService;
 
@@ -43,8 +44,11 @@ public class SysRoleController {
      */
     @GetMapping("/list")
     @PreAuthorize("hasAnyAuthority('sys:role:list')")
-    public Result list(@RequestParam Map<String, Object> params) {
-        return Result.ok();
+    public Result list(@RequestParam SysRoleEntity sysRole) {
+        return Result.ok(this.sysRoleService.list(Wrappers.<SysRoleEntity>lambdaQuery()
+                .like(SysRoleEntity::getRoleName, sysRole.getRoleName())
+                .like(SysRoleEntity::getRoleCode, sysRole.getRoleCode())
+        ));
     }
 
 
@@ -54,8 +58,7 @@ public class SysRoleController {
     @GetMapping("/info/{id}")
     @PreAuthorize("hasAnyAuthority('sys:role:info')")
     public Result info(@PathVariable("id") Long id) {
-        SysRoleEntity role = sysRoleService.getById(id);
-        return Result.ok(role);
+        return Result.ok(sysRoleService.getById(id));
     }
 
     /**
