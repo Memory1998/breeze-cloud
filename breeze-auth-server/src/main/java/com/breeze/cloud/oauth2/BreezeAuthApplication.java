@@ -28,10 +28,10 @@ import org.springframework.web.bind.annotation.GetMapping;
  */
 @EnableCaching
 @SpringBootApplication
-public class BreezeOauthApplication {
+public class BreezeAuthApplication {
 
     public static void main(String[] args) {
-        SpringApplication.run(BreezeOauthApplication.class, args);
+        SpringApplication.run(BreezeAuthApplication.class, args);
     }
 
     @GetMapping("/getCurrentUser")
