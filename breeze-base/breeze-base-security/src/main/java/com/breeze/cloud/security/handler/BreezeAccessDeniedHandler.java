@@ -42,11 +42,7 @@ public class BreezeAccessDeniedHandler implements AccessDeniedHandler {
 
     @Override
     public void handle(HttpServletRequest request, HttpServletResponse response, AccessDeniedException authException) {
-        logger.info("权限不足 {}", request.getRequestURI());
-        try {
-            ResponseUtil.response(response, Result.fail(ResultCode.NO_ACCESS));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        logger.info("无权限访问 {}", request.getRequestURI());
+        ResponseUtil.response(response, Result.fail(ResultCode.FORBIDDEN));
     }
 }

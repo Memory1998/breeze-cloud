@@ -16,13 +16,13 @@
 
 package com.breeze.cloud.security.annotation;
 
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.*;
 
 /**
  * @author breeze
  * @date 2021/10/1
  */
+@Documented
 @Retention(RetentionPolicy.RUNTIME)
 public @interface JoinWhiteList {
 

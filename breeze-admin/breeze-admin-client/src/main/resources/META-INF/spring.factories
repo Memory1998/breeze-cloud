@@ -1,2 +1,3 @@
 org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
-
+com.breeze.cloud.admin.api.factory.SysUserFactory,\
+com.breeze.cloud.admin.api.factory.SysOauthClientDetailsFactory

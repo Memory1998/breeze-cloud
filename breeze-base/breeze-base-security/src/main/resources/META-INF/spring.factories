@@ -10,5 +10,4 @@ org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
   com.breeze.cloud.security.config.BreezeOauth2ClientIgnoreProperties,\
   com.breeze.cloud.security.handler.BreezeAccessDeniedHandler,\
   com.breeze.cloud.security.sms.handler.BreezeAuthenticationSuccessHandler,\
-  com.breeze.cloud.security.sms.handler.BreezeAuthenticationFailureHandler,\
-  com.breeze.cloud.security.exception.GlobalExceptionHandler
+  com.breeze.cloud.security.sms.handler.BreezeAuthenticationFailureHandler

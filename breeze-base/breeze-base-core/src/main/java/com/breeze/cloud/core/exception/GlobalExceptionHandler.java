@@ -14,11 +14,17 @@
  * limitations under the License.
  */
 
-package com.breeze.cloud.security.exception;
+package com.breeze.cloud.core.exception;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import com.breeze.cloud.core.Result;
+import com.breeze.cloud.core.enums.ResultCode;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+
+import javax.servlet.http.HttpServletRequest;
 
 /**
  * 全局异常处理器
@@ -26,9 +32,15 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
  * @author breeze
  * @date 2021/10/1
  */
+@Slf4j
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
-    private static final Logger logger = LoggerFactory.getLogger(GlobalExceptionHandler.class);
+    @ExceptionHandler(Exception.class)
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    public Result bizException(Exception e, HttpServletRequest request) {
+        log.warn("exception:", e);
+        return Result.fail(ResultCode.INTERNAL_SERVER_ERROR, ResultCode.INTERNAL_SERVER_ERROR.getDesc());
+    }
 
 }

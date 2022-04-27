@@ -14,24 +14,29 @@
  * limitations under the License.
  */
 
-package com.breeze.cloud.admin.api;
+package com.breeze.cloud.admin.api.factory;
 
-import com.breeze.cloud.admin.api.factory.SysOauthClientDetailsFactory;
+import com.breeze.cloud.admin.api.SysOauthClientDetailsFeign;
 import com.breeze.cloud.admin.entity.SysOauthClientDetailsEntity;
-import org.springframework.cloud.openfeign.FeignClient;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.cloud.openfeign.FallbackFactory;
+import org.springframework.stereotype.Component;
 
 /**
  * @author breeze
- * @date 2021-12-06 22:03:39
+ * @date 2022/04/27
  */
-@FeignClient(name = "breeze-admin-server", contextId = "oauthClientDetailsFeign", fallbackFactory = SysOauthClientDetailsFactory.class)
-public interface SysOauthClientDetailsFeign {
+@Slf4j
+@Component
+public class SysOauthClientDetailsFactory implements FallbackFactory<SysOauthClientDetailsFeign> {
+    @Override
+    public SysOauthClientDetailsFeign create(Throwable cause) {
+        return new SysOauthClientDetailsFeign() {
 
-    /**
-     * 信息
-     */
-    @GetMapping("/sys/oauth/info/{clientId}")
-    SysOauthClientDetailsEntity info(@PathVariable("clientId") String clientId);
+            @Override
+            public SysOauthClientDetailsEntity info(String clientId) {
+                return new SysOauthClientDetailsEntity();
+            }
+        };
+    }
 }

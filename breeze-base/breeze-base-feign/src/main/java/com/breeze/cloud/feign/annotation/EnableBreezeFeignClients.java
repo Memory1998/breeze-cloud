@@ -14,26 +14,28 @@
  * limitations under the License.
  */
 
-package com.breeze.cloud.admin;
+package com.breeze.cloud.feign.annotation;
 
-import com.breeze.cloud.security.annotation.EnableBreezeResourceServer;
-import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.boot.web.servlet.ServletComponentScan;
+import org.springframework.cloud.openfeign.EnableFeignClients;
+
+import java.lang.annotation.*;
 
 /**
- * druid监控页面是一个servlet，需要让SpringBoot支持servlet
- *
  * @author breeze
- * @date 2021/10/1
+ * @date 2022/04/27
  */
-@EnableBreezeResourceServer
-@SpringBootApplication
-@ServletComponentScan
-public class BreezeAdminApplication {
+@Retention(RetentionPolicy.RUNTIME)
+@Documented
+@EnableFeignClients
+public @interface EnableBreezeFeignClients {
 
-    public static void main(String[] args) {
-        SpringApplication.run(BreezeAdminApplication.class, args);
-    }
+    String[] value() default {};
 
+    String[] basePackages() default {"com.breeze.cloud"};
+
+    Class<?>[] basePackageClasses() default {};
+
+    Class<?>[] defaultConfiguration() default {};
+
+    Class<?>[] clients() default {};
 }

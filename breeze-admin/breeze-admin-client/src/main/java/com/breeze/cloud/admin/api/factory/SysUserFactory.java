@@ -14,26 +14,31 @@
  * limitations under the License.
  */
 
-package com.breeze.cloud.admin.api;
+package com.breeze.cloud.admin.api.factory;
 
-import com.breeze.cloud.admin.api.factory.SysUserFactory;
+import com.breeze.cloud.admin.api.SysUserFeign;
 import com.breeze.cloud.admin.dto.SysUserDTO;
 import com.breeze.cloud.core.Result;
-import org.springframework.cloud.openfeign.FeignClient;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.cloud.openfeign.FallbackFactory;
+import org.springframework.stereotype.Component;
 
 /**
  * @author breeze
- * @date 2021-12-06 22:03:39
+ * @date 2022/04/27
  */
-@FeignClient(name = "breeze-admin-server", contextId = "sysUserFeign", fallback = SysUserFactory.class)
-public interface SysUserFeign {
+@Slf4j
+@Component
+public class SysUserFactory implements FallbackFactory<SysUserFeign> {
+    @Override
+    public SysUserFeign create(Throwable cause) {
+        return new SysUserFeign() {
 
-    /**
-     * 登录feign接口
-     */
-    @RequestMapping("/sys/user/loadByUsername/{loginAmount}")
-    Result<SysUserDTO> loadByLoginAmount(@PathVariable("loginAmount") String loginAmount);
+            @Override
+            public Result<SysUserDTO> loadByLoginAmount(String loginAmount) {
+                return Result.ok(new SysUserDTO());
+            }
+        };
 
+    }
 }

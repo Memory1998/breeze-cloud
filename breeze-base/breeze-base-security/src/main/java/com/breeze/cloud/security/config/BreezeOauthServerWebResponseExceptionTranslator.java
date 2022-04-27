@@ -58,8 +58,8 @@ public class BreezeOauthServerWebResponseExceptionTranslator implements WebRespo
             logger.info("内部身份验证服务异常 {}", ResultCode.FEIGN_INTERNAL_AUTHENTICATION_SERVICE_EXCEPTION.getCode());
             return Result.fail(ResultCode.FEIGN_INTERNAL_AUTHENTICATION_SERVICE_EXCEPTION);
         }
-        logger.info("权限不足 {}", ResultCode.INSUFFICIENT_PERMISSIONS.getCode());
-        return Result.fail(ResultCode.INSUFFICIENT_PERMISSIONS);
+        logger.info("系统未授权 {}", ResultCode.UNAUTHORIZED.getCode());
+        return Result.fail(ResultCode.UNAUTHORIZED);
     }
 
 }
