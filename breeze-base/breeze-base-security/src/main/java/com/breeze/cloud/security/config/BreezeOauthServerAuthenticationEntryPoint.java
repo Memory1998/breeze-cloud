@@ -3,8 +3,7 @@ package com.breeze.cloud.security.config;
 import com.breeze.cloud.core.Result;
 import com.breeze.cloud.core.enums.ResultCode;
 import com.breeze.cloud.core.utils.ResponseUtil;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.stereotype.Component;
@@ -21,10 +20,9 @@ import java.io.IOException;
  * @author breeze
  * @date 2021/10/1
  */
+@Slf4j
 @Component
 public class BreezeOauthServerAuthenticationEntryPoint implements AuthenticationEntryPoint {
-
-    private final Logger logger = LoggerFactory.getLogger(BreezeOauthServerAuthenticationEntryPoint.class);
 
     /**
      * 认证失败处理器会调用这个方法返回提示信息
@@ -37,6 +35,7 @@ public class BreezeOauthServerAuthenticationEntryPoint implements Authentication
      */
     @Override
     public void commence(HttpServletRequest request, HttpServletResponse response, AuthenticationException authException) throws IOException, ServletException {
+        log.error("{}", ResultCode.CLIENT_AUTHENTICATION_FAILED.getDesc());
         ResponseUtil.response(response, Result.fail(ResultCode.CLIENT_AUTHENTICATION_FAILED));
     }
 

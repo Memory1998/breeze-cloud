@@ -34,8 +34,8 @@ public class BreezeTokenEnhancer implements TokenEnhancer {
     @Override
     public OAuth2AccessToken enhance(OAuth2AccessToken accessToken, OAuth2Authentication authentication) {
         Map<String, Object> additionalInfo = new HashMap<>();
-        BreezeLoginUser breezeLoginUser = (BreezeLoginUser) authentication.getUserAuthentication().getPrincipal();
-        additionalInfo.put("breezeLoginUser", breezeLoginUser);
+        BreezeLoginUser currentUser = (BreezeLoginUser) authentication.getUserAuthentication().getPrincipal();
+        additionalInfo.put("currentUser", currentUser);
         ((DefaultOAuth2AccessToken) accessToken).setAdditionalInformation(additionalInfo);
         return accessToken;
     }

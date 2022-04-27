@@ -22,6 +22,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.AuthorityUtils;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.oauth2.provider.token.UserAuthenticationConverter;
 import org.springframework.util.StringUtils;
 
@@ -45,32 +46,35 @@ public class BreezeDefaultUserAuthenticationConverter implements UserAuthenticat
 
     @Override
     public Authentication extractAuthentication(Map<String, ?> map) {
-        if (map.containsKey(USERNAME)) {
-            Collection<? extends GrantedAuthority> authorities = getAuthorities(map);
-            Map<String, Object> userMap = (LinkedHashMap) map.get("breezeLoginUser");
-            List<String> userRoleCodes = (ArrayList) userMap.get("userRoleCodes");
-            List<String> userRoleIds = (ArrayList) userMap.get("userRoleIds");
-            String amountName = (String) userMap.get("amountName");
-            Long userId = Long.valueOf(userMap.get("userId").toString());
-            Long deptId = Long.valueOf(userMap.get("deptId").toString());
-            String userCode = String.valueOf(userMap.get("userCode"));
-            String deptName = (String) userMap.get("deptName");
-            String username = String.valueOf(map.get(USERNAME));
-            BreezeLoginUser user = new BreezeLoginUser(
-                    userId,
-                    userCode,
-                    userRoleCodes,
-                    userRoleIds,
-                    deptId,
-                    deptName,
-                    username,
-                    "N/A",
-                    amountName,
-                    true, true, true, true,
-                    authorities);
-            return new UsernamePasswordAuthenticationToken(user, "N/A", authorities);
+        if (!map.containsKey(USERNAME)) {
+            return SecurityContextHolder.getContext().getAuthentication();
         }
-        return null;
+        Collection<? extends GrantedAuthority> authorities = getAuthorities(map);
+        Map<String, Object> userMap = (LinkedHashMap) map.get("currentUser");
+        if (Objects.isNull(userMap)) {
+            return SecurityContextHolder.getContext().getAuthentication();
+        }
+        List<String> userRoleCodes = (ArrayList) userMap.get("userRoleCodes");
+        List<String> userRoleIds = (ArrayList) userMap.get("userRoleIds");
+        String amountName = (String) userMap.get("amountName");
+        Long userId = Long.valueOf(userMap.get("userId").toString());
+        Long deptId = Long.valueOf(userMap.get("deptId").toString());
+        String userCode = String.valueOf(userMap.get("userCode"));
+        String deptName = (String) userMap.get("deptName");
+        String username = String.valueOf(map.get(USERNAME));
+        BreezeLoginUser user = new BreezeLoginUser(
+                userId,
+                userCode,
+                userRoleCodes,
+                userRoleIds,
+                deptId,
+                deptName,
+                username,
+                "N/A",
+                amountName,
+                true, true, true, true,
+                authorities);
+        return new UsernamePasswordAuthenticationToken(user, "N/A", authorities);
     }
 
     private Collection<? extends GrantedAuthority> getAuthorities(Map<String, ?> map) {

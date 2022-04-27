@@ -18,6 +18,7 @@ package com.breeze.cloud.security.config;
 
 import cn.hutool.core.util.ArrayUtil;
 import com.breeze.cloud.security.annotation.JoinWhiteList;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.client.loadbalancer.LoadBalanced;
@@ -41,6 +42,7 @@ import java.util.Set;
  * @author breeze
  * @date 2021/10/1
  */
+@Slf4j
 @Configuration
 public class BreezeJoinTheWhiteListConfigurer implements InitializingBean {
 
@@ -60,7 +62,7 @@ public class BreezeJoinTheWhiteListConfigurer implements InitializingBean {
     }
 
     @Override
-    public void afterPropertiesSet() throws Exception {
+    public void afterPropertiesSet() {
         Map<RequestMappingInfo, HandlerMethod> handlerMethodMap = requestMappingHandlerMapping.getHandlerMethods();
         // 获取全部的请求方法
         handlerMethodMap.forEach((requestMappingInfo, method) -> {
@@ -80,6 +82,7 @@ public class BreezeJoinTheWhiteListConfigurer implements InitializingBean {
     private void setUrl(HandlerMethod method, Set<String> methodUrls) {
         methodUrls.forEach(handlerMethod -> {
             if (filterHandlerMethod(method)) {
+                log.info("已经加入白名单 ====> {}", handlerMethod);
                 oAuth2ClientIgnoreProperties.getUrls().add(handlerMethod);
             }
         });

@@ -56,6 +56,11 @@ public class SysUserController {
         return principal;
     }
 
+    @GetMapping("/v3/getUser")
+    public Object getUser3(Authentication authentication) {
+        return authentication.getPrincipal();
+    }
+
     /**
      * 登录feign接口
      */

@@ -19,16 +19,13 @@ package com.breeze.cloud.security.config;
 import com.breeze.cloud.core.Result;
 import com.breeze.cloud.core.enums.ResultCode;
 import com.breeze.cloud.core.utils.ResponseUtil;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.stereotype.Component;
 
-import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
 
 /**
  * token失效的处理器
@@ -36,13 +33,13 @@ import java.io.IOException;
  * @author breeze
  * @date 2021/10/2
  */
+@Slf4j
 @Component
 public class BreezeOauthResourceAuthenticationEntryPoint implements AuthenticationEntryPoint {
 
-    private final Logger logger = LoggerFactory.getLogger(BreezeOauthResourceAuthenticationEntryPoint.class);
-
     @Override
-    public void commence(HttpServletRequest request, HttpServletResponse response, AuthenticationException authException) throws IOException, ServletException {
+    public void commence(HttpServletRequest request, HttpServletResponse response, AuthenticationException authException) {
+        log.error("{}", ResultCode.TOKEN_INVALID.getDesc());
         ResponseUtil.response(response, Result.fail(ResultCode.TOKEN_INVALID));
     }
 

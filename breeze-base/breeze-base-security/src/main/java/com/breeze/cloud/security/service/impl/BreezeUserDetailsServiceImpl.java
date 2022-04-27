@@ -135,8 +135,8 @@ public class BreezeUserDetailsServiceImpl implements BreezeUserDetailsService {
 
         return new BreezeLoginUser(sysUserDTO.getId(),
                 sysUserDTO.getUserCode(),
-                null,
-                null,
+                roleCodeList,
+                roleIdList,
                 sysUserDTO.getDeptId(),
                 sysUserDTO.getDeptName(),
                 sysUserDTO.getUsername(),

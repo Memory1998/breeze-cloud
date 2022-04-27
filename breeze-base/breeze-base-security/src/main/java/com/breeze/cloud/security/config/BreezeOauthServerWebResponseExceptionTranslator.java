@@ -18,6 +18,7 @@ package com.breeze.cloud.security.config;
 
 import com.breeze.cloud.core.Result;
 import com.breeze.cloud.core.enums.ResultCode;
+import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
@@ -33,9 +34,8 @@ import org.springframework.security.oauth2.provider.error.WebResponseExceptionTr
  * @author breeze
  * @date 2021/01/10
  */
+@Slf4j
 public class BreezeOauthServerWebResponseExceptionTranslator implements WebResponseExceptionTranslator {
-
-    private final Logger logger = LoggerFactory.getLogger(BreezeOauthServerWebResponseExceptionTranslator.class);
 
     @Override
     public ResponseEntity translate(Exception ex) {
@@ -46,19 +46,19 @@ public class BreezeOauthServerWebResponseExceptionTranslator implements WebRespo
     private Result getResponseEntity(Exception ex) {
         ex.printStackTrace();
         if (ex instanceof UnsupportedGrantTypeException) {
-            logger.info("不支持的认证模式 {}", ResultCode.UNSUPPORTED_GRANT_TYPE.getCode());
+            log.error("不支持的认证模式 {}", ResultCode.UNSUPPORTED_GRANT_TYPE.getCode());
             return Result.fail(ResultCode.UNSUPPORTED_GRANT_TYPE);
         } else if (ex instanceof InvalidGrantException) {
-            logger.info("用户名或者密码错误 {}", ResultCode.WRONG_USERNAME_OR_PASSWORD.getCode());
+            log.error("用户名或者密码错误 {}", ResultCode.WRONG_USERNAME_OR_PASSWORD.getCode());
             return Result.fail(ResultCode.WRONG_USERNAME_OR_PASSWORD);
         } else if (ex instanceof UsernameNotFoundException) {
-            logger.info("用户不存在 {}", ResultCode.USERNAME_NOT_FOUND_EXCEPTION.getCode());
+            log.error("用户不存在 {}", ResultCode.USERNAME_NOT_FOUND_EXCEPTION.getCode());
             return Result.fail(ResultCode.USERNAME_NOT_FOUND_EXCEPTION);
         } else if (ex instanceof InternalAuthenticationServiceException) {
-            logger.info("内部身份验证服务异常 {}", ResultCode.FEIGN_INTERNAL_AUTHENTICATION_SERVICE_EXCEPTION.getCode());
+            log.error("内部身份验证服务异常 {}", ResultCode.FEIGN_INTERNAL_AUTHENTICATION_SERVICE_EXCEPTION.getCode());
             return Result.fail(ResultCode.FEIGN_INTERNAL_AUTHENTICATION_SERVICE_EXCEPTION);
         }
-        logger.info("系统未授权 {}", ResultCode.UNAUTHORIZED.getCode());
+        log.error("系统未授权 {}", ResultCode.UNAUTHORIZED.getCode());
         return Result.fail(ResultCode.UNAUTHORIZED);
     }
 

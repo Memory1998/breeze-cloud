@@ -65,7 +65,7 @@ public class BreezeSmsCodeAuthenticationProvider implements AuthenticationProvid
             throw new InternalAuthenticationServiceException(PHONE_NOT_FOUND_CODE);
         }
 
-        BreezeSmsCodeAuthenticationToken authenticationResult = new BreezeSmsCodeAuthenticationToken(principal, credentials,
+        BreezeSmsCodeAuthenticationToken authenticationResult = new BreezeSmsCodeAuthenticationToken(user, credentials,
                 this.authoritiesMapper.mapAuthorities(user.getAuthorities()));
         authenticationResult.setDetails(authenticationToken.getDetails());
         return authenticationResult;
