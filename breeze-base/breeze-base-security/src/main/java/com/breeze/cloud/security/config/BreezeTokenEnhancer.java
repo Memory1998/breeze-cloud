@@ -16,7 +16,7 @@
 
 package com.breeze.cloud.security.config;
 
-import com.breeze.cloud.security.domain.BreezeLoginUser;
+import com.breeze.cloud.security.domain.CurrentLoginUser;
 import org.springframework.security.oauth2.common.DefaultOAuth2AccessToken;
 import org.springframework.security.oauth2.common.OAuth2AccessToken;
 import org.springframework.security.oauth2.provider.OAuth2Authentication;
@@ -34,8 +34,8 @@ public class BreezeTokenEnhancer implements TokenEnhancer {
     @Override
     public OAuth2AccessToken enhance(OAuth2AccessToken accessToken, OAuth2Authentication authentication) {
         Map<String, Object> additionalInfo = new HashMap<>();
-        BreezeLoginUser currentUser = (BreezeLoginUser) authentication.getUserAuthentication().getPrincipal();
-        additionalInfo.put("currentUser", currentUser);
+        CurrentLoginUser currentLoginUser = (CurrentLoginUser) authentication.getUserAuthentication().getPrincipal();
+        additionalInfo.put("currentLoginUser", currentLoginUser);
         ((DefaultOAuth2AccessToken) accessToken).setAdditionalInformation(additionalInfo);
         return accessToken;
     }

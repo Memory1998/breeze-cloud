@@ -22,7 +22,7 @@ import com.breeze.cloud.admin.dto.SysUserDTO;
 import com.breeze.cloud.admin.dto.SysUserRoleDTO;
 import com.breeze.cloud.core.Result;
 import com.breeze.cloud.core.enums.ResultCode;
-import com.breeze.cloud.security.domain.BreezeLoginUser;
+import com.breeze.cloud.security.domain.CurrentLoginUser;
 import com.breeze.cloud.security.service.BreezeUserDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -79,7 +79,7 @@ public class BreezeUserDetailsServiceImpl implements BreezeUserDetailsService {
         Collection<? extends GrantedAuthority> authorities
                 = AuthorityUtils.createAuthorityList(authSet.toArray(new String[0]));
 
-        return new BreezeLoginUser(sysUserDTO.getId(),
+        return new CurrentLoginUser(sysUserDTO.getId(),
                 sysUserDTO.getUserCode(),
                 roleCodeList,
                 roleIdList,
@@ -133,7 +133,7 @@ public class BreezeUserDetailsServiceImpl implements BreezeUserDetailsService {
                 = AuthorityUtils.createAuthorityList(authSet.toArray(new String[0]));
 
 
-        return new BreezeLoginUser(sysUserDTO.getId(),
+        return new CurrentLoginUser(sysUserDTO.getId(),
                 sysUserDTO.getUserCode(),
                 roleCodeList,
                 roleIdList,

@@ -17,7 +17,7 @@
 package com.breeze.cloud.security.config;
 
 import cn.hutool.core.collection.CollUtil;
-import com.breeze.cloud.security.domain.BreezeLoginUser;
+import com.breeze.cloud.security.domain.CurrentLoginUser;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
@@ -50,18 +50,18 @@ public class BreezeDefaultUserAuthenticationConverter implements UserAuthenticat
             return SecurityContextHolder.getContext().getAuthentication();
         }
 
-        Object currentUser = map.get("currentUser");
-        if (Objects.isNull(currentUser)){
+        Object currentLoginUser = map.get("currentLoginUser");
+        if (Objects.isNull(currentLoginUser)){
             return SecurityContextHolder.getContext().getAuthentication();
         }
 
-        Map<String, Object> userMap = (LinkedHashMap) currentUser;
+        Map<String, Object> userMap = (LinkedHashMap) currentLoginUser;
         // 用户名
         String username = String.valueOf(map.get(USERNAME));
         // 权限信息
         Collection<? extends GrantedAuthority> authorities = getAuthorities(map);
         // 构造方法创建
-        BreezeLoginUser user = new BreezeLoginUser(username, "N/A", true, true, true, true, authorities);
+        CurrentLoginUser user = new CurrentLoginUser(username, "N/A", true, true, true, true, authorities);
         // 用户编码
         user.setUserCode(String.valueOf(userMap.get("userCode")));
         // 账户名

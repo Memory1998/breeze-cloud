@@ -28,7 +28,7 @@ import java.util.List;
  * @author breeze
  * @date 2021/10/1
  */
-public class BreezeLoginUser extends User {
+public class CurrentLoginUser extends User {
 
     private static final long serialVersionUID = 1L;
 
@@ -83,7 +83,7 @@ public class BreezeLoginUser extends User {
      * @param accountNonLocked      账户是否锁定
      * @param authorities           用户的权限集， 默认需要添加ROLE_ 前缀
      */
-    public BreezeLoginUser(Long userId
+    public CurrentLoginUser(Long userId
             , String userCode
             , List<String> userRoleCodes
             , List<String> userRoleIds
@@ -108,13 +108,13 @@ public class BreezeLoginUser extends User {
         this.deptName = deptName;
     }
 
-    public BreezeLoginUser(String username,
-                           String password,
-                           boolean enabled,
-                           boolean accountNonExpired,
-                           boolean credentialsNonExpired,
-                           boolean accountNonLocked,
-                           Collection<? extends GrantedAuthority> authorities) {
+    public CurrentLoginUser(String username,
+                            String password,
+                            boolean enabled,
+                            boolean accountNonExpired,
+                            boolean credentialsNonExpired,
+                            boolean accountNonLocked,
+                            Collection<? extends GrantedAuthority> authorities) {
         super(username, password, enabled, accountNonExpired, credentialsNonExpired, accountNonLocked, authorities);
     }
 

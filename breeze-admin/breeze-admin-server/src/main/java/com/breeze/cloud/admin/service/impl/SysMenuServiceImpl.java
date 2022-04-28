@@ -32,7 +32,7 @@ import com.breeze.cloud.admin.service.SysMenuRoleService;
 import com.breeze.cloud.admin.service.SysMenuService;
 import com.breeze.cloud.admin.service.SysPlatformService;
 import com.breeze.cloud.core.Result;
-import com.breeze.cloud.security.domain.BreezeLoginUser;
+import com.breeze.cloud.security.domain.CurrentLoginUser;
 import com.breeze.cloud.security.utils.SecurityUtils;
 import com.google.common.collect.Maps;
 import lombok.extern.slf4j.Slf4j;
@@ -65,10 +65,10 @@ public class SysMenuServiceImpl extends ServiceImpl<SysMenuMapper, SysMenuEntity
 
     @Override
     public Result menuTree(String platformCode) {
-        BreezeLoginUser breezeLoginUser = SecurityUtils.getBreezeLoginUser();
-        log.info("用户信息 ===> {}", JSONUtil.parse(breezeLoginUser));
+        CurrentLoginUser currentLoginUser = SecurityUtils.getBreezeLoginUser();
+        log.info("用户信息 ===> {}", JSONUtil.parse(currentLoginUser));
         List<SysMenuRoleEntity> menuRoleList = this.menuRoleService.list(Wrappers.<SysMenuRoleEntity>lambdaQuery()
-                .in(SysMenuRoleEntity::getRoleId, breezeLoginUser.getUserRoleIds()));
+                .in(SysMenuRoleEntity::getRoleId, currentLoginUser.getUserRoleIds()));
         if (CollUtil.isEmpty(menuRoleList)) {
             return Result.ok();
         }

@@ -16,7 +16,7 @@
 
 package com.breeze.cloud.security.utils;
 
-import com.breeze.cloud.security.domain.BreezeLoginUser;
+import com.breeze.cloud.security.domain.CurrentLoginUser;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 
@@ -41,15 +41,15 @@ public class SecurityUtils {
     /**
      * 获取当前登录者对象
      */
-    public static BreezeLoginUser getBreezeLoginUser() {
+    public static CurrentLoginUser getBreezeLoginUser() {
         Authentication authentication = getAuthentication();
         Object principal = authentication.getPrincipal();
         if (Objects.isNull(principal)) {
             throw new RuntimeException("用户没有登录");
         }
 
-        if (principal instanceof BreezeLoginUser) {
-            return (BreezeLoginUser) principal;
+        if (principal instanceof CurrentLoginUser) {
+            return (CurrentLoginUser) principal;
         }
         return null;
     }
