@@ -108,6 +108,16 @@ public class BreezeLoginUser extends User {
         this.deptName = deptName;
     }
 
+    public BreezeLoginUser(String username,
+                           String password,
+                           boolean enabled,
+                           boolean accountNonExpired,
+                           boolean credentialsNonExpired,
+                           boolean accountNonLocked,
+                           Collection<? extends GrantedAuthority> authorities) {
+        super(username, password, enabled, accountNonExpired, credentialsNonExpired, accountNonLocked, authorities);
+    }
+
     public Long getUserId() {
         return userId;
     }
@@ -128,8 +138,8 @@ public class BreezeLoginUser extends User {
         return userRoleCodes;
     }
 
-    public void setGetRoleCodeList(List<String> userRoleCodeList) {
-        this.userRoleCodes = userRoleCodeList;
+    public void setUserRoleCodes(List<String> userRoleCodes) {
+        this.userRoleCodes = userRoleCodes;
     }
 
     public List<String> getUserRoleIds() {

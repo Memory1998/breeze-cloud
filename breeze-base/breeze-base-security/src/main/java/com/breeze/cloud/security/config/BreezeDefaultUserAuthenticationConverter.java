@@ -49,31 +49,49 @@ public class BreezeDefaultUserAuthenticationConverter implements UserAuthenticat
         if (!map.containsKey(USERNAME)) {
             return SecurityContextHolder.getContext().getAuthentication();
         }
-        Collection<? extends GrantedAuthority> authorities = getAuthorities(map);
-        Map<String, Object> userMap = (LinkedHashMap) map.get("currentUser");
-        if (Objects.isNull(userMap)) {
+
+        Object currentUser = map.get("currentUser");
+        if (Objects.isNull(currentUser)){
             return SecurityContextHolder.getContext().getAuthentication();
         }
-        List<String> userRoleCodes = (ArrayList) userMap.get("userRoleCodes");
-        List<String> userRoleIds = (ArrayList) userMap.get("userRoleIds");
-        String amountName = (String) userMap.get("amountName");
-        Long userId = Long.valueOf(userMap.get("userId").toString());
-        Long deptId = Long.valueOf(userMap.get("deptId").toString());
-        String userCode = String.valueOf(userMap.get("userCode"));
-        String deptName = (String) userMap.get("deptName");
+
+        Map<String, Object> userMap = (LinkedHashMap) currentUser;
+        // 用户名
         String username = String.valueOf(map.get(USERNAME));
-        BreezeLoginUser user = new BreezeLoginUser(
-                userId,
-                userCode,
-                userRoleCodes,
-                userRoleIds,
-                deptId,
-                deptName,
-                username,
-                "N/A",
-                amountName,
-                true, true, true, true,
-                authorities);
+        // 权限信息
+        Collection<? extends GrantedAuthority> authorities = getAuthorities(map);
+        // 构造方法创建
+        BreezeLoginUser user = new BreezeLoginUser(username, "N/A", true, true, true, true, authorities);
+        // 用户编码
+        user.setUserCode(String.valueOf(userMap.get("userCode")));
+        // 账户名
+        user.setAmountName(String.valueOf(userMap.get("amountName")));
+        // 部门名称
+        user.setDeptName(String.valueOf(userMap.get("deptName")));
+
+        // 用户ID
+        Object userId = userMap.get("userId");
+        if (Objects.nonNull(userId)) {
+            user.setUserId(Long.valueOf(userId.toString()));
+        }
+
+        // 部门ID
+        Object deptId = userMap.get("deptId");
+        if (Objects.nonNull(deptId)) {
+            user.setDeptId(Long.valueOf(deptId.toString()));
+        }
+
+        // 用户角色ID
+        Object userRoleIds = userMap.get("userRoleIds");
+        if (Objects.nonNull(userRoleIds)) {
+            user.setUserRoleIds((ArrayList) userRoleIds);
+        }
+
+        // 用户角色编码
+        Object userRoleCodes = userMap.get("userRoleCodes");
+        if (Objects.nonNull(userRoleCodes)) {
+            user.setUserRoleCodes((ArrayList) userMap.get("userRoleCodes"));
+        }
         return new UsernamePasswordAuthenticationToken(user, "N/A", authorities);
     }
 
