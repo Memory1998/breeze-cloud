@@ -31,6 +31,7 @@ import com.breeze.cloud.admin.service.SysUserService;
 import com.breeze.cloud.core.Result;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
 
 import java.util.List;
 import java.util.Objects;
@@ -63,6 +64,9 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUserEntity
         BeanUtil.copyProperties(sysUserEntity, sysUserDTO);
         List<SysUserRoleDTO> userRoleDTOList = this.sysRoleService.listUserRole(sysUserEntity.getId());
         sysUserDTO.setUserRoleDTOList(userRoleDTOList);
+        if (CollectionUtils.isEmpty(userRoleDTOList)){
+            return Result.ok(sysUserDTO);
+        }
         String[] permissionList = this.sysMenuService.listUserMenuPermission(userRoleDTOList);
         sysUserDTO.setPermission(permissionList);
         return Result.ok(sysUserDTO);

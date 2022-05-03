@@ -25,8 +25,6 @@ import org.springframework.web.server.ServerWebExchange;
 import reactor.core.publisher.Mono;
 
 /**
- * RemoveRequestHeader todo
- *
  * @author breeze
  * @date 2022-02-07
  */
@@ -38,6 +36,9 @@ public class GatewayGlobalFilter implements GlobalFilter {
     @Override
     public Mono<Void> filter(ServerWebExchange exchange, GatewayFilterChain chain) {
         log.info("执行了自定义的全局过滤器, {}", exchange.getRequest().getRemoteAddress());
+        // todo 日志
+
+        //todo RemoveRequestHeader 清洗请求
         return chain.filter(exchange);
     }
 

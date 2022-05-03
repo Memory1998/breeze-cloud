@@ -14,32 +14,32 @@
  * limitations under the License.
  */
 
-package com.breeze.cloud.security.handler;
+package com.breeze.cloud.security.properties;
 
-import org.springframework.http.client.ClientHttpResponse;
-import org.springframework.stereotype.Component;
-import org.springframework.web.client.ResponseErrorHandler;
+import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.context.annotation.Configuration;
 
-import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
- * todo
+ * 认证忽略配置
  *
  * @author breeze
  * @date 2021/10/1
- */
-@Component
-public class BreezeResponseErrorHandler implements ResponseErrorHandler {
+ **/
+@Configuration
+@ConfigurationProperties(prefix = "security.oauth2.ignore")
+public class BreezeOauth2ClientIgnoreProperties {
 
-    @Override
-    public boolean hasError(ClientHttpResponse response) throws IOException {
-        // 这里返回false
-        return false;
+    private List<String> urls = new ArrayList<>();
+
+    public List<String> getUrls() {
+        return urls;
     }
 
-    @Override
-    public void handleError(ClientHttpResponse response) throws IOException {
-
+    public void setUrls(List<String> urls) {
+        this.urls = urls;
     }
 
 }

@@ -18,6 +18,7 @@ package com.breeze.cloud.security.config;
 
 import cn.hutool.core.util.ArrayUtil;
 import com.breeze.cloud.security.annotation.JoinWhiteList;
+import com.breeze.cloud.security.properties.BreezeOauth2ClientIgnoreProperties;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -63,8 +64,8 @@ public class BreezeJoinTheWhiteListConfigurer implements InitializingBean {
 
     @Override
     public void afterPropertiesSet() {
-        Map<RequestMappingInfo, HandlerMethod> handlerMethodMap = requestMappingHandlerMapping.getHandlerMethods();
         // 获取全部的请求方法
+        Map<RequestMappingInfo, HandlerMethod> handlerMethodMap = requestMappingHandlerMapping.getHandlerMethods();
         handlerMethodMap.forEach((requestMappingInfo, method) -> {
             Class clazz = method.getClass();
             Set<String> methodUrls = requestMappingInfo.getPatternsCondition().getPatterns();

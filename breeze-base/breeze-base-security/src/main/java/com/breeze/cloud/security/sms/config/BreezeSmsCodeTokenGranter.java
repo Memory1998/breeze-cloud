@@ -65,7 +65,7 @@ public class BreezeSmsCodeTokenGranter extends AbstractTokenGranter {
         try {
             userAuth = authenticationManagerBean.authenticate(userAuth);
         } catch (AccountStatusException ase) {
-            //covers expired, locked, disabled cases (mentioned in section 5.2, draft 31)
+            // covers expired, locked, disabled cases (mentioned in section 5.2, draft 31)
             throw new InvalidGrantException(ase.getMessage());
         } catch (BadCredentialsException e) {
             // If the phone/code are wrong the spec says we should send 400/invalid grant

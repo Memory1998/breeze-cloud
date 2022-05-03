@@ -16,8 +16,9 @@
 
 package com.breeze.cloud.admin.api.factory;
 
-import com.breeze.cloud.admin.api.SysOauthClientDetailsFeign;
-import com.breeze.cloud.admin.entity.SysOauthClientDetailsEntity;
+import com.breeze.cloud.admin.api.SysUserFeign;
+import com.breeze.cloud.admin.dto.SysUserDTO;
+import com.breeze.cloud.core.Result;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.cloud.openfeign.FallbackFactory;
 import org.springframework.stereotype.Component;
@@ -28,15 +29,15 @@ import org.springframework.stereotype.Component;
  */
 @Slf4j
 @Component
-public class SysOauthClientDetailsFactory implements FallbackFactory<SysOauthClientDetailsFeign> {
+public class SysUserFeignFactory implements FallbackFactory<SysUserFeign> {
     @Override
-    public SysOauthClientDetailsFeign create(Throwable cause) {
-        return new SysOauthClientDetailsFeign() {
-
+    public SysUserFeign create(Throwable cause) {
+        return new SysUserFeign() {
             @Override
-            public SysOauthClientDetailsEntity info(String clientId) {
-                return new SysOauthClientDetailsEntity();
+            public Result<SysUserDTO> loadByLoginAmount(String loginAmount) {
+                return Result.ok(new SysUserDTO());
             }
         };
+
     }
 }

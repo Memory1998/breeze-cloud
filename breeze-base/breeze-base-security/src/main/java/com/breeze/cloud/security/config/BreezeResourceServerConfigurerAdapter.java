@@ -16,10 +16,8 @@
 
 package com.breeze.cloud.security.config;
 
-import com.breeze.cloud.security.handler.BreezeAccessDeniedHandler;
-import com.breeze.cloud.security.handler.BreezeResponseErrorHandler;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import com.breeze.cloud.security.properties.BreezeOauth2ClientIgnoreProperties;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.security.oauth2.OAuth2ClientProperties;
 import org.springframework.boot.autoconfigure.security.oauth2.resource.ResourceServerProperties;
@@ -39,10 +37,9 @@ import org.springframework.web.client.RestTemplate;
  * @author breeze
  * @date 2021/10/1
  */
+@Slf4j
 @Configuration
 public class BreezeResourceServerConfigurerAdapter extends ResourceServerConfigurerAdapter {
-
-    private final Logger logger = LoggerFactory.getLogger(BreezeAccessDeniedHandler.class);
 
     /**
      * 注入服务认证忽略配置
@@ -83,9 +80,7 @@ public class BreezeResourceServerConfigurerAdapter extends ResourceServerConfigu
     @Bean
     @LoadBalanced
     public RestTemplate restTemplate() {
-        RestTemplate restTemplate = new RestTemplate();
-        restTemplate.setErrorHandler(new BreezeResponseErrorHandler());
-        return restTemplate;
+        return new RestTemplate();
     }
 
     @Bean

@@ -26,14 +26,14 @@ import java.net.URI;
 import java.util.Objects;
 
 /**
- * 拦截 验证码验证等
+ * 自定义过滤器需在yml文件中进行配置，否则不生效
  *
  * @author breeze
  * @date 2022-02-09
  */
 @Slf4j
 @Component
-public class VerificationCodeGatewayFilterFactory extends AbstractGatewayFilterFactory {
+public class PasswordDecryptionGatewayFilterFactory extends AbstractGatewayFilterFactory {
 
     @Override
     public GatewayFilter apply(Object config) {
@@ -48,15 +48,13 @@ public class VerificationCodeGatewayFilterFactory extends AbstractGatewayFilterF
             String rawPath = newUri.getRawPath();
             log.info("{}", rawPath);
 
-            if (!Objects.equals("/oauth/token", rawPath) || !Objects.equals("/oauth/sms", rawPath)) {
-                return chain.filter(exchange);
+            if (Objects.equals("/oauth/token", rawPath) || Objects.equals("/oauth/sms", rawPath)) {
+                // 解密密码
+                // todo
             }
 
-            if (Objects.equals("/oauth/token", rawPath) && Objects.equals("refresh_token", queryParams.get("grant_type"))) {
-                return chain.filter(exchange);
-            }
-            // todo yanzhangma
             return chain.filter(exchange);
         };
     }
+
 }

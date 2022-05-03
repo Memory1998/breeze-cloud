@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.breeze.cloud.security.handler;
+package com.breeze.cloud.security.config;
 
 import com.breeze.cloud.core.Result;
 import com.breeze.cloud.core.enums.ResultCode;
@@ -27,7 +27,6 @@ import org.springframework.stereotype.Component;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
 
 /**
  * 自定义访问无权限资源时的异常

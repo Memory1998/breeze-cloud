@@ -16,6 +16,7 @@
 
 package com.breeze.cloud.security.filter;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.oauth2.common.exceptions.BadClientCredentialsException;
@@ -29,6 +30,7 @@ import org.springframework.security.web.AuthenticationEntryPoint;
  * @author breeze
  * @date 2021/10/1
  */
+@Slf4j
 public class BreezeClientCredentialsTokenEndpointFilter extends ClientCredentialsTokenEndpointFilter {
 
     private AuthorizationServerSecurityConfigurer configurer;
@@ -47,7 +49,6 @@ public class BreezeClientCredentialsTokenEndpointFilter extends ClientCredential
 
     @Override
     public void setAuthenticationEntryPoint(AuthenticationEntryPoint authenticationEntryPoint) {
-        super.setAuthenticationEntryPoint(null);
         this.authenticationEntryPoint = authenticationEntryPoint;
     }
 
@@ -71,11 +72,13 @@ public class BreezeClientCredentialsTokenEndpointFilter extends ClientCredential
             }
             authenticationEntryPoint.commence(request, response, exception);
             // TODO 可以增加 监听器 进行异步操作 比如 保存日志
+            log.error("{}", exception.getMessage());
         });
 
         // 成功处理器
         setAuthenticationSuccessHandler((request, response, authentication) -> {
             // TODO 可以增加 监听器 进行异步操作 比如 保存日志
+            log.info("{}", authentication.getPrincipal());
         });
     }
 }

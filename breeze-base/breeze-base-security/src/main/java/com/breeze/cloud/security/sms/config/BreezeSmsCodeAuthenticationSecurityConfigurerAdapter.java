@@ -41,7 +41,7 @@ public class BreezeSmsCodeAuthenticationSecurityConfigurerAdapter extends Securi
     private BreezeUserDetailsService userDetailsService;
 
     @Override
-    public void configure(HttpSecurity http) throws Exception {
+    public void configure(HttpSecurity http) {
         http.authenticationProvider(new BreezeSmsCodeAuthenticationProvider(userDetailsService));
     }
 }

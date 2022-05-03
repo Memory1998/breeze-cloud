@@ -55,7 +55,7 @@ public class BreezeAuthorizationServerConfigurerAdapter extends AuthorizationSer
     public AuthorizationServerTokenServices breezeTokenService;
 
     @Autowired
-    private BreezeOauthServerAuthenticationEntryPoint breezeOauthServerAuthenticationEntryPoint;
+    private BreezeOauthServerAuthenticationEntryPoint clientCredentialsTokenEndpointFilter;
 
     @Autowired
     private SysOauthClientDetailsFeign sysOauthClientDetailsFeign;
@@ -127,12 +127,12 @@ public class BreezeAuthorizationServerConfigurerAdapter extends AuthorizationSer
     public void configure(AuthorizationServerSecurityConfigurer security) {
         // 自定义 BreezeClientCredentialsTokenEndpointFilter，用于处理客户端id，密码错误的异常
         BreezeClientCredentialsTokenEndpointFilter endpointFilter
-                = new BreezeClientCredentialsTokenEndpointFilter(security, breezeOauthServerAuthenticationEntryPoint);
+                = new BreezeClientCredentialsTokenEndpointFilter(security, clientCredentialsTokenEndpointFilter);
         endpointFilter.afterPropertiesSet();
         security.addTokenEndpointAuthenticationFilter(endpointFilter);
 
         security
-                .authenticationEntryPoint(breezeOauthServerAuthenticationEntryPoint)
+                .authenticationEntryPoint(clientCredentialsTokenEndpointFilter)
                 // 开启/oauth/token_key验证端口认证权限访问
                 .tokenKeyAccess("isAuthenticated()")
                 //  开启/oauth/check_token验证端口认证权限访问
