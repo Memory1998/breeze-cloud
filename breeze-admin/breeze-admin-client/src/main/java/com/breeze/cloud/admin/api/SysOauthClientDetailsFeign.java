@@ -16,7 +16,7 @@
 
 package com.breeze.cloud.admin.api;
 
-import com.breeze.cloud.admin.api.factory.SysOauthClientDetailsFactory;
+import com.breeze.cloud.admin.api.factory.SysOauthClientDetailsFeignFactory;
 import com.breeze.cloud.admin.entity.SysOauthClientDetailsEntity;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -26,7 +26,7 @@ import org.springframework.web.bind.annotation.PathVariable;
  * @author breeze
  * @date 2021-12-06 22:03:39
  */
-@FeignClient(name = "breeze-admin-server", contextId = "oauthClientDetailsFeign", fallbackFactory = SysOauthClientDetailsFactory.class)
+@FeignClient(name = "breeze-admin-server", contextId = "oauthClientDetailsFeign", fallbackFactory = SysOauthClientDetailsFeignFactory.class)
 public interface SysOauthClientDetailsFeign {
 
     /**
