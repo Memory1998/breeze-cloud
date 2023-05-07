@@ -1,0 +1,3 @@
+com.breeze.cloud.mybatis.config.MybatisMetaObjectHandler
+com.breeze.cloud.mybatis.MybatisPlusConfiguration
+com.breeze.cloud.mybatis.filters.TenantLoadFilter

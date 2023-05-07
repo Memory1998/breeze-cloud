@@ -1,0 +1,43 @@
+server:
+  port: 8081
+
+logging:
+  config: classpath:logback-spring.xml
+
+spring:
+  application:
+    name: @artifactId@
+  profiles:
+    active: @profiles.active@
+  thymeleaf:
+    cache: false
+  security:
+    oauth2:
+      client:
+        registration: # 定义应用信息
+          gitee-app: # 应用的唯一标识
+            clientName: breeze-gitee
+            client-id: ba7002b13ee57b211d5ee7bf9567cf8c6718bbc934aa38f06095398ba70e2ee8
+            client-secret: 5e55b2001bf704aa1f02113e909e9ba470408fe5e7eb30195b289e1e6263f58a
+            clientAuthenticationMethod: basic
+            authorizationGrantType: authorization_code
+            redirectUri: '{baseUrl}/{action}/oauth2/code/{registrationId}'
+            provider: gitee # 指向 provider 唯一标识，默认值是 registrationId
+
+          github-app:
+            clientName: breeze-github
+            client-id: 1d5e67cf8c6718bbc93a38f060953
+            client-secret: f7211ba470408fe5e7eb30195b289e1e626
+            clientAuthenticationMethod: basic
+            authorizationGrantType: authorization_code
+            redirectUri: '{baseUrl}/login/oauth2/code/{registrationId}'
+            provider: GITHUB # CommonOAuth2Provider
+
+        # 定义授权服务器信息
+        provider:
+          gitee: # 授权服务器的唯一标识
+            authorizationUri: https://gitee.com/oauth/authorize
+            tokenUri: https://gitee.com/oauth/token
+            userInfoUri: https://gitee.com/api/v5/user
+            userInfoAuthenticationMethod: GET
+            userNameAttribute: login

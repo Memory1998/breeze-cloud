@@ -1,0 +1,17 @@
+server:
+  port: 8090
+
+spring:
+  application:
+    name: @artifactId@
+  profiles:
+    active: @profiles.active@
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: http://localhost:8000
+          jwk-set-uri: http://localhost:8000/oauth2/jwks
+
+logging:
+  config: classpath:logback-spring.xml

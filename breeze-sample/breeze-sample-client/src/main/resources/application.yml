@@ -1,0 +1,58 @@
+server:
+  port: 8080
+
+logging:
+  config: classpath:logback-spring.xml
+
+spring:
+  application:
+    name: @artifactId@
+  profiles:
+    active: @profiles.active@
+  thymeleaf:
+    cache: false
+  security:
+    oauth2:
+      client:
+        registration:
+          messaging-client-oidc:
+            provider: sas # 指向 provider 唯一标识【sas】
+            client-id: messaging-client
+            client-secret: secret
+            authorization-grant-type: authorization_code
+            redirect-uri: "http://127.0.0.1:8080/login/oauth2/code/{registrationId}"
+            scope: openid,profile
+            client-name: messaging-client-oidc
+          messaging-client-authorization-code:
+            provider: sas
+            client-id: messaging-client
+            client-secret: secret
+            authorization-grant-type: authorization_code
+            redirect-uri: "http://127.0.0.1:8080/authorized"
+            scope: message.read,message.write
+            client-name: messaging-client-authorization-code
+          messaging-client-client-credentials:
+            provider: sas
+            client-id: messaging-client
+            client-secret: secret
+            authorization-grant-type: client_credentials
+            scope: message.read,message.write
+            client-name: messaging-client-client-credentials
+        provider:
+          # 授权服务器的唯一标识
+          sas:
+            issuer-uri: http://localhost:8000
+            # ======================= 可以简化下面的配置 ======================
+            # 请求授权码地址
+            authorization-uri: http://localhost:8000/oauth2/authorize
+            # 请求令牌地址
+            token-uri: http://localhost:8000/oauth2/token
+            # 用户资源地址
+            # user-info-uri: http://localhost:8000/userinfo
+            # # 用户资源返回中的属性名
+            # user-name-attribute: name
+            # user-info-authentication-method: GET
+            # ======================= 可以简化上面的配置 ======================
+
+messages:
+  base-uri: http://127.0.0.1:8090

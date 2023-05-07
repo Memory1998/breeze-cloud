@@ -1,0 +1,23 @@
+server:
+  port: 10000
+
+
+spring:
+  application:
+    name: @artifactId@
+  profiles:
+    active: @profiles.active@
+  cloud:
+    nacos:
+      username: @nacos.username@
+      password: @nacos.password@
+      discovery:
+        server-addr: ${NACOS_HOST:breeze-nacos}:${NACOS_PORT:8848}
+        namespace: @nacos.namespace@
+      config:
+        server-addr: ${spring.cloud.nacos.discovery.server-addr}
+        file-extension: yml
+        namespace: @nacos.namespace@
+  config:
+    import:
+      - nacos:application-${spring.profiles.active}.${spring.cloud.nacos.config.file-extension}

@@ -1,0 +1,4 @@
+com.breeze.cloud.security.config.JwtConfiguration
+com.breeze.cloud.security.config.PwdConfiguration
+com.breeze.cloud.security.config.RedisConfiguration
+com.breeze.cloud.security.service.LocalUserDetailsService

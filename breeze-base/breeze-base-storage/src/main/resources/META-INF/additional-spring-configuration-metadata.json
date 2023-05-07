@@ -1,0 +1,9 @@
+{
+  "properties": [
+    {
+      "name": "breeze.storage.local.path",
+      "type": "java.lang.String",
+      "description": "本地存储路径"
+    }
+  ]
+}

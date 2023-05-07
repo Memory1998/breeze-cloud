@@ -1,0 +1,534 @@
+{
+  "info": {
+    "_postman_id": "7f81b55f-76e2-4349-8950-b8b002f3561a",
+    "name": "breeze-cloud",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "system",
+      "item": [
+        {
+          "name": "用户名登录",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "tenant_id",
+                "value": "1",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"username\": \"admin\",\r\n    \"password\": \"123456\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:9000/system/breeze/login",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "9000",
+              "path": [
+                "system",
+                "breeze",
+                "login"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "测试本服务",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "eyJhbGciOiJSUzI1NiJ9.eyJzdWIiOiJhZG1pbiIsInNjb3BlIjoiUk9MRV9BRE1JTiBST0xFX1NJTVBMRSBmbG93OmNhdGVnb3J5OmNyZWF0ZSBmbG93OmNhdGVnb3J5OmRlbGV0ZSBmbG93OmNhdGVnb3J5Omxpc3QgZmxvdzpjYXRlZ29yeTptb2RpZnkgZmxvdzpkZWZpbml0aW9uOmNyZWF0ZSBmbG93OmRlZmluaXRpb246ZGVsZXRlIGZsb3c6ZGVmaW5pdGlvbjpkZXBsb3kgZmxvdzpkZWZpbml0aW9uOmluZm8gZmxvdzpkZWZpbml0aW9uOmxpc3QgZmxvdzpkZWZpbml0aW9uOnN1c3BlbmRlZCBmbG93OmRlc2lnbmVyIGZsb3c6aW5zdGFuY2U6bGlzdCBmbG93Omluc3RhbmNlOnB1Ymxpc2ggZmxvdzppbnN0YW5jZTpzdGFydCBrZWVwOmNyZWF0ZSBzeXM6ZGVwdDpjcmVhdGUgc3lzOmRlcHQ6ZGVsZXRlIHN5czpkZXB0Omxpc3Qgc3lzOmRlcHQ6bW9kaWZ5IHN5czpkaWN0OmNyZWF0ZSBzeXM6ZGljdDpkZWxldGUgc3lzOmRpY3Q6bGlzdCBzeXM6ZGljdDptb2RpZnkgc3lzOmZpbGU6ZGVsZXRlIHN5czpmaWxlOmRvd25sb2FkIHN5czpmaWxlOmxpc3Qgc3lzOmZpbGU6cHJldmlldyBzeXM6ZmlsZTp1cGxvYWQgc3lzOml0ZW06bGlzdCBzeXM6akxvZzpkZWxldGUgc3lzOmpMb2c6bGlzdCBzeXM6akxvZzp0cnVuY2F0ZSBzeXM6am9iOmNyZWF0ZSBzeXM6am9iOmRlbGV0ZSBzeXM6am9iOmxpc3Qgc3lzOmpvYjptb2RpZnkgc3lzOmpvYjpydW4gc3lzOmxvZzpkZWxldGUgc3lzOmxvZzpsaXN0IHN5czpsb2c6dHJ1bmNhdGUgc3lzOm1lbnU6Y3JlYXRlIHN5czptZW51OmRlbGV0ZSBzeXM6bWVudTpsaXN0IHN5czptZW51Om1vZGlmeSBzeXM6bXNnOmNyZWF0ZSBzeXM6bXNnOmRlbGV0ZSBzeXM6bXNnOmxpc3Qgc3lzOm1zZzptb2RpZnkgc3lzOnBlcm1pc3Npb246Y3JlYXRlIHN5czpwZXJtaXNzaW9uOmRlbGV0ZSBzeXM6cGVybWlzc2lvbjplZGl0IHN5czpwZXJtaXNzaW9uOmxpc3Qgc3lzOnBlcm1pc3Npb246bW9kaWZ5IHN5czpwbGF0Zm9ybTpjcmVhdGUgc3lzOnBsYXRmb3JtOmRlbGV0ZSBzeXM6cGxhdGZvcm06bGlzdCBzeXM6cGxhdGZvcm06bW9kaWZ5IHN5czpwb3N0OmNyZWF0ZSBzeXM6cG9zdDpkZWxldGUgc3lzOnBvc3Q6bGlzdCBzeXM6cG9zdDptb2RpZnkgc3lzOnJvbGU6Y3JlYXRlIHN5czpyb2xlOmRlbGV0ZSBzeXM6cm9sZTpsaXN0IHN5czpyb2xlOm1vZGlmeSBzeXM6dGVuYW50OmNyZWF0ZSBzeXM6dGVuYW50OmRlbGV0ZSBzeXM6dGVuYW50Omxpc3Qgc3lzOnRlbmFudDptb2RpZnkgc3lzOnRlc3Q6aGVsbG8gc3lzOnVzZXI6Y3JlYXRlIHN5czp1c2VyOmRlbGV0ZSBzeXM6dXNlcjpleHBvcnQgc3lzOnVzZXI6aW5mbyBzeXM6dXNlcjpsaXN0IHN5czp1c2VyOm1vZGlmeSBzeXM6dXNlcjpyZXNldFBhc3Mgc3lzOnVzZXI6dXNlclNldFJvbGUgc3lzOnVzZXJNc2c6ZGVsZXRlIHN5czp1c2VyTXNnOmxpc3Qgc3lzOnVzZXJNc2c6bW9kaWZ5IiwiaXNzIjoic2VsZiIsInRlbmFudElkIjoxLCJleHAiOjE2ODE5MjA3MDYsImlhdCI6MTY4MTg4NDcwNiwidXNlcklkIjoxMTExMTExMTExMTExMTExMTExLCJ1c2VyQ29kZSI6ImFkbWluIiwidXNlcm5hbWUiOiJhZG1pbiJ9.QBBzDQ-NGwV--8U9gDINETmu8wKBpmhiuVfbyFNlajFLsMmi_qgxxbp5RSHWlLUs5ePXsxzBT2RZcH5aGAqssfBf1Ys7oFWhX8vOBDA6lcfUgP1a3B_6xWSvwbWjWYPR3Hab0yRQIajDKNMrVN7Kzh_qp34P4wiOwVlAhmKjxBSkAHHMILWoVCELzh8vPcj-_2PVUhT7OHSHE103zxUUe0LVaOIh4NJOO0G8KT0wqDJybHo6lhgoHTykHjVU8Tz2HpIEGk22mJUX7CmascKGwRUlt6PmgtlXSaDouFWSjEAp_aFxKUp8Tx6Rkb_XSXZmkGVTptnvjAsi52cip-i1qw",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:9000/system/test/hello",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "9000",
+              "path": [
+                "system",
+                "test",
+                "hello"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "测试其他服务",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "eyJhbGciOiJSUzI1NiJ9.eyJzdWIiOiJhZG1pbiIsInNjb3BlIjoiUk9MRV9BRE1JTiBST0xFX1NJTVBMRSBmbG93OmNhdGVnb3J5OmNyZWF0ZSBmbG93OmNhdGVnb3J5OmRlbGV0ZSBmbG93OmNhdGVnb3J5Omxpc3QgZmxvdzpjYXRlZ29yeTptb2RpZnkgZmxvdzpkZWZpbml0aW9uOmNyZWF0ZSBmbG93OmRlZmluaXRpb246ZGVsZXRlIGZsb3c6ZGVmaW5pdGlvbjpkZXBsb3kgZmxvdzpkZWZpbml0aW9uOmluZm8gZmxvdzpkZWZpbml0aW9uOmxpc3QgZmxvdzpkZWZpbml0aW9uOnN1c3BlbmRlZCBmbG93OmRlc2lnbmVyIGZsb3c6aW5zdGFuY2U6bGlzdCBmbG93Omluc3RhbmNlOnB1Ymxpc2ggZmxvdzppbnN0YW5jZTpzdGFydCBrZWVwOmNyZWF0ZSBzeXM6ZGVwdDpjcmVhdGUgc3lzOmRlcHQ6ZGVsZXRlIHN5czpkZXB0Omxpc3Qgc3lzOmRlcHQ6bW9kaWZ5IHN5czpkaWN0OmNyZWF0ZSBzeXM6ZGljdDpkZWxldGUgc3lzOmRpY3Q6bGlzdCBzeXM6ZGljdDptb2RpZnkgc3lzOmZpbGU6ZGVsZXRlIHN5czpmaWxlOmRvd25sb2FkIHN5czpmaWxlOmxpc3Qgc3lzOmZpbGU6cHJldmlldyBzeXM6ZmlsZTp1cGxvYWQgc3lzOml0ZW06bGlzdCBzeXM6akxvZzpkZWxldGUgc3lzOmpMb2c6bGlzdCBzeXM6akxvZzp0cnVuY2F0ZSBzeXM6am9iOmNyZWF0ZSBzeXM6am9iOmRlbGV0ZSBzeXM6am9iOmxpc3Qgc3lzOmpvYjptb2RpZnkgc3lzOmpvYjpydW4gc3lzOmxvZzpkZWxldGUgc3lzOmxvZzpsaXN0IHN5czpsb2c6dHJ1bmNhdGUgc3lzOm1lbnU6Y3JlYXRlIHN5czptZW51OmRlbGV0ZSBzeXM6bWVudTpsaXN0IHN5czptZW51Om1vZGlmeSBzeXM6bXNnOmNyZWF0ZSBzeXM6bXNnOmRlbGV0ZSBzeXM6bXNnOmxpc3Qgc3lzOm1zZzptb2RpZnkgc3lzOnBlcm1pc3Npb246Y3JlYXRlIHN5czpwZXJtaXNzaW9uOmRlbGV0ZSBzeXM6cGVybWlzc2lvbjplZGl0IHN5czpwZXJtaXNzaW9uOmxpc3Qgc3lzOnBlcm1pc3Npb246bW9kaWZ5IHN5czpwbGF0Zm9ybTpjcmVhdGUgc3lzOnBsYXRmb3JtOmRlbGV0ZSBzeXM6cGxhdGZvcm06bGlzdCBzeXM6cGxhdGZvcm06bW9kaWZ5IHN5czpwb3N0OmNyZWF0ZSBzeXM6cG9zdDpkZWxldGUgc3lzOnBvc3Q6bGlzdCBzeXM6cG9zdDptb2RpZnkgc3lzOnJvbGU6Y3JlYXRlIHN5czpyb2xlOmRlbGV0ZSBzeXM6cm9sZTpsaXN0IHN5czpyb2xlOm1vZGlmeSBzeXM6dGVuYW50OmNyZWF0ZSBzeXM6dGVuYW50OmRlbGV0ZSBzeXM6dGVuYW50Omxpc3Qgc3lzOnRlbmFudDptb2RpZnkgc3lzOnRlc3Q6aGVsbG8gc3lzOnVzZXI6Y3JlYXRlIHN5czp1c2VyOmRlbGV0ZSBzeXM6dXNlcjpleHBvcnQgc3lzOnVzZXI6aW5mbyBzeXM6dXNlcjpsaXN0IHN5czp1c2VyOm1vZGlmeSBzeXM6dXNlcjpyZXNldFBhc3Mgc3lzOnVzZXI6dXNlclNldFJvbGUgc3lzOnVzZXJNc2c6ZGVsZXRlIHN5czp1c2VyTXNnOmxpc3Qgc3lzOnVzZXJNc2c6bW9kaWZ5IiwiaXNzIjoic2VsZiIsInRlbmFudElkIjoxLCJleHAiOjE2ODE5MjA3MDYsImlhdCI6MTY4MTg4NDcwNiwidXNlcklkIjoxMTExMTExMTExMTExMTExMTExLCJ1c2VyQ29kZSI6ImFkbWluIiwidXNlcm5hbWUiOiJhZG1pbiJ9.QBBzDQ-NGwV--8U9gDINETmu8wKBpmhiuVfbyFNlajFLsMmi_qgxxbp5RSHWlLUs5ePXsxzBT2RZcH5aGAqssfBf1Ys7oFWhX8vOBDA6lcfUgP1a3B_6xWSvwbWjWYPR3Hab0yRQIajDKNMrVN7Kzh_qp34P4wiOwVlAhmKjxBSkAHHMILWoVCELzh8vPcj-_2PVUhT7OHSHE103zxUUe0LVaOIh4NJOO0G8KT0wqDJybHo6lhgoHTykHjVU8Tz2HpIEGk22mJUX7CmascKGwRUlt6PmgtlXSaDouFWSjEAp_aFxKUp8Tx6Rkb_XSXZmkGVTptnvjAsi52cip-i1qw",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:9000/quartz/test/v1/getUser",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "9000",
+              "path": [
+                "quartz",
+                "test",
+                "v1",
+                "getUser"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "gateway",
+      "item": [
+        {
+          "name": "获取验证码",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:9000/captcha/getCode",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "9000",
+              "path": [
+                "captcha",
+                "getCode"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "auth",
+      "item": [
+        {
+          "name": "oidc",
+          "item": [
+            {
+              "name": "授权码认证",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "http://localhost:8000/oauth2/authorize?response_type=code&client_id=messaging-client&scope=openid&state=KxnBJF434gArDfhkmLGbneHFOU6DK-SA3g4g3ijuceA%3D&redirect_uri=http://www.baidu.com&nonce=1m_P8HkIxsNv6ZthuqzQS4Yx1rkCxCJJDfx0qOtz5dY",
+                  "protocol": "http",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "8000",
+                  "path": [
+                    "oauth2",
+                    "authorize"
+                  ],
+                  "query": [
+                    {
+                      "key": "response_type",
+                      "value": "code"
+                    },
+                    {
+                      "key": "client_id",
+                      "value": "messaging-client"
+                    },
+                    {
+                      "key": "scope",
+                      "value": "openid"
+                    },
+                    {
+                      "key": "state",
+                      "value": "KxnBJF434gArDfhkmLGbneHFOU6DK-SA3g4g3ijuceA%3D"
+                    },
+                    {
+                      "key": "redirect_uri",
+                      "value": "http://www.baidu.com"
+                    },
+                    {
+                      "key": "nonce",
+                      "value": "1m_P8HkIxsNv6ZthuqzQS4Yx1rkCxCJJDfx0qOtz5dY"
+                    }
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "授权码获取token",
+              "request": {
+                "auth": {
+                  "type": "basic",
+                  "basic": [
+                    {
+                      "key": "password",
+                      "value": "secret",
+                      "type": "string"
+                    },
+                    {
+                      "key": "username",
+                      "value": "messaging-client",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "POST",
+                "header": [],
+                "url": {
+                  "raw": "http://localhost:8000/oauth2/token?grant_type=authorization_code&redirect_uri=http://www.baidu.com&code=GfspHBBueaosAuY1MJje4RgSTvCScXprw9igF8vBI8MVpHSDZL4kKIAfl_SBtPX0oSCj6RXB0V0RYgaVHL4PNtjDJqQoEAUhTG5Rs3HtiWdNYjPv3ie-PZbz8Hj46xmY&state=KxnBJF434gArDfhkmLGbneHFOU6DK-SA3g4g3ijuceA%3D",
+                  "protocol": "http",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "8000",
+                  "path": [
+                    "oauth2",
+                    "token"
+                  ],
+                  "query": [
+                    {
+                      "key": "grant_type",
+                      "value": "authorization_code"
+                    },
+                    {
+                      "key": "redirect_uri",
+                      "value": "http://www.baidu.com"
+                    },
+                    {
+                      "key": "code",
+                      "value": "GfspHBBueaosAuY1MJje4RgSTvCScXprw9igF8vBI8MVpHSDZL4kKIAfl_SBtPX0oSCj6RXB0V0RYgaVHL4PNtjDJqQoEAUhTG5Rs3HtiWdNYjPv3ie-PZbz8Hj46xmY"
+                    },
+                    {
+                      "key": "state",
+                      "value": "KxnBJF434gArDfhkmLGbneHFOU6DK-SA3g4g3ijuceA%3D"
+                    }
+                  ]
+                }
+              },
+              "response": []
+            }
+          ]
+        },
+        {
+          "name": "simple",
+          "item": [
+            {
+              "name": "获取授权码code",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "http://localhost:3000/oauth2/authorize?response_type=code&client_id=messaging-client&redirect_uri=http://www.baidu.com&scope=message.read",
+                  "protocol": "http",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "3000",
+                  "path": [
+                    "oauth2",
+                    "authorize"
+                  ],
+                  "query": [
+                    {
+                      "key": "response_type",
+                      "value": "code"
+                    },
+                    {
+                      "key": "client_id",
+                      "value": "messaging-client"
+                    },
+                    {
+                      "key": "redirect_uri",
+                      "value": "http://www.baidu.com"
+                    },
+                    {
+                      "key": "scope",
+                      "value": "message.read"
+                    }
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "授权码获取token",
+              "request": {
+                "auth": {
+                  "type": "basic",
+                  "basic": [
+                    {
+                      "key": "password",
+                      "value": "secret",
+                      "type": "string"
+                    },
+                    {
+                      "key": "username",
+                      "value": "messaging-client",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "POST",
+                "header": [],
+                "url": {
+                  "raw": "http://localhost:3000/oauth2/token?grant_type=authorization_code&redirect_uri=http://www.baidu.com&code=bSpojS9bgSpv6skIz3_YcHwgKFW3g6pbNTlH6xqymUkbNHOUZ7l4WeH-aOxgbnwjWsx-iYdZ1r6hAe7j2D9fZo-RdDNX6M6esEO9ekioU2bIPvJFdLJZfzau4yhTfsqb",
+                  "protocol": "http",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "3000",
+                  "path": [
+                    "oauth2",
+                    "token"
+                  ],
+                  "query": [
+                    {
+                      "key": "grant_type",
+                      "value": "authorization_code"
+                    },
+                    {
+                      "key": "redirect_uri",
+                      "value": "http://www.baidu.com"
+                    },
+                    {
+                      "key": "code",
+                      "value": "bSpojS9bgSpv6skIz3_YcHwgKFW3g6pbNTlH6xqymUkbNHOUZ7l4WeH-aOxgbnwjWsx-iYdZ1r6hAe7j2D9fZo-RdDNX6M6esEO9ekioU2bIPvJFdLJZfzau4yhTfsqb"
+                    }
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "测试",
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "eyJraWQiOiI5NjhlNTk4MS1jNWM5LTRlMGQtOGJmYS01ZDZkYjIyMTlhY2UiLCJhbGciOiJSUzI1NiJ9.eyJzdWIiOiJhZG1pbiIsImF1ZCI6Im1lc3NhZ2luZy1jbGllbnQiLCJuYmYiOjE2ODE0NTU1NDAsInNjb3BlIjpbInN5czpkZXB0Omxpc3QiLCJtZXNzYWdlLnJlYWQiXSwiaXNzIjoiaHR0cDpcL1wvbG9jYWxob3N0OjMwMDAiLCJleHAiOjE2ODE0NTczNDAsImlhdCI6MTY4MTQ1NTU0MH0.jF6l6vKkKwdNah-L6fus7PlO-LoR_0bynaoDbwtBav-YxwBxMD_DwXEDk54-dj0RtwDWHQXVdedvySMpI_x87-xS66RxrzBPr46062QgCbKVsuKugXAGRxisIuxRnoa859hUypXYaPdFD4T4m_t8v4vSnJSfL9Bboj79CAIpudQ-9tqxMKa81W9odh0xS6bjA09t18Ic7gEXlfn_jufCokpDSA1CMQHSfVOr4NgJEPpOwS6tVMlx57UBP80acBrLckLRLzl1gPtmBkys7OGgSlWqqintbcEJSTwZueNOumuig15DFsNasY70_6HsXe2QTXuFlzUMOPOK1Bm9FMttIw",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "http://localhost:8090/messages",
+                  "protocol": "http",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "8090",
+                  "path": [
+                    "messages"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "测试2",
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "eyJraWQiOiI5NjhlNTk4MS1jNWM5LTRlMGQtOGJmYS01ZDZkYjIyMTlhY2UiLCJhbGciOiJSUzI1NiJ9.eyJzdWIiOiJhZG1pbiIsImF1ZCI6Im1lc3NhZ2luZy1jbGllbnQiLCJuYmYiOjE2ODE0NTU1NDAsInNjb3BlIjpbInN5czpkZXB0Omxpc3QiLCJtZXNzYWdlLnJlYWQiXSwiaXNzIjoiaHR0cDpcL1wvbG9jYWxob3N0OjMwMDAiLCJleHAiOjE2ODE0NTczNDAsImlhdCI6MTY4MTQ1NTU0MH0.jF6l6vKkKwdNah-L6fus7PlO-LoR_0bynaoDbwtBav-YxwBxMD_DwXEDk54-dj0RtwDWHQXVdedvySMpI_x87-xS66RxrzBPr46062QgCbKVsuKugXAGRxisIuxRnoa859hUypXYaPdFD4T4m_t8v4vSnJSfL9Bboj79CAIpudQ-9tqxMKa81W9odh0xS6bjA09t18Ic7gEXlfn_jufCokpDSA1CMQHSfVOr4NgJEPpOwS6tVMlx57UBP80acBrLckLRLzl1gPtmBkys7OGgSlWqqintbcEJSTwZueNOumuig15DFsNasY70_6HsXe2QTXuFlzUMOPOK1Bm9FMttIw",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "http://localhost:8090/dept/list",
+                  "protocol": "http",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "8090",
+                  "path": [
+                    "dept",
+                    "list"
+                  ]
+                }
+              },
+              "response": []
+            }
+          ]
+        },
+        {
+          "name": "read&write",
+          "item": [
+            {
+              "name": "获取授权码code",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "http://localhost:9000/oauth2/authorize?response_type=code&client_id=messaging-client&redirect_uri=http://www.baidu.com&scope=message.read",
+                  "protocol": "http",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "9000",
+                  "path": [
+                    "oauth2",
+                    "authorize"
+                  ],
+                  "query": [
+                    {
+                      "key": "response_type",
+                      "value": "code"
+                    },
+                    {
+                      "key": "client_id",
+                      "value": "messaging-client"
+                    },
+                    {
+                      "key": "redirect_uri",
+                      "value": "http://www.baidu.com"
+                    },
+                    {
+                      "key": "scope",
+                      "value": "message.read"
+                    }
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "授权码获取token",
+              "request": {
+                "auth": {
+                  "type": "basic",
+                  "basic": [
+                    {
+                      "key": "password",
+                      "value": "secret",
+                      "type": "string"
+                    },
+                    {
+                      "key": "username",
+                      "value": "messaging-client",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "POST",
+                "header": [],
+                "url": {
+                  "raw": "http://localhost:9000/oauth2/token?grant_type=authorization_code&code=M5UDZw-cHDzHry9a70lhJkttne7f0lfhAwZQSgHbIlmCSmlgpoDGFzrt1iDhjknXGaWTK1dgiAae7x9wU17GojB5ClM-TxnFPIgTMUXNENdtGidx6ysYrh2dCR2fXOur&redirect_uri=http://www.baidu.com",
+                  "protocol": "http",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "9000",
+                  "path": [
+                    "oauth2",
+                    "token"
+                  ],
+                  "query": [
+                    {
+                      "key": "grant_type",
+                      "value": "authorization_code"
+                    },
+                    {
+                      "key": "code",
+                      "value": "M5UDZw-cHDzHry9a70lhJkttne7f0lfhAwZQSgHbIlmCSmlgpoDGFzrt1iDhjknXGaWTK1dgiAae7x9wU17GojB5ClM-TxnFPIgTMUXNENdtGidx6ysYrh2dCR2fXOur"
+                    },
+                    {
+                      "key": "redirect_uri",
+                      "value": "http://www.baidu.com"
+                    },
+                    {
+                      "key": "client_id",
+                      "value": "messaging-client",
+                      "disabled": true
+                    },
+                    {
+                      "key": "client_secret",
+                      "value": "secret",
+                      "disabled": true
+                    }
+                  ]
+                }
+              },
+              "response": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "test",
+      "item": [
+        {
+          "name": "授权码模式测试",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "eyJraWQiOiI3YmE0YTdjNC1iZmI2LTRlZWMtYmRkYi1mODAwMDYyMWYyNjEiLCJhbGciOiJSUzI1NiJ9.eyJzdWIiOiJhZG1pbiIsImF1ZCI6Im1lc3NhZ2luZy1jbGllbnQiLCJuYmYiOjE2ODE4OTU2OTksInNjb3BlIjpbIm9wZW5pZCJdLCJpc3MiOiJodHRwOlwvXC9sb2NhbGhvc3Q6ODAwMCIsImV4cCI6MTY4MTg5NzQ5OSwiaWF0IjoxNjgxODk1Njk5LCJhdXRob3JpdGllcyI6WyJzeXM6dGVzdDpyZWFkIl19.o3aPUawhT9vvCddjajpFZZZP962uS361aEYsZh6a_7CwvYabF46wj0GyA-2gK7fNbcNXiFx5aeOfG84IiuGHOpsNMFmpEPuwXBRzHr1aLx5P5oDPa0LcTk9qZKlZPskgU3NJabIXNA2jWCVctqS1z6FSwktPgMlDkV_zNQCl2mx87Qy1SGUtnlQlBTxqRcg_cRVQZqyHlddDXAJotvTTmR50kLO0iyPt2YdhR1N9uBARVb5-Sqx04py7jh8CAgvDL3a5GTWVkilA-N281cQHjb_mDfoBPWAK5L4afXtI4I57CYwpzrXHvqETGVo_4NYeDI9e_NYSLBT-wCPnn14Ohw",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8090/messages",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8090",
+              "path": [
+                "messages"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    }
+  ]
+}
