@@ -40,6 +40,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.joda.time.LocalDate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.Assert;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
@@ -48,7 +49,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
-import static com.breeze.cloud.core.constants.CoreConstants.SYSTEM_BUCKET_NAME;
+import static com.breeze.cloud.core.constants.StorageConstants.SYSTEM_BUCKET_NAME;
 
 /**
  * 系统文件服务impl
@@ -97,9 +98,11 @@ public class SysFileServiceImpl extends ServiceImpl<SysFileMapper, SysFile> impl
     @SneakyThrows
     @Override
     public Result<Map<String, Object>> uploadMinioS3(FileParam fileParam, HttpServletRequest request, HttpServletResponse response) {
+        LocalDate now = LocalDate.now();
+
         MultipartFile file = fileParam.getFile();
         String originalFilename = file.getOriginalFilename();
-        LocalDate now = LocalDate.now();
+        Assert.isNull(originalFilename, "文件名不能为空");
         String newFileName = now.getYear() + now.getMonthOfYear() + now.getDayOfMonth() + RandomUtil.randomInt(6)
                 + originalFilename.substring(originalFilename.lastIndexOf("."));
         String path = now.getYear() + "/" + now.getMonthOfYear() + "/" + now.getDayOfMonth() + "/";

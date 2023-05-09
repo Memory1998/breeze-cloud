@@ -7,7 +7,6 @@
         <groupId>com.breeze</groupId>
         <artifactId>breeze-base</artifactId>
         <version>1.0</version>
-        <!-- TODO -->
     </parent>
 
     <artifactId>breeze-base-security</artifactId>
@@ -17,18 +16,18 @@
     <dependencies>
         <dependency>
             <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-configuration-processor</artifactId>
+            <optional>true</optional>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-security</artifactId>
         </dependency>
 
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-oauth2-resource-server</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-configuration-processor</artifactId>
-            <optional>true</optional>
         </dependency>
 
         <dependency>
@@ -42,18 +41,8 @@
         </dependency>
 
         <dependency>
-            <groupId>org.springframework.security</groupId>
-            <artifactId>spring-security-oauth2-jose</artifactId>
-        </dependency>
-
-        <dependency>
             <groupId>com.breeze</groupId>
             <artifactId>breeze-system-client</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>com.breeze</groupId>
-            <artifactId>breeze-base-redis-cache</artifactId>
         </dependency>
     </dependencies>
 </project>

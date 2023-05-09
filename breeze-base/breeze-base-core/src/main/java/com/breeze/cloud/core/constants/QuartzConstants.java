@@ -58,12 +58,12 @@ public class QuartzConstants {
         /**
          * 状态
          */
-        private Integer status;
+        private final Integer status;
 
         /**
          * 描述
          */
-        private String desc;
+        private final String desc;
 
     }
 
@@ -101,17 +101,17 @@ public class QuartzConstants {
         /**
          * 编码
          */
-        private Integer code;
+        private final Integer code;
 
         /**
          * 方法名
          */
-        private String methodName;
+        private final String methodName;
 
         /**
          * 描述
          */
-        private String desc;
+        private final String desc;
     }
 
 }

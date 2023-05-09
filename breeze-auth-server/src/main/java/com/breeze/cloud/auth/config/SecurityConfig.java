@@ -16,25 +16,17 @@
 
 package com.breeze.cloud.auth.config;
 
-import com.breeze.cloud.auth.authentication.password.UsernamePasswordFormLoginBeforeProcessorFilter;
-import com.breeze.cloud.auth.service.UserPrincipalService;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.breeze.cloud.auth.authentication.FormLoginBeforeProcessorFilter;
+import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
 
 /**
  * 安全配置
@@ -42,20 +34,14 @@ import java.io.IOException;
  * @author gaoweixuan
  * @date 2023-04-14
  */
+@RequiredArgsConstructor
 @EnableWebSecurity(debug = true)
 public class SecurityConfig {
 
     /**
      * 身份验证管理器生成器
      */
-    @Autowired
-    private AuthenticationManagerBuilder authenticationManagerBuilder;
-
-    /**
-     * 用户详细信息服务
-     */
-    @Autowired
-    private UserPrincipalService userDetailsService;
+    private final AuthenticationManagerBuilder authenticationManagerBuilder;
 
     /**
      * 默认安全过滤器链，授权服务器本身的安全配置
@@ -66,12 +52,12 @@ public class SecurityConfig {
      */
     @Bean
     SecurityFilterChain defaultSecurityFilterChain(HttpSecurity http) throws Exception {
-        http.authorizeRequests(authorizeRequests ->
-                // 开放自定义的需要开放的端点
-                authorizeRequests
-                        .antMatchers("/login").permitAll()
-                        .anyRequest().authenticated()
-        );
+        // @formatter:off
+       http.authorizeRequests(authorizeRequests ->
+               // 开放自定义的需要开放的端点
+               authorizeRequests.antMatchers("/login").permitAll()
+                       .anyRequest().authenticated()
+       );
 
         http.headers()
                 .frameOptions()
@@ -79,25 +65,31 @@ public class SecurityConfig {
         // 设置登录表单页面
         http.formLogin().loginPage("/login")
                 .loginProcessingUrl("/custom/auth/login")
-                .successHandler(new AuthenticationSuccessHandler() {
-                    @Override
-                    public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
-                        String url = "http://localhost:8000/oauth2/authorize" +
-                                "?response_type=code" +
-                                "&client_id=messaging-client" +
-                                "&scope=openid%20profile" +
-                                "&state=Tuh4Jf_MoLkJn6C9Iga8qWUraoHZgiAok0TXk6eWgNc%3D" +
-                                "&redirect_uri=http://127.0.0.1:8080/login/oauth2/code/messaging-client-oidc" +
-                                "&nonce=e8_WBpeuUCN5gf0UH5TfL9tkwsXIV08aW3RePI6ptsM" +
-                                "&tenantId=" + request.getParameter("tenantId");
-                        response.sendRedirect(url);
-                    }
+                .successHandler((request,response,authentication)-> {
+                    String url = "http://localhost:8000/oauth2/authorize" +
+                            "?response_type=code" +
+                            "&client_id=messaging-client" +
+                            "&scope=openid%20profile" +
+                            "&state=Tuh4Jf_MoLkJn6C9Iga8qWUraoHZgiAok0TXk6eWgNc%3D" +
+                            "&redirect_uri=http://127.0.0.1:8080/login/oauth2/code/messaging-client-oidc" +
+                            "&nonce=e8_WBpeuUCN5gf0UH5TfL9tkwsXIV08aW3RePI6ptsM" +
+                            "&tenantId=" + request.getParameter("tenantId");
+                    response.sendRedirect(url);
+                })
+                .failureHandler((request,response,exception)-> {
+                    System.out.println(exception.getMessage());
                 });
-        http.logout().logoutSuccessUrl("/logout").logoutSuccessUrl("/custom/auth/logout").invalidateHttpSession(true).deleteCookies("JSESSIONID");
+        // 退出登录配置
+        http.logout().logoutSuccessUrl("/logout")
+                .logoutSuccessUrl("/custom/auth/logout")
+                .invalidateHttpSession(true)
+                .deleteCookies("JSESSIONID");
 
-        http.addFilterBefore(new UsernamePasswordFormLoginBeforeProcessorFilter("/custom/auth/login", authenticationManagerBuilder.getObject()),
-                UsernamePasswordAuthenticationFilter.class);
-
+        // 增加自定义过滤器
+        http.addFilterBefore(new FormLoginBeforeProcessorFilter(
+                "/custom/auth/login",
+                        authenticationManagerBuilder.getObject()), UsernamePasswordAuthenticationFilter.class);
+        // @formatter:on
         return http.build();
     }
 

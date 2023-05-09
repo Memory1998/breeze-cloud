@@ -16,6 +16,7 @@
 
 package com.breeze.cloud.system.client;
 
+import com.breeze.cloud.core.constants.ContextConstants;
 import com.breeze.cloud.core.utils.Result;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -29,7 +30,7 @@ import java.util.Map;
  * @author gaoweixuan
  * @date 2021-12-06 22:03:39
  */
-@FeignClient(name = "breeze-system-server", contextId = "SysTenantFeign")
+@FeignClient(name = ContextConstants.SYSTEM, contextId = "SysTenantFeign")
 public interface SysTenantFeign {
 
     @GetMapping("/common/selectTenant")

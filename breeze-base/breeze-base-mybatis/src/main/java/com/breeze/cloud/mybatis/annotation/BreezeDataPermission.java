@@ -38,15 +38,11 @@ public @interface BreezeDataPermission {
 
     /**
      * 范围权限字段名称
-     *
-     * @return
      */
     String scope() default "";
 
     /**
      * 个人权限字段名称
-     *
-     * @return
      */
     String own() default "";
 

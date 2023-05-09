@@ -29,6 +29,7 @@ import java.io.Serializable;
  */
 public final class CustomAuthorizationGrantType implements Serializable {
     public static final AuthorizationGrantType SMS_CODE = new AuthorizationGrantType("sms_code");
+    public static final AuthorizationGrantType EMAIL_CODE = new AuthorizationGrantType("email_code");
     private static final long serialVersionUID = 580L;
     private final String value;
 

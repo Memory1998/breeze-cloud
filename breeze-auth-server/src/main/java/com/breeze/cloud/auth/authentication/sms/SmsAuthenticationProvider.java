@@ -17,15 +17,19 @@
 package com.breeze.cloud.auth.authentication.sms;
 
 import cn.hutool.core.util.StrUtil;
-import com.breeze.cloud.auth.doamin.UserPrincipal;
-import com.breeze.cloud.auth.service.UserPrincipalService;
+import com.breeze.cloud.auth.domain.UserPrincipal;
+import com.breeze.cloud.auth.service.impl.UserDetailService;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.context.support.MessageSourceAccessor;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.InternalAuthenticationServiceException;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.core.SpringSecurityMessageSource;
+
+import static com.breeze.cloud.core.constants.CacheConstants.VALIDATE_PHONE_CODE;
 
 /**
  * 短信密码身份验证提供者
@@ -47,7 +51,9 @@ public class SmsAuthenticationProvider implements AuthenticationProvider {
     /**
      * 用户详细信息服务
      */
-    private final UserPrincipalService userDetailsService;
+    private final UserDetailService userDetailsService;
+
+    protected MessageSourceAccessor messages = SpringSecurityMessageSource.getAccessor();
 
     /**
      * 短信身份验证提供者
@@ -55,7 +61,7 @@ public class SmsAuthenticationProvider implements AuthenticationProvider {
      * @param userDetailsService 用户详细信息服务
      * @param redisTemplate      复述,模板
      */
-    public SmsAuthenticationProvider(UserPrincipalService userDetailsService, RedisTemplate<String, String> redisTemplate) {
+    public SmsAuthenticationProvider(UserDetailService userDetailsService, RedisTemplate<String, String> redisTemplate) {
         this.userDetailsService = userDetailsService;
         this.redisTemplate = redisTemplate;
     }
@@ -69,16 +75,17 @@ public class SmsAuthenticationProvider implements AuthenticationProvider {
      */
     @Override
     public Authentication authenticate(Authentication authentication) throws AuthenticationException {
-        UserPrincipal loadedUser = (UserPrincipal) this.userDetailsService.loadUserByPhone((String) authentication.getPrincipal());
+        UserPrincipal loadedUser = this.userDetailsService.loadUserByPhone((String) authentication.getPrincipal());
         if (loadedUser == null) {
             throw new InternalAuthenticationServiceException("UserDetailsService returned null, which is an interface contract violation");
         }
         // 验证码
-        String validateCode = String.valueOf(this.redisTemplate.opsForValue().get("sys:validate_phone_code:" + loadedUser.getLoginUser().getPhone()));
+        String validateCode = String.valueOf(this.redisTemplate.opsForValue().get(VALIDATE_PHONE_CODE + loadedUser.getPhone()));
         String code = authentication.getCredentials().toString();
         if (!StrUtil.equals(validateCode, String.valueOf(code))) {
             log.error("Failed to authenticate since code does not match stored value");
-            throw new BadCredentialsException("AbstractUserDetailsAuthenticationProvider.badCredentials Bad Code");
+            throw new BadCredentialsException(this.messages
+                    .getMessage("AbstractUserDetailsAuthenticationProvider.badCredentials", "Bad credentials"));
         }
         SmsAuthenticationToken smsAuthenticationToken = new SmsAuthenticationToken(loadedUser, code, loadedUser.getAuthorities());
         smsAuthenticationToken.setDetails(loadedUser);

@@ -17,14 +17,10 @@
 package com.breeze.cloud.security.utils;
 
 import cn.hutool.extra.spring.SpringUtil;
-import cn.hutool.jwt.JWTUtil;
-import cn.hutool.jwt.signers.JWTSigner;
-import cn.hutool.jwt.signers.JWTSignerUtil;
-import com.breeze.cloud.security.properties.JwtProperties;
-import com.breeze.cloud.system.dto.LoginUser;
+import com.breeze.cloud.core.base.BaseLoginUser;
+import org.springframework.cache.Cache;
 import org.springframework.cache.CacheManager;
 import org.springframework.security.access.AccessDeniedException;
-import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.oauth2.jwt.BadJwtException;
@@ -56,13 +52,7 @@ public class SecurityUtils {
         if (Objects.equals("anonymousUser", principal)) {
             return null;
         }
-        JwtProperties jwtProperties = SpringUtil.getBean(JwtProperties.class);
-        Jwt jwt = (Jwt) principal;
-        JWTSigner jwtSigner = JWTSignerUtil.rs256(jwtProperties.getRsaPublicKey());
-        if (!JWTUtil.verify(jwt.getTokenValue(), jwtSigner)) {
-            throw new BadCredentialsException("令牌错误，请重新登录!");
-        }
-        return jwt;
+        return (Jwt) principal;
     }
 
     /**
@@ -101,13 +91,13 @@ public class SecurityUtils {
         return SecurityContextHolder.getContext().getAuthentication();
     }
 
-    public static LoginUser getCurrentUser() {
+    public static BaseLoginUser getCurrentUser() {
         CacheManager cacheManager = SpringUtil.getBean(CacheManager.class);
-        LoginUser loginUser = cacheManager.getCache(LOGIN_USER).get(SecurityUtils.getUsername(), LoginUser.class);
-        if (Objects.isNull(loginUser)) {
+        Cache cache = cacheManager.getCache(LOGIN_USER);
+        if (Objects.isNull(cache)) {
             throw new AccessDeniedException("用户未登录");
         }
-        return loginUser;
+        return cache.get(SecurityUtils.getUsername(), BaseLoginUser.class);
     }
 
     /**

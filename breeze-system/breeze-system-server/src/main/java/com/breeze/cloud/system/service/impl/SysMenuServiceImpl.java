@@ -23,13 +23,12 @@ import cn.hutool.core.lang.tree.TreeUtil;
 import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.breeze.cloud.core.base.BaseLoginUser;
 import com.breeze.cloud.core.utils.Result;
 import com.breeze.cloud.security.utils.SecurityUtils;
 import com.breeze.cloud.system.domain.SysMenu;
 import com.breeze.cloud.system.domain.SysRoleMenu;
-import com.breeze.cloud.system.dto.LoginUser;
 import com.breeze.cloud.system.dto.UserRole;
-import com.breeze.cloud.system.manager.UserTokenService;
 import com.breeze.cloud.system.mapper.SysMenuMapper;
 import com.breeze.cloud.system.query.MenuQuery;
 import com.breeze.cloud.system.service.SysMenuService;
@@ -61,11 +60,6 @@ public class SysMenuServiceImpl extends ServiceImpl<SysMenuMapper, SysMenu> impl
     private final SysRoleMenuService sysRoleMenuService;
 
     /**
-     * 用户token服务
-     */
-    private final UserTokenService userTokenService;
-
-    /**
      * 用户菜单权限列表
      *
      * @param userRoleList 用户角色列表
@@ -85,13 +79,13 @@ public class SysMenuServiceImpl extends ServiceImpl<SysMenuMapper, SysMenu> impl
      */
     @Override
     public Result<List<Tree<Long>>> listTreeMenu(String platformCode) {
-        LoginUser currentLoginUser = SecurityUtils.getCurrentUser();
-        if (CollUtil.isEmpty(currentLoginUser.getUserRoleIds())) {
+        BaseLoginUser currentBaseLoginUser = SecurityUtils.getCurrentUser();
+        if (CollUtil.isEmpty(currentBaseLoginUser.getUserRoleIds())) {
             return Result.ok();
         }
 
         // 查询角色下的菜单信息
-        List<SysMenu> menuList = this.baseMapper.selectMenusByRoleId(currentLoginUser.getUserRoleIds(), platformCode);
+        List<SysMenu> menuList = this.baseMapper.selectMenusByRoleId(currentBaseLoginUser.getUserRoleIds(), platformCode);
         return Result.ok(this.buildTrees(menuList, ROOT));
     }
 
@@ -133,8 +127,8 @@ public class SysMenuServiceImpl extends ServiceImpl<SysMenuMapper, SysMenu> impl
      */
     @Override
     public Result<List<Tree<Long>>> listTreePermission() {
-        LoginUser currentLoginUser = SecurityUtils.getCurrentUser();
-        if (CollUtil.isEmpty(currentLoginUser.getUserRoleIds())) {
+        BaseLoginUser currentBaseLoginUser = SecurityUtils.getCurrentUser();
+        if (CollUtil.isEmpty(currentBaseLoginUser.getUserRoleIds())) {
             return Result.ok();
         }
         return this.listTreeRolePermission();

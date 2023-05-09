@@ -51,12 +51,13 @@
 
         <dependency>
             <groupId>com.breeze</groupId>
-            <artifactId>breeze-base-security</artifactId>
+            <artifactId>breeze-base-core</artifactId>
         </dependency>
 
         <dependency>
-            <groupId>com.breeze</groupId>
-            <artifactId>breeze-base-core</artifactId>
+            <groupId>org.springframework.security</groupId>
+            <artifactId>spring-security-core</artifactId>
+            <optional>true</optional>
         </dependency>
     </dependencies>
 

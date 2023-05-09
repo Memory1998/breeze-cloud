@@ -17,7 +17,7 @@
 package com.breeze.cloud.auth.exception;
 
 /**
- * 授权服务器异常
+ * 不支持异常
  *
  * @author gaoweixuan
  * @date 2022-09-25

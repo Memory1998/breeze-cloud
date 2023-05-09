@@ -18,9 +18,9 @@ package com.breeze.cloud.system.service;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.breeze.cloud.core.base.BaseLoginUser;
 import com.breeze.cloud.core.utils.Result;
 import com.breeze.cloud.system.domain.SysUser;
-import com.breeze.cloud.system.dto.LoginUser;
 import com.breeze.cloud.system.params.*;
 import com.breeze.cloud.system.query.UserQuery;
 
@@ -127,40 +127,40 @@ public interface SysUserService extends IService<SysUser> {
      * 加载用户通过用户名
      *
      * @param username 用户名
-     * @return {@link Result}<{@link LoginUser}>
+     * @return {@link Result}<{@link BaseLoginUser}>
      */
-    Result<LoginUser> loadUserByUsername(String username);
+    Result<BaseLoginUser> loadUserByUsername(String username);
 
     /**
      * 加载用户通过电话
      *
      * @param phone 电话
-     * @return {@link Result}<{@link LoginUser}>
+     * @return {@link Result}<{@link BaseLoginUser}>
      */
-    Result<LoginUser> loadUserByPhone(String phone);
+    Result<BaseLoginUser> loadUserByPhone(String phone);
 
     /**
      * 加载用户通过电子邮件
      *
      * @param email 电子邮件
-     * @return {@link Result}<{@link LoginUser}>
+     * @return {@link Result}<{@link BaseLoginUser}>
      */
-    Result<LoginUser> loadUserByEmail(String email);
+    Result<BaseLoginUser> loadUserByEmail(String email);
 
     /**
      * 加载注册用户通过开放id
      *
      * @param wxLoginParam wx登录参数
-     * @return {@link Result}<{@link LoginUser}>
+     * @return {@link Result}<{@link BaseLoginUser}>
      */
-    Result<LoginUser> loadRegisterUserByOpenId(WxLoginParam wxLoginParam);
+    Result<BaseLoginUser> loadRegisterUserByOpenId(WxLoginParam wxLoginParam);
 
     /**
      * 加载注册用户通过电话
      *
      * @param authLoginParam 身份验证登录参数
-     * @return {@link Result}<{@link LoginUser}>
+     * @return {@link Result}<{@link BaseLoginUser}>
      */
-    Result<LoginUser> loadRegisterUserByPhone(AuthLoginParam authLoginParam);
+    Result<BaseLoginUser> loadRegisterUserByPhone(AuthLoginParam authLoginParam);
 
 }

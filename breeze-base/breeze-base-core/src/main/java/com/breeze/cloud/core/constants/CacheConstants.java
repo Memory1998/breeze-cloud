@@ -30,10 +30,24 @@ public class CacheConstants {
     public static final String LOGIN_USER = "sys:login_user:";
 
     /**
+     * 验证电话号码
+     */
+    public static final String VALIDATE_PHONE_CODE = "auth:validate_phone_code:";
+
+
+    /**
+     * 验证电子邮件代码
+     */
+    public static final String VALIDATE_EMAIL_CODE = "auth:validate_email_code:";
+
+    /**
      * 黑名单jwt
      */
     public static final String BLACK_JWT = "sys:black:jwt:";
 
+    /**
+     * auth 缓存前缀
+     */
     public static String prefix = "auth:";
 
     /**

@@ -78,8 +78,6 @@ public class SmsAuthenticationToken extends AbstractAuthenticationToken {
 
     /**
      * 未经身份验证
-     * <p>
-     * This factory method can be safely used by any code that wishes to create a unauthenticated <code>SmsCodeAuthenticationToken</code>.
      *
      * @param principal   主要
      * @param credentials 凭证
@@ -91,8 +89,6 @@ public class SmsAuthenticationToken extends AbstractAuthenticationToken {
 
     /**
      * 通过身份验证
-     * <p>
-     * This factory method can be safely used by any code that wishes to create a authenticated <code>SmsCodeAuthenticationToken</code>.
      *
      * @param principal   主要
      * @param credentials 凭证

@@ -14,36 +14,32 @@
  * limitations under the License.
  */
 
-package com.breeze.cloud.security.properties;
+package com.breeze.cloud.auth.querys;
 
-import lombok.Getter;
-import lombok.Setter;
-import org.springframework.boot.context.properties.ConfigurationProperties;
+import com.breeze.cloud.core.base.PageQuery;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.NoArgsConstructor;
 
 /**
- * oauth属性
+ * 注册客户端查询参数
  *
  * @author gaoweixuan
- * @date 2022-11-09
+ * @date 2023/05/08
  */
-@Getter
-@Setter
-@ConfigurationProperties(prefix = "breeze")
-public class OauthLoginProperties {
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
+public class RegisterClientQuery extends PageQuery {
 
     /**
-     * gitee
+     * id
      */
-    private AuthProperties gitee;
+    private String id;
 
     /**
-     * github
+     * 客户机id
      */
-    private AuthProperties github;
-
-    /**
-     * 微信
-     */
-    private WxLoginProperties wx;
+    private String clientId;
 
 }

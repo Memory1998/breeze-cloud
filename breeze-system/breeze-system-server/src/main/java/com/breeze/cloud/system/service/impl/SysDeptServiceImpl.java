@@ -25,11 +25,9 @@ import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.breeze.cloud.core.utils.Result;
 import com.breeze.cloud.system.domain.SysDept;
-import com.breeze.cloud.system.domain.SysUser;
 import com.breeze.cloud.system.mapper.SysDeptMapper;
 import com.breeze.cloud.system.query.DeptQuery;
 import com.breeze.cloud.system.service.SysDeptService;
-import com.breeze.cloud.system.service.SysUserService;
 import com.google.common.collect.Maps;
 import lombok.AllArgsConstructor;
 import org.apache.commons.compress.utils.Lists;
@@ -51,8 +49,6 @@ import static com.breeze.cloud.core.constants.CoreConstants.ROOT;
 @Service
 @AllArgsConstructor
 public class SysDeptServiceImpl extends ServiceImpl<SysDeptMapper, SysDept> implements SysDeptService {
-
-    private SysUserService sysUserService;
 
     /**
      * 部门列表
@@ -98,10 +94,6 @@ public class SysDeptServiceImpl extends ServiceImpl<SysDeptMapper, SysDept> impl
         if (CollUtil.isNotEmpty(deptEntityList)) {
             return Result.warning(Boolean.FALSE, "此部门存在下级部门,不允许删除");
         }
-        if (CollUtil.isNotEmpty(this.sysUserService.list(Wrappers.<SysUser>lambdaQuery().eq(SysUser::getDeptId, id)))) {
-            return Result.warning(Boolean.FALSE, "此部门内有在职员工,不允许删除");
-        }
-
         boolean remove = this.removeById(id);
         if (remove) {
             return Result.ok(Boolean.TRUE, "删除成功");

@@ -19,13 +19,13 @@ package com.breeze.cloud.system.controller;
 import cn.hutool.core.collection.CollUtil;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
+import com.breeze.cloud.core.base.BaseLoginUser;
 import com.breeze.cloud.core.utils.Result;
 import com.breeze.cloud.log.annotation.BreezeSysLog;
 import com.breeze.cloud.log.enums.LogType;
 import com.breeze.cloud.security.annotation.JumpAuth;
 import com.breeze.cloud.security.utils.SecurityUtils;
 import com.breeze.cloud.system.domain.SysUser;
-import com.breeze.cloud.system.dto.LoginUser;
 import com.breeze.cloud.system.params.*;
 import com.breeze.cloud.system.query.UserQuery;
 import com.breeze.cloud.system.service.SysUserService;
@@ -226,7 +226,7 @@ public class SysUserController {
      */
     @Operation(summary = "查询用户信息")
     @GetMapping("/userInfo")
-    public Result<LoginUser> userInfo() {
+    public Result<BaseLoginUser> userInfo() {
         return Result.ok(SecurityUtils.getCurrentUser());
     }
 
@@ -234,12 +234,12 @@ public class SysUserController {
      * 加载用户通过用户名
      *
      * @param username 用户名
-     * @return {@link Result}<{@link LoginUser}>
+     * @return {@link Result}<{@link BaseLoginUser}>
      */
     @JumpAuth
     @ResponseBody
     @GetMapping("/loadUserByUsername/{username}")
-    public Result<LoginUser> loadUserByUsername(@PathVariable("username") String username) {
+    public Result<BaseLoginUser> loadUserByUsername(@PathVariable("username") String username) {
         return this.sysUserService.loadUserByUsername(username);
     }
 
@@ -247,12 +247,12 @@ public class SysUserController {
      * 加载用户通过电话
      *
      * @param phone 电话
-     * @return {@link Result}<{@link LoginUser}>
+     * @return {@link Result}<{@link BaseLoginUser}>
      */
     @JumpAuth
     @ResponseBody
     @GetMapping("/loadUserByPhone/{phone}")
-    public Result<LoginUser> loadUserByPhone(@PathVariable("phone") String phone) {
+    public Result<BaseLoginUser> loadUserByPhone(@PathVariable("phone") String phone) {
         return this.sysUserService.loadUserByPhone(phone);
     }
 
@@ -260,24 +260,24 @@ public class SysUserController {
      * 加载用户通过电子邮件
      *
      * @param email 电子邮件
-     * @return {@link Result}<{@link LoginUser}>
+     * @return {@link Result}<{@link BaseLoginUser}>
      */
     @ResponseBody
     @GetMapping("/loadUserByEmail/{email}")
-    public Result<LoginUser> loadUserByEmail(@PathVariable("email") String email) {
+    public Result<BaseLoginUser> loadUserByEmail(@PathVariable("email") String email) {
         return this.sysUserService.loadUserByEmail(email);
     }
 
     /**
-     * 加载注册用户通过开放id
+     * 加载注册用户通过 [openId]
      *
      * @param wxLoginParam wx登录参数
-     * @return {@link Result}<{@link LoginUser}>
+     * @return {@link Result}<{@link BaseLoginUser}>
      */
     @ResponseBody
     @Operation(summary = "通过手机号获取并且注册用户")
     @PostMapping("/loadRegisterUserByOpenId")
-    public Result<LoginUser> loadRegisterUserByOpenId(@RequestBody WxLoginParam wxLoginParam) {
+    public Result<BaseLoginUser> loadRegisterUserByOpenId(@RequestBody WxLoginParam wxLoginParam) {
         return this.sysUserService.loadRegisterUserByOpenId(wxLoginParam);
     }
 
@@ -285,12 +285,12 @@ public class SysUserController {
      * 加载注册用户通过电话
      *
      * @param authLoginParam 身份验证登录参数
-     * @return {@link Result}<{@link LoginUser}>
+     * @return {@link Result}<{@link BaseLoginUser}>
      */
     @ResponseBody
     @Operation(summary = "通过手机号获取并且注册用户")
     @PostMapping("/loadRegisterUserByPhone")
-    public Result<LoginUser> loadRegisterUserByPhone(@RequestBody AuthLoginParam authLoginParam) {
+    public Result<BaseLoginUser> loadRegisterUserByPhone(@RequestBody AuthLoginParam authLoginParam) {
         return this.sysUserService.loadRegisterUserByPhone(authLoginParam);
     }
 

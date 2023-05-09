@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org">
+<html lang="zh-cn" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org">
 <head>
     <title>登录中心</title>
     <meta charset="utf-8"/>
@@ -28,11 +28,13 @@
                 <div class="col text-center">
                     <label class="form-label" for="username"></label>
                     <input autofocus class="form-control" id="username" name="username" placeholder="用户名" required
+                           value="admin"
                            type="text">
                 </div>
                 <div class="col text-center">
                     <label class="form-label" for="password"></label>
                     <input class="form-control" id="password" name="password" placeholder="密 码" required
+                           value="123456"
                            type="password">
                 </div>
                 <div class="col text-center">
@@ -42,7 +44,7 @@
                                 th:text="${item.value}"
                                 th:value="${item.key}">
                         </option>
-                    </select>`
+                    </select>
                 </div>
                 <button class="btn btn-primary btn-block" style="width: 100px; margin: 30px;" type="submit">登录
                 </button>

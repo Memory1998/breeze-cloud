@@ -17,15 +17,15 @@
 package com.breeze.cloud.mybatis.plugins;
 
 import cn.hutool.core.util.StrUtil;
+import cn.hutool.extra.spring.SpringUtil;
 import com.baomidou.mybatisplus.core.plugins.InterceptorIgnoreHelper;
 import com.baomidou.mybatisplus.core.toolkit.PluginUtils;
 import com.baomidou.mybatisplus.extension.parser.JsqlParserSupport;
 import com.baomidou.mybatisplus.extension.plugins.inner.InnerInterceptor;
+import com.breeze.cloud.core.base.BaseLoginUser;
 import com.breeze.cloud.core.enums.ResultCode;
 import com.breeze.cloud.core.exception.SystemServiceException;
 import com.breeze.cloud.mybatis.annotation.BreezeDataPermission;
-import com.breeze.cloud.security.utils.SecurityUtils;
-import com.breeze.cloud.system.dto.LoginUser;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import net.sf.jsqlparser.parser.CCJSqlParserUtil;
@@ -36,10 +36,17 @@ import org.apache.ibatis.mapping.BoundSql;
 import org.apache.ibatis.mapping.MappedStatement;
 import org.apache.ibatis.session.ResultHandler;
 import org.apache.ibatis.session.RowBounds;
+import org.springframework.cache.Cache;
+import org.springframework.cache.CacheManager;
+import org.springframework.security.access.AccessDeniedException;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 
 import java.lang.reflect.Method;
 import java.util.List;
 import java.util.Objects;
+
+import static com.breeze.cloud.core.constants.CacheConstants.LOGIN_USER;
 
 /**
  * 数据权限内拦截器
@@ -49,6 +56,32 @@ import java.util.Objects;
  */
 @Slf4j
 public class BreezeDataPermissionInterceptor extends JsqlParserSupport implements InnerInterceptor {
+
+    /**
+     * 通过缓存获取当前用户
+     *
+     * @return {@link BaseLoginUser}
+     */
+    public static BaseLoginUser getCurrentUser() {
+        Authentication authentication =
+                SecurityContextHolder.getContext().getAuthentication();
+        String name = authentication.getName();
+        if (name == null) {
+            log.error("[登录名不存在]");
+            throw new SystemServiceException(ResultCode.exception("未登录，数据权限不可实现"));
+        }
+        CacheManager cacheManager = SpringUtil.getBean(CacheManager.class);
+        Cache cache = cacheManager.getCache(LOGIN_USER);
+        if (Objects.isNull(cache)) {
+            throw new AccessDeniedException("用户未登录");
+        }
+        BaseLoginUser currentUser = cache.get(name, BaseLoginUser.class);
+        if (currentUser == null) {
+            log.error("[登录名称对应的用户信息不存在]");
+            throw new SystemServiceException(ResultCode.exception("未登录，数据权限不可实现"));
+        }
+        return currentUser;
+    }
 
     /**
      * 查询之前去拼装权限的sql
@@ -87,18 +120,14 @@ public class BreezeDataPermissionInterceptor extends JsqlParserSupport implement
             if (Objects.isNull(annotation) || !methodName.equals(method.getName())) {
                 continue;
             }
-
-            LoginUser loginUser = SecurityUtils.getCurrentUser();
-            if (loginUser == null) {
-                throw new SystemServiceException(ResultCode.exception("未登录，数据权限不可实现"));
-            }
-            originalSql = this.getSql(loginUser, annotation, originalSql);
+            BaseLoginUser currentUser = getCurrentUser();
+            originalSql = this.getSql(currentUser, annotation, originalSql);
         }
         mpBs.sql(originalSql);
     }
 
     @SneakyThrows
-    private String getSql(LoginUser loginUser, BreezeDataPermission dataPer, String originalSql) {
+    private String getSql(BaseLoginUser currentUser, BreezeDataPermission dataPer, String originalSql) {
         List<String> columns = Lists.newArrayList();
         Select stmt = (Select) CCJSqlParserUtil.parse(originalSql);
         for (SelectItem selectItem : ((PlainSelect) stmt.getSelectBody()).getSelectItems()) {
@@ -118,13 +147,13 @@ public class BreezeDataPermissionInterceptor extends JsqlParserSupport implement
             });
         }
         String column = String.join(", ", columns);
-        String permissions = loginUser.getPermissions();
+        String permissions = currentUser.getPermissions();
         if (StrUtil.isAllBlank(permissions)) {
             // 无论注解设置什么，没有配置权限就不查询出任何数据
             originalSql = String.format("SELECT %s FROM (%s) temp WHERE 1 = 2", column, originalSql);
         } else if (StrUtil.isNotBlank(dataPer.own())) {
             // 个人范围权限
-            originalSql = String.format("SELECT %s FROM (%s) temp WHERE temp.%s = '%s'", column, originalSql, dataPer.own(), loginUser.getUsername());
+            originalSql = String.format("SELECT %s FROM (%s) temp WHERE temp.%s = '%s'", column, originalSql, dataPer.own(), currentUser.getUsername());
         } else if (StrUtil.isNotBlank(dataPer.scope())) {
             // 部门范围权限
             originalSql = String.format("SELECT %s FROM (%s) temp WHERE temp.%s IN (%s)", columns, originalSql, dataPer.scope(), permissions);

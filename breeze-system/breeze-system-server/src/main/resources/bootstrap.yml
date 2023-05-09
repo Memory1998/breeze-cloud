@@ -7,6 +7,12 @@ spring:
     active: @profiles.active@
   main:
     allow-circular-references: true
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: http://localhost:8000
+          jwk-set-uri: http://localhost:8000/oauth2/jwks
   cloud:
     nacos:
       username: @nacos.username@    # 用户名

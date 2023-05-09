@@ -26,9 +26,4 @@ public class CoreConstants {
 
     public static final Long ROOT = 1111111111111111111L;
 
-    /**
-     * 系统bucket名称
-     */
-    public static final String SYSTEM_BUCKET_NAME = "system";
-
 }

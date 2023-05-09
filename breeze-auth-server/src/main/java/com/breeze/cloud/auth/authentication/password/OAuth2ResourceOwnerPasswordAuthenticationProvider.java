@@ -104,7 +104,9 @@ public class OAuth2ResourceOwnerPasswordAuthenticationProvider implements Authen
                     .filter(requestedScope -> !registeredClient.getScopes().contains(requestedScope))
                     .collect(Collectors.toSet());
             if (!CollectionUtils.isEmpty(unauthorizedScopes)) {
-                throw new OAuth2AuthenticationException(OAuth2ErrorCodes.INVALID_SCOPE);
+                OAuth2Error error = new OAuth2Error(OAuth2ErrorCodes.INVALID_SCOPE,
+                        "invalid_scope", ERROR_URI);
+                throw new OAuth2AuthenticationException(error);
             }
 
             authorizedScopes = new LinkedHashSet<>(requestedScopes);

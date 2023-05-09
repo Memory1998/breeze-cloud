@@ -23,19 +23,19 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.breeze.cloud.core.base.BaseLoginUser;
 import com.breeze.cloud.core.enums.ResultCode;
 import com.breeze.cloud.core.utils.EasyExcelExport;
 import com.breeze.cloud.core.utils.Result;
 import com.breeze.cloud.security.exception.AccessException;
 import com.breeze.cloud.system.domain.*;
-import com.breeze.cloud.system.dto.LoginUser;
 import com.breeze.cloud.system.dto.UserRole;
 import com.breeze.cloud.system.mapper.SysUserMapper;
 import com.breeze.cloud.system.params.*;
 import com.breeze.cloud.system.query.UserQuery;
 import com.breeze.cloud.system.service.*;
 import com.google.common.collect.Lists;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -59,61 +59,53 @@ import static com.breeze.cloud.core.constants.CacheConstants.LOGIN_USER;
  * @date 2021-12-06 22:03:39
  */
 @Service
+@AllArgsConstructor
 public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> implements SysUserService {
 
     /**
      * 密码编码器
      */
-    @Autowired
-    private PasswordEncoder passwordEncoder;
+    private final PasswordEncoder passwordEncoder;
 
     /**
      * 系统角色服务
      */
-    @Autowired
-    private SysRoleService sysRoleService;
+    private final SysRoleService sysRoleService;
 
     /**
      * 系统用户角色服务
      */
-    @Autowired
-    private SysUserRoleService sysUserRoleService;
+    private final SysUserRoleService sysUserRoleService;
 
     /**
      * 系统文件服务
      */
-    @Autowired
-    private SysFileService sysFileService;
+    private final SysFileService sysFileService;
 
     /**
      * 系统部门服务
      */
-    @Autowired
-    private SysDeptService sysDeptService;
+    private final SysDeptService sysDeptService;
 
     /**
      * 系统岗位服务
      */
-    @Autowired
-    private SysPostService sysPostService;
+    private final SysPostService sysPostService;
 
     /**
      * 密码编码器
      */
-    @Autowired
-    private SysMenuService sysMenuService;
+    private final SysMenuService sysMenuService;
 
     /**
      * 系统角色数据权限服务
      */
-    @Autowired
-    private SysRolePermissionService sysRolePermissionService;
+    private final SysRolePermissionService sysRolePermissionService;
 
     /**
      * 缓存
      */
-    @Autowired
-    private RedisTemplate<String, Object> redisTemplate;
+    private final RedisTemplate<String, Object> redisTemplate;
 
     /**
      * 列表页面
@@ -285,7 +277,7 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
                 .openId(registerUser.getOpenId())
                 .phone(registerUser.getPhone())
                 .tenantId(registerUser.getTenantId())
-                .build();
+                .deptId(1L).build();
         this.save(sysUser);
         // 给用户赋予一个临时角色，临时角色指定接口的权限
         SysRole sysRole = this.sysRoleService.getOne(Wrappers.<SysRole>lambdaQuery().eq(SysRole::getRoleCode, roleCode));
@@ -327,30 +319,30 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
      * 加载用户通过用户名
      *
      * @param username 用户名
-     * @return {@link Result}<{@link LoginUser}>
+     * @return {@link Result}<{@link BaseLoginUser}>
      */
     @Override
-    public Result<LoginUser> loadUserByUsername(String username) {
+    public Result<BaseLoginUser> loadUserByUsername(String username) {
         SysUser sysUser = this.getOne(Wrappers.<SysUser>lambdaQuery().eq(SysUser::getUsername, username));
         if (Objects.isNull(sysUser)) {
             return Result.fail("未获取到用户");
         }
-        return Result.ok(this.getLoginUserInfo(sysUser));
+        return Result.ok(this.buildLoginUserInfo(sysUser));
     }
 
     /**
      * 加载用户通过电话
      *
      * @param phone 电话
-     * @return {@link LoginUser}
+     * @return {@link BaseLoginUser}
      */
     @Override
-    public Result<LoginUser> loadUserByPhone(String phone) {
+    public Result<BaseLoginUser> loadUserByPhone(String phone) {
         SysUser sysUser = this.getOne(Wrappers.<SysUser>lambdaQuery().eq(SysUser::getPhone, phone));
         if (Objects.isNull(sysUser)) {
             return Result.fail("未获取到用户");
         }
-        return Result.ok(this.getLoginUserInfo(sysUser));
+        return Result.ok(this.buildLoginUserInfo(sysUser));
 
     }
 
@@ -358,19 +350,19 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
      * 加载用户通过电子邮件
      *
      * @param email 电子邮件
-     * @return {@link LoginUser}
+     * @return {@link BaseLoginUser}
      */
     @Override
-    public Result<LoginUser> loadUserByEmail(String email) {
+    public Result<BaseLoginUser> loadUserByEmail(String email) {
         SysUser sysUser = this.getOne(Wrappers.<SysUser>lambdaQuery().eq(SysUser::getEmail, email));
         if (Objects.isNull(sysUser)) {
             return Result.fail("未获取到用户");
         }
-        return Result.ok(this.getLoginUserInfo(sysUser));
+        return Result.ok(this.buildLoginUserInfo(sysUser));
     }
 
     @Override
-    public Result<LoginUser> loadRegisterUserByOpenId(WxLoginParam wxLoginParam) {
+    public Result<BaseLoginUser> loadRegisterUserByOpenId(WxLoginParam wxLoginParam) {
         SysUser sysUser = this.getOne(Wrappers.<SysUser>lambdaQuery().eq(SysUser::getEmail, wxLoginParam.getOpenId()));
         if (Objects.isNull(sysUser)) {
             this.registerUser(SysUser.builder()
@@ -380,19 +372,19 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
                     .email(wxLoginParam.getEmail())
                     .tenantId(wxLoginParam.getTenantId())
                     .username(wxLoginParam.getOpenId())
-                    .build(), "ROLE_MINI");
+                    .deptId(1L).build(), "ROLE_MINI");
         }
-        return Result.ok(this.getLoginUserInfo(sysUser));
+        return Result.ok(this.buildLoginUserInfo(sysUser));
     }
 
     /**
      * 加载用户通过电话
      *
      * @param authLoginParam auth三方登录消息体
-     * @return {@link Result}<{@link LoginUser}>
+     * @return {@link Result}<{@link BaseLoginUser}>
      */
     @Override
-    public Result<LoginUser> loadRegisterUserByPhone(AuthLoginParam authLoginParam) {
+    public Result<BaseLoginUser> loadRegisterUserByPhone(AuthLoginParam authLoginParam) {
         SysUser sysUser = this.getOne(Wrappers.<SysUser>lambdaQuery().eq(SysUser::getPhone, authLoginParam.getPhone()));
         if (Objects.isNull(sysUser)) {
             // 不存在就去创建
@@ -403,41 +395,40 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
                     .email(authLoginParam.getEmail())
                     .tenantId(authLoginParam.getTenantId())
                     .username(authLoginParam.getAppUserName() + RandomUtil.randomString(5))
-                    .build(), "ROLE_AUTH");
+                    .deptId(1L).build(), "ROLE_AUTH");
         }
-        return Result.ok(this.getLoginUserInfo(sysUser));
+        return Result.ok(this.buildLoginUserInfo(sysUser));
     }
 
     /**
      * 加载登录用户
      *
      * @param sysUser 系统用户实体
-     * @return {@link LoginUser}
+     * @return {@link BaseLoginUser}
      */
-    public LoginUser getLoginUserInfo(SysUser sysUser) {
-        LoginUser loginUser = new LoginUser();
-        BeanUtil.copyProperties(sysUser, loginUser);
+    public BaseLoginUser buildLoginUserInfo(SysUser sysUser) {
+        BaseLoginUser baseLoginUser = new BaseLoginUser();
+        BeanUtil.copyProperties(sysUser, baseLoginUser);
         // 获取部门名称
-        Optional.ofNullable(this.sysDeptService.getById(sysUser.getDeptId())).ifPresent(sysDept -> loginUser.setDeptName(sysDept.getDeptName()));
+        Optional.ofNullable(this.sysDeptService.getById(sysUser.getDeptId())).ifPresent(sysDept -> baseLoginUser.setDeptName(sysDept.getDeptName()));
         // 查询 用户的角色
         Set<UserRole> userRoleSet = this.sysRoleService.listRoleByUserId(sysUser.getId());
         if (CollUtil.isNotEmpty(userRoleSet)) {
-            loginUser.setAuthorities(this.sysMenuService.listUserMenuPermission(userRoleSet));
-            loginUser.setUserRoleList(userRoleSet);
+            baseLoginUser.setAuthorities(this.sysMenuService.listUserMenuPermission(userRoleSet));
             // 角色CODE
-            loginUser.setUserRoleCodes(userRoleSet.stream().map(UserRole::getRoleCode).collect(Collectors.toSet()));
+            baseLoginUser.setUserRoleCodes(userRoleSet.stream().map(UserRole::getRoleCode).collect(Collectors.toSet()));
             // 角色ID
             Set<Long> roleIdSet = userRoleSet.stream().map(UserRole::getRoleId).collect(Collectors.toSet());
-            loginUser.setUserRoleIds(roleIdSet);
+            baseLoginUser.setUserRoleIds(roleIdSet);
             // 用户的多个数据权限
             List<SysPermission> permissionList = this.sysRolePermissionService.listRolePermissionByRoleIds(roleIdSet);
             if (CollUtil.isNotEmpty(permissionList)) {
-                loginUser.setPermissions(permissionList.stream().map(SysPermission::getPermissions).collect(Collectors.joining(", ")));
+                baseLoginUser.setPermissions(permissionList.stream().map(SysPermission::getPermissions).collect(Collectors.joining(", ")));
             }
         }
         // 保存redis
-        this.redisTemplate.opsForValue().set(LOGIN_USER + sysUser.getUsername(), loginUser, 24L, TimeUnit.HOURS);
-        return loginUser;
+        this.redisTemplate.opsForValue().set(LOGIN_USER + sysUser.getUsername(), baseLoginUser, 24L, TimeUnit.HOURS);
+        return baseLoginUser;
     }
 }
 

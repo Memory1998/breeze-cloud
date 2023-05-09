@@ -25,6 +25,7 @@ package com.breeze.cloud.auth.authentication.constants;
 public class CustomOAuth2ParameterNames {
 
     public static String PHONE = "phone";
+    public static String EMAIL = "email";
     public static String CODE = "code";
 
 }

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.breeze.cloud.auth.authentication.password;
+package com.breeze.cloud.auth.authentication;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -32,9 +32,9 @@ import javax.servlet.http.HttpServletResponse;
  * @date 2023-04-25
  */
 @Slf4j
-public class UsernamePasswordFormLoginBeforeProcessorFilter extends UsernamePasswordAuthenticationFilter {
+public class FormLoginBeforeProcessorFilter extends UsernamePasswordAuthenticationFilter {
 
-    public UsernamePasswordFormLoginBeforeProcessorFilter(String defaultFilterProcessingUrl, AuthenticationManager authenticationManager) {
+    public FormLoginBeforeProcessorFilter(String defaultFilterProcessingUrl, AuthenticationManager authenticationManager) {
         super.setFilterProcessesUrl(defaultFilterProcessingUrl);
         super.setAuthenticationManager(authenticationManager);
     }

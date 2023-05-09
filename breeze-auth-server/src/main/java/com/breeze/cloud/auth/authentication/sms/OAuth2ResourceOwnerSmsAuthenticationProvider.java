@@ -68,7 +68,8 @@ public class OAuth2ResourceOwnerSmsAuthenticationProvider implements Authenticat
      * @param tokenGenerator        令牌生成器
      */
     public OAuth2ResourceOwnerSmsAuthenticationProvider(AuthenticationManager authenticationManager,
-                                                        OAuth2AuthorizationService authorizationService, OAuth2TokenGenerator<? extends OAuth2Token> tokenGenerator) {
+                                                        OAuth2AuthorizationService authorizationService,
+                                                        OAuth2TokenGenerator<? extends OAuth2Token> tokenGenerator) {
         Assert.notNull(authorizationService, "authorizationService cannot be null");
         Assert.notNull(tokenGenerator, "tokenGenerator cannot be null");
         this.authenticationManager = authenticationManager;
@@ -79,9 +80,9 @@ public class OAuth2ResourceOwnerSmsAuthenticationProvider implements Authenticat
     @Override
     public Authentication authenticate(Authentication authentication) throws AuthenticationException {
 
-        OAuth2ResourceOwnerSmsAuthenticationToken resourceOwnerSmsAuthentication = (OAuth2ResourceOwnerSmsAuthenticationToken) authentication;
+        OAuth2ResourceOwnerSmsAuthenticationToken resourceOwnerSmsAuthenticationToken = (OAuth2ResourceOwnerSmsAuthenticationToken) authentication;
 
-        OAuth2ClientAuthenticationToken clientAuthenticationToken = getAuthenticatedClientElseThrowInvalidClient(resourceOwnerSmsAuthentication);
+        OAuth2ClientAuthenticationToken clientAuthenticationToken = getAuthenticatedClientElseThrowInvalidClient(resourceOwnerSmsAuthenticationToken);
 
         RegisteredClient registeredClient = clientAuthenticationToken.getRegisteredClient();
 
@@ -94,17 +95,19 @@ public class OAuth2ResourceOwnerSmsAuthenticationProvider implements Authenticat
             throw new OAuth2AuthenticationException(OAuth2ErrorCodes.UNAUTHORIZED_CLIENT);
         }
 
-        Authentication smsAuthentication = getUsernameSmsAuthentication(resourceOwnerSmsAuthentication);
+        Authentication smsAuthentication = getSmsAuthentication(resourceOwnerSmsAuthenticationToken);
 
         // Default to configured scopes
         Set<String> authorizedScopes = registeredClient.getScopes();
-        Set<String> requestedScopes = resourceOwnerSmsAuthentication.getScopes();
+        Set<String> requestedScopes = resourceOwnerSmsAuthenticationToken.getScopes();
         if (!CollectionUtils.isEmpty(requestedScopes)) {
             Set<String> unauthorizedScopes = requestedScopes.stream()
                     .filter(requestedScope -> !registeredClient.getScopes().contains(requestedScope))
                     .collect(Collectors.toSet());
             if (!CollectionUtils.isEmpty(unauthorizedScopes)) {
-                throw new OAuth2AuthenticationException(OAuth2ErrorCodes.INVALID_SCOPE);
+                OAuth2Error error = new OAuth2Error(OAuth2ErrorCodes.INVALID_SCOPE,
+                        "invalid_scope", ERROR_URI);
+                throw new OAuth2AuthenticationException(error);
             }
 
             authorizedScopes = new LinkedHashSet<>(requestedScopes);
@@ -121,7 +124,7 @@ public class OAuth2ResourceOwnerSmsAuthenticationProvider implements Authenticat
                 .authorizationServerContext(AuthorizationServerContextHolder.getContext())
                 .authorizedScopes(authorizedScopes)
                 .authorizationGrantType(CustomAuthorizationGrantType.SMS_CODE)
-                .authorizationGrant(resourceOwnerSmsAuthentication);
+                .authorizationGrant(resourceOwnerSmsAuthenticationToken);
         // @formatter:on
 
         // ----- Access token -----
@@ -243,12 +246,12 @@ public class OAuth2ResourceOwnerSmsAuthenticationProvider implements Authenticat
     /**
      * 解析用户名手机认证
      *
-     * @param resourceOwnerSmsAuthentication 资源所有者手机身份验证
+     * @param resourceOwnerSmsAuthenticationToken 资源所有者手机身份验证
      * @return {@link Authentication}
      */
-    private Authentication getUsernameSmsAuthentication(OAuth2ResourceOwnerSmsAuthenticationToken resourceOwnerSmsAuthentication) {
+    private Authentication getSmsAuthentication(OAuth2ResourceOwnerSmsAuthenticationToken resourceOwnerSmsAuthenticationToken) {
 
-        Map<String, Object> additionalParameters = resourceOwnerSmsAuthentication.getAdditionalParameters();
+        Map<String, Object> additionalParameters = resourceOwnerSmsAuthenticationToken.getAdditionalParameters();
 
         String username = (String) additionalParameters.get(CustomOAuth2ParameterNames.PHONE);
         String code = (String) additionalParameters.get(CustomOAuth2ParameterNames.CODE);

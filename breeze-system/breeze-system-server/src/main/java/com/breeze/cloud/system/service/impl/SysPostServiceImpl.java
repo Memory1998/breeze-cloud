@@ -16,20 +16,16 @@
 
 package com.breeze.cloud.system.service.impl;
 
-import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.metadata.IPage;
-import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.conditions.query.LambdaQueryChainWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.breeze.cloud.core.utils.Result;
 import com.breeze.cloud.system.domain.SysPost;
-import com.breeze.cloud.system.domain.SysUser;
 import com.breeze.cloud.system.mapper.SysPostMapper;
 import com.breeze.cloud.system.query.PostQuery;
 import com.breeze.cloud.system.service.SysPostService;
-import com.breeze.cloud.system.service.SysUserService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -44,11 +40,6 @@ import java.util.List;
 @Service
 @AllArgsConstructor
 public class SysPostServiceImpl extends ServiceImpl<SysPostMapper, SysPost> implements SysPostService {
-
-    /**
-     * 系统用户服务
-     */
-    private final SysUserService sysUserService;
 
     /**
      * 列表页面
@@ -74,10 +65,6 @@ public class SysPostServiceImpl extends ServiceImpl<SysPostMapper, SysPost> impl
      */
     @Override
     public Result<Boolean> removePostByIds(List<Long> ids) {
-        List<SysUser> sysUserList = this.sysUserService.list(Wrappers.<SysUser>lambdaQuery().in(SysUser::getPostId, ids));
-        if (CollUtil.isNotEmpty(sysUserList)) {
-            return Result.warning(Boolean.FALSE, "岗位存在用户");
-        }
         return Result.ok(this.removeByIds(ids));
     }
 

@@ -16,8 +16,9 @@
 
 package com.breeze.cloud.system.client;
 
+import com.breeze.cloud.core.base.BaseLoginUser;
+import com.breeze.cloud.core.constants.ContextConstants;
 import com.breeze.cloud.core.utils.Result;
-import com.breeze.cloud.system.dto.LoginUser;
 import com.breeze.cloud.system.params.AuthLoginParam;
 import com.breeze.cloud.system.params.LoginUserParam;
 import com.breeze.cloud.system.params.WxLoginParam;
@@ -30,45 +31,47 @@ import org.springframework.web.bind.annotation.*;
  * @author gaoweixuan
  * @date 2021-12-06 22:03:39
  */
-@FeignClient(name = "breeze-system-server", contextId = "LoginUserFeign")
+@FeignClient(name = ContextConstants.SYSTEM, contextId = "LoginUserFeign")
 public interface SysUserFeign {
 
     /**
      * 加载用户通过用户名
      *
      * @param username 用户名
-     * @param tenantId
-     * @return {@link Result}<{@link LoginUserParam}>
+     * @param tenantId 承租者id
+     * @return {@link Result}<{@link BaseLoginUser}>
      */
     @RequestMapping("/user/loadUserByUsername/{username}")
-    Result<LoginUser> loadUserByUsername(@PathVariable("username") String username, @RequestHeader(name = "TENANT_ID") String tenantId);
+    Result<BaseLoginUser> loadUserByUsername(@PathVariable("username") String username, @RequestHeader(name = "TENANT_ID") String tenantId);
 
     /**
      * 加载用户通过电话
      *
-     * @param phone 手机号
-     * @return {@link Result}<{@link LoginUserParam}>
+     * @param phone    手机号
+     * @param tenantId 承租者id
+     * @return {@link Result}<{@link BaseLoginUser}>
      */
     @RequestMapping("/user/loadUserByPhone/{phone}")
-    Result<LoginUser> loadUserByPhone(@PathVariable("phone") String phone, @RequestHeader(name = "TENANT_ID") String tenantId);
+    Result<BaseLoginUser> loadUserByPhone(@PathVariable("phone") String phone, @RequestHeader(name = "TENANT_ID") String tenantId);
 
     /**
      * 加载用户通过电子邮件
      *
-     * @param email 邮箱
-     * @return {@link Result}<{@link LoginUserParam}>
+     * @param email    邮箱
+     * @param tenantId 承租者id
+     * @return {@link Result}<{@link BaseLoginUser}>
      */
     @RequestMapping("/user/loadUserByEmail/{email}")
-    Result<LoginUser> loadUserByEmail(@PathVariable("email") String email);
+    Result<BaseLoginUser> loadUserByEmail(@PathVariable("email") String email, @RequestHeader(name = "TENANT_ID") String tenantId);
 
     /**
      * 微信登录加载用户,若不存在即创建
      *
      * @param wxLoginParam wx登录参数
-     * @return {@link Result}<{@link LoginUser}>
+     * @return {@link Result}<{@link BaseLoginUser}>
      */
     @PostMapping("/user/loadCreateUserByOpenId")
-    Result<LoginUser> loadCreateUserByOpenId(@RequestBody WxLoginParam wxLoginParam);
+    Result<BaseLoginUser> loadCreateUserByOpenId(@RequestBody WxLoginParam wxLoginParam);
 
     /**
      * 三方登录
@@ -77,15 +80,15 @@ public interface SysUserFeign {
      * @return {@link Result}<{@link LoginUserParam}>
      */
     @PostMapping("/user/loadCreateAuthUserByPhone")
-    Result<LoginUser> loadCreateAuthUserByPhone(AuthLoginParam authLoginParam);
+    Result<BaseLoginUser> loadCreateAuthUserByPhone(AuthLoginParam authLoginParam);
 
     /**
      * 负载创建用户通过电话
      *
      * @param phone 电话
-     * @return {@link Result}<{@link LoginUser}>
+     * @return {@link Result}<{@link BaseLoginUser}>
      */
     @PostMapping("/user/loadCreateUserByPhone/{phone}")
-    Result<LoginUser> loadCreateUserByPhone(@PathVariable("phone") String phone);
+    Result<BaseLoginUser> loadCreateUserByPhone(@PathVariable("phone") String phone);
 
 }
