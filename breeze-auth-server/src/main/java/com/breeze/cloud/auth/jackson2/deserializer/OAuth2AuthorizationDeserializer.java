@@ -91,7 +91,7 @@ public class OAuth2AuthorizationDeserializer extends JsonDeserializer<OAuth2Auth
         ObjectMapper mapper = (ObjectMapper) jp.getCodec();
         JsonNode jsonNode = mapper.readTree(jp);
 
-        //@formatter:off
+        // @formatter:off
         Set<String> authorizedScopes = mapper.convertValue(jsonNode.get("authorizedScopes"), SET_TYPE_REFERENCE);
         Map<String, Object> attributes = mapper.convertValue(jsonNode.get("attributes"), MAP_TYPE_REFERENCE);
         Map<String, Object> tokens = mapper.convertValue(jsonNode.get("tokens"), MAP_TYPE_REFERENCE);
@@ -115,7 +115,7 @@ public class OAuth2AuthorizationDeserializer extends JsonDeserializer<OAuth2Auth
         Optional.ofNullable(tokens.get(OAuth2AccessToken.class.getName())).ifPresent(token -> this.addToken((Token) token, builder));
         Optional.ofNullable(tokens.get(OAuth2RefreshToken.class.getName())).ifPresent(token -> this.addToken((Token) token, builder));
         Optional.ofNullable(tokens.get(OidcIdToken.class.getName())).ifPresent(token -> this.addToken((Token) token, builder));
-        //@formatter:on
+        // @formatter:on
         return builder.build();
     }
 

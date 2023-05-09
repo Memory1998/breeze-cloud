@@ -160,5 +160,4 @@ public class BreezeDataPermissionInterceptor extends JsqlParserSupport implement
         }
         return originalSql;
     }
-
 }

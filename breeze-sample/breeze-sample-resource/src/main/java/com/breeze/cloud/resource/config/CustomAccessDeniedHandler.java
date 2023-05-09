@@ -49,7 +49,7 @@ public class CustomAccessDeniedHandler implements AccessDeniedHandler {
         log.info(response.getHeader("Authorization"));
         log.error("[携带了合法token,但权限不足以访问其请求的资源：403]", accessDeniedException);
         // 此处不再返回使用异常拦截进行处理
-        ResponseUtil.response(response, ResultCode.UNAUTHORIZED.getMsg());
+        ResponseUtil.response(response, ResultCode.UNAUTHORIZED);
     }
 
 }

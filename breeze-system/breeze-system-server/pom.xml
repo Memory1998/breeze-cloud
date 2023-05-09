@@ -135,6 +135,12 @@
             <groupId>de.codecentric</groupId>
             <artifactId>spring-boot-admin-starter-client</artifactId>
         </dependency>
+        <dependency>
+            <groupId>org.flowable</groupId>
+            <artifactId>flowable-engine-common</artifactId>
+            <version>6.7.2</version>
+            <scope>compile</scope>
+        </dependency>
     </dependencies>
 
     <build>

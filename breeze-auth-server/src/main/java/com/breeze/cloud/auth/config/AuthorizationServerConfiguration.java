@@ -27,8 +27,10 @@ import com.breeze.cloud.auth.authentication.sms.SmsAuthenticationProvider;
 import com.breeze.cloud.auth.exception.CustomAuthenticationFailureHandler;
 import com.breeze.cloud.auth.extend.InRedisOAuth2AuthorizationConsentService;
 import com.breeze.cloud.auth.extend.InRedisOAuth2AuthorizationService;
+import com.breeze.cloud.auth.extend.RemoteRegisterClientService;
 import com.breeze.cloud.auth.jose.Jwks;
 import com.breeze.cloud.auth.service.impl.UserDetailService;
+import com.breeze.cloud.system.client.SysRegisterClientFeign;
 import com.nimbusds.jose.jwk.JWKSet;
 import com.nimbusds.jose.jwk.RSAKey;
 import com.nimbusds.jose.jwk.source.JWKSource;
@@ -185,6 +187,19 @@ public class AuthorizationServerConfiguration {
             authorities.addAll(authorizedScopes);
             claims.claim("scope", authorities);
         };
+    }
+
+    /**
+     * 注册客户端库
+     *
+     * @param passwordEncoder     密码编码器
+     * @param registerClientFeign 注册客户端装
+     * @return {@link RegisteredClientRepository}
+     */
+    @Bean
+    public RegisteredClientRepository registeredClientRepository(PasswordEncoder passwordEncoder,
+                                                                 SysRegisterClientFeign registerClientFeign) {
+        return new RemoteRegisterClientService(passwordEncoder, registerClientFeign);
     }
 
     /**

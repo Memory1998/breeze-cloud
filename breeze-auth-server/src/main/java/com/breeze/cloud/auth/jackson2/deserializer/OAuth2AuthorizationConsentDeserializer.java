@@ -55,12 +55,16 @@ public class OAuth2AuthorizationConsentDeserializer extends JsonDeserializer<OAu
     public OAuth2AuthorizationConsent deserialize(JsonParser jp, DeserializationContext context) throws IOException {
         ObjectMapper mapper = (ObjectMapper) jp.getCodec();
         JsonNode jsonNode = mapper.readTree(jp);
+        // @formatter:off
 
         String registeredClientId = readJsonNode(jsonNode, "registeredClientId").asText();
         String principalName = readJsonNode(jsonNode, "principalName").asText();
         Set<SimpleGrantedAuthority> authorities = mapper.convertValue(jsonNode.get("authorities"), SIMPLE_GRANTED_AUTHORITY_TYPE_REFERENCE);
 
-        return OAuth2AuthorizationConsent.withId(registeredClientId, principalName).authorities(grantedAuthorities -> grantedAuthorities.addAll(authorities)).build();
+        return OAuth2AuthorizationConsent.withId(registeredClientId, principalName)
+                .authorities(grantedAuthorities -> grantedAuthorities.addAll(authorities))
+                .build();
+        // @formatter:on
     }
 
     private JsonNode readJsonNode(JsonNode jsonNode, String field) {

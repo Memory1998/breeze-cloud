@@ -83,7 +83,7 @@ public class InRedisOAuth2AuthorizationService implements OAuth2AuthorizationSer
         this.redisOperations = redisOperations;
         this.clientRepository = clientRepository;
 
-        ClassLoader classLoader = this.getClass().getClassLoader();
+        ClassLoader classLoader = InRedisOAuth2AuthorizationService.class.getClassLoader();
         List<Module> securityModules = SecurityJackson2Modules.getModules(classLoader);
 
         utils.register(securityModules);

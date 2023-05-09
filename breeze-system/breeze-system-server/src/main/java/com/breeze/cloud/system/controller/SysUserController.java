@@ -262,6 +262,7 @@ public class SysUserController {
      * @param email 电子邮件
      * @return {@link Result}<{@link BaseLoginUser}>
      */
+    @JumpAuth
     @ResponseBody
     @GetMapping("/loadUserByEmail/{email}")
     public Result<BaseLoginUser> loadUserByEmail(@PathVariable("email") String email) {
@@ -274,6 +275,7 @@ public class SysUserController {
      * @param wxLoginParam wx登录参数
      * @return {@link Result}<{@link BaseLoginUser}>
      */
+    @JumpAuth
     @ResponseBody
     @Operation(summary = "通过手机号获取并且注册用户")
     @PostMapping("/loadRegisterUserByOpenId")
@@ -287,6 +289,7 @@ public class SysUserController {
      * @param authLoginParam 身份验证登录参数
      * @return {@link Result}<{@link BaseLoginUser}>
      */
+    @JumpAuth
     @ResponseBody
     @Operation(summary = "通过手机号获取并且注册用户")
     @PostMapping("/loadRegisterUserByPhone")
