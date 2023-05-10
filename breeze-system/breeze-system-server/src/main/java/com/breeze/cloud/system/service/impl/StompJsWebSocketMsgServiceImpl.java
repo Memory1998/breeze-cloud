@@ -152,7 +152,7 @@ public class StompJsWebSocketMsgServiceImpl extends WebSocketMsgService {
      * @return {@link UserMsgBO.SysUserMsgSnapshotBO}
      */
     private UserMsgBO.SysUserMsgSnapshotBO buildSysUserMsgSnapshot(SysMsg sysMsg) {
-        UserMsgBO.SysUserMsgSnapshotBO userMsgSnapshot = com.breeze.cloud.websocket.bo.UserMsgBO.SysUserMsgSnapshotBO.builder().build();
+        UserMsgBO.SysUserMsgSnapshotBO userMsgSnapshot = UserMsgBO.SysUserMsgSnapshotBO.builder().build();
         BeanUtil.copyProperties(sysMsg, userMsgSnapshot, CopyOptions.create().setIgnoreProperties("id").setIgnoreNullValue(true).setIgnoreError(true));
         userMsgSnapshot.setMsgId(sysMsg.getId());
         return userMsgSnapshot;

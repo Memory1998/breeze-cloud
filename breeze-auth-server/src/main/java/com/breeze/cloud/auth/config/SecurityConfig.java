@@ -68,7 +68,7 @@ public class SecurityConfig {
                 .successHandler((request,response,authentication)-> {
                     String url = "http://localhost:8000/oauth2/authorize" +
                             "?response_type=code" +
-                            "&client_id=messaging-client" +
+                            "&client_id=messaging-test" +
                             "&scope=openid%20profile" +
                             "&state=Tuh4Jf_MoLkJn6C9Iga8qWUraoHZgiAok0TXk6eWgNc%3D" +
                             "&redirect_uri=http://127.0.0.1:8080/login/oauth2/code/messaging-client-oidc" +

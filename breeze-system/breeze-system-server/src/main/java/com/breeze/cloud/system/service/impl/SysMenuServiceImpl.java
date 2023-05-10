@@ -182,10 +182,10 @@ public class SysMenuServiceImpl extends ServiceImpl<SysMenuMapper, SysMenu> impl
     }
 
     /**
-     * 构建树
+     * 获取树形数据
      *
      * @param menuEntityList 菜单实体列表
-     * @param id             id
+     * @param id
      * @return {@link List}<{@link Tree}<{@link Long}>>
      */
     private List<Tree<Long>> buildTrees(List<SysMenu> menuEntityList, Long id) {
