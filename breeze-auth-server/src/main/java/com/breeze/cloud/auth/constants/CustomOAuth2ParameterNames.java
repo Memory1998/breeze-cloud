@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.breeze.cloud.auth.authentication.constants;
+package com.breeze.cloud.auth.constants;
 
 /**
  * 自定义oauth2参数名称

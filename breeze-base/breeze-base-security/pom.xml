@@ -11,7 +11,7 @@
 
     <artifactId>breeze-base-security</artifactId>
     <packaging>jar</packaging>
-    <description>JWT Security 登录依赖</description>
+    <description>资源服务包</description>
 
     <dependencies>
         <dependency>

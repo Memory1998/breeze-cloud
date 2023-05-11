@@ -16,15 +16,13 @@
 
 package com.breeze.cloud.auth.controller;
 
-import com.breeze.cloud.core.utils.Result;
-import com.breeze.cloud.system.client.SysTenantFeign;
+import cn.hutool.json.JSONUtil;
 import lombok.AllArgsConstructor;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
-import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 import java.util.Map;
 
@@ -36,37 +34,14 @@ import java.util.Map;
  */
 @Controller
 @AllArgsConstructor
-@RequestMapping("/auth")
-public class RouteController {
+public class UserController {
 
-    /**
-     * 租户接口
-     */
-    private final SysTenantFeign tenantFeign;
-
-    @RequestMapping("/login")
-    public String login(Model model) {
-        Result<List<Map<String, Object>>> mapResult = this.tenantFeign.selectTenant();
-        List<Map<String, Object>> tenantMap = mapResult.getData();
-        if (tenantMap == null) {
-            return "error";
-        }
-
-        // 给login页面赋值
-        model.addAttribute("tenant", tenantMap);
-        return "login";
-    }
-
-    @RequestMapping("/logout")
-    public String logout(HttpServletRequest request) {
-
-        // 清理客户端的session
-        request.getSession().invalidate();
-        // 清理客户端的安全上下文
-        SecurityContextHolder.clearContext();
-
-        // 拓展需要跳转页面 TODO
-        return "logout";
+    @RequestMapping("/userInfo")
+    @ResponseBody
+    public List<Map<String, Object>> userInfo() {
+        System.out.println(SecurityContextHolder.getContext().getAuthentication().getPrincipal());
+        System.out.println(JSONUtil.parse(SecurityContextHolder.getContext().getAuthentication().getPrincipal()));
+        return null;
     }
 
 }

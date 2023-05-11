@@ -16,8 +16,8 @@
 
 package com.breeze.cloud.auth.authentication.sms;
 
-import com.breeze.cloud.auth.authentication.constants.CustomAuthorizationGrantType;
-import com.breeze.cloud.auth.authentication.constants.CustomOAuth2ParameterNames;
+import com.breeze.cloud.auth.constants.CustomAuthorizationGrantType;
+import com.breeze.cloud.auth.constants.CustomOAuth2ParameterNames;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationProvider;

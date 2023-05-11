@@ -72,7 +72,7 @@ public class InRedisOAuth2AuthorizationService implements OAuth2AuthorizationSer
     /**
      * 在Redis,oauth2授权服务
      *
-     * @param redisOperations  复述,操作
+     * @param redisOperations  redis操作
      * @param clientRepository 客户端库
      * @param beanFactory      bean工厂, 它的功能主要是为了装配applicationContext管理之外的Bean。
      */

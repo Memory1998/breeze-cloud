@@ -109,35 +109,6 @@ public class SysRoleController {
     }
 
     /**
-     * 获取树形权限列表
-     * <p>
-     * 选中数据
-     *
-     * @param roleId 角色id
-     * @return {@link Result}<{@link List}<{@link SysRoleMenu}>>
-     */
-    @Operation(summary = "获取树形权限列表", description = "选中的行的回显")
-    @GetMapping("/listRolesPermission")
-    @PreAuthorize("hasAnyAuthority('sys:role:list')")
-    public Result<List<SysRoleMenu>> listRolesPermission(@RequestParam Long roleId) {
-        return Result.ok(this.sysRoleMenuService.list(Wrappers.<SysRoleMenu>lambdaQuery().eq(SysRoleMenu::getRoleId, roleId)));
-    }
-
-    /**
-     * 修改权限
-     *
-     * @param menuPermissionParam 菜单权限参数
-     * @return {@link Result}<{@link Boolean}>
-     */
-    @Operation(summary = "编辑权限")
-    @PutMapping("/modifyPermission")
-    @PreAuthorize("hasAnyAuthority('sys:role:modify')")
-    @BreezeSysLog(description = "角色权限信息修改", type = LogType.EDIT)
-    public Result<Boolean> modifyPermission(@Valid @RequestBody MenuPermissionParam menuPermissionParam) {
-        return this.sysRoleMenuService.modifyPermission(menuPermissionParam);
-    }
-
-    /**
      * 创建
      *
      * @param sysRole 角色实体
@@ -177,6 +148,35 @@ public class SysRoleController {
     @BreezeSysLog(description = "角色信息删除", type = LogType.DELETE)
     public Result<Boolean> delete(@NotNull(message = "参数不能为空") @RequestBody Long[] ids) {
         return sysRoleService.deleteByIds(Arrays.asList(ids));
+    }
+
+    /**
+     * 获取树形权限列表
+     * <p>
+     * 选中数据
+     *
+     * @param roleId 角色id
+     * @return {@link Result}<{@link List}<{@link SysRoleMenu}>>
+     */
+    @Operation(summary = "获取树形权限列表", description = "选中的行的回显")
+    @GetMapping("/listRolesPermission")
+    @PreAuthorize("hasAnyAuthority('sys:role:list')")
+    public Result<List<SysRoleMenu>> listRolesPermission(@RequestParam Long roleId) {
+        return Result.ok(this.sysRoleMenuService.list(Wrappers.<SysRoleMenu>lambdaQuery().eq(SysRoleMenu::getRoleId, roleId)));
+    }
+
+    /**
+     * 修改权限
+     *
+     * @param menuPermissionParam 菜单权限参数
+     * @return {@link Result}<{@link Boolean}>
+     */
+    @Operation(summary = "编辑权限")
+    @PutMapping("/modifyPermission")
+    @PreAuthorize("hasAnyAuthority('sys:role:modify')")
+    @BreezeSysLog(description = "角色权限信息修改", type = LogType.EDIT)
+    public Result<Boolean> modifyPermission(@Valid @RequestBody MenuPermissionParam menuPermissionParam) {
+        return this.sysRoleMenuService.modifyPermission(menuPermissionParam);
     }
 
 }

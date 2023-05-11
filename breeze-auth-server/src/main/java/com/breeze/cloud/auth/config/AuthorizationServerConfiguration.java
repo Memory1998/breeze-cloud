@@ -24,10 +24,7 @@ import com.breeze.cloud.auth.authentication.password.OAuth2ResourceOwnerPassword
 import com.breeze.cloud.auth.authentication.sms.OAuth2ResourceOwnerSmsAuthenticationConverter;
 import com.breeze.cloud.auth.authentication.sms.OAuth2ResourceOwnerSmsAuthenticationProvider;
 import com.breeze.cloud.auth.authentication.sms.SmsAuthenticationProvider;
-import com.breeze.cloud.auth.exception.CustomAuthenticationFailureHandler;
-import com.breeze.cloud.auth.extend.InRedisOAuth2AuthorizationConsentService;
-import com.breeze.cloud.auth.extend.InRedisOAuth2AuthorizationService;
-import com.breeze.cloud.auth.extend.RemoteRegisterClientService;
+import com.breeze.cloud.auth.extend.*;
 import com.breeze.cloud.auth.jose.Jwks;
 import com.breeze.cloud.auth.service.impl.UserDetailService;
 import com.breeze.cloud.system.client.SysRegisterClientFeign;
@@ -68,7 +65,6 @@ import org.springframework.security.oauth2.server.authorization.web.authenticati
 import org.springframework.security.oauth2.server.authorization.web.authentication.OAuth2RefreshTokenAuthenticationConverter;
 import org.springframework.security.web.DefaultSecurityFilterChain;
 import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.security.web.authentication.LoginUrlAuthenticationEntryPoint;
 import org.springframework.security.web.util.matcher.RequestMatcher;
 
 import java.util.Arrays;
@@ -120,17 +116,22 @@ public class AuthorizationServerConfiguration {
         OAuth2AuthorizationServerConfigurer authorizationServerConfigurer = new OAuth2AuthorizationServerConfigurer();
         // @formatter:off
 
-        http.apply(authorizationServerConfigurer
-                .tokenEndpoint((tokenEndpoint) -> tokenEndpoint.accessTokenRequestConverter(
-                        new DelegatingAuthenticationConverter(Arrays.asList(
-                                new OAuth2AuthorizationCodeAuthenticationConverter(),
-                                new OAuth2RefreshTokenAuthenticationConverter(),
-                                new OAuth2ClientCredentialsAuthenticationConverter(),
-                                new OAuth2ResourceOwnerPasswordAuthenticationConverter(),
-                                new OAuth2ResourceOwnerSmsAuthenticationConverter(),
-                                new OAuth2ResourceOwnerEmailAuthenticationConverter()
-                        ))
-                )));
+        http.apply(authorizationServerConfigurer.tokenEndpoint((tokenEndpoint) -> {
+            tokenEndpoint.accessTokenRequestConverter(
+                            new DelegatingAuthenticationConverter(Arrays.asList(
+                                    new OAuth2AuthorizationCodeAuthenticationConverter(),
+                                    new OAuth2RefreshTokenAuthenticationConverter(),
+                                    new OAuth2ClientCredentialsAuthenticationConverter(),
+                                    new OAuth2ResourceOwnerPasswordAuthenticationConverter(),
+                                    new OAuth2ResourceOwnerSmsAuthenticationConverter(),
+                                    new OAuth2ResourceOwnerEmailAuthenticationConverter()
+                            )))
+                    .errorResponseHandler(new CustomAuthenticationFailureHandler());
+        }));
+
+        authorizationServerConfigurer.clientAuthentication(authenticationConfigurer -> {
+            authenticationConfigurer.errorResponseHandler(new CustomAuthenticationFailureHandler());
+        });
 
         // 根据需求对 authorizationServerConfigurer 进行一些个性化配置
         authorizationServerConfigurer
@@ -140,30 +141,20 @@ public class AuthorizationServerConfiguration {
                 // Enable OpenID Connect 1.0
                 .oidc(Customizer.withDefaults());
 
-        authorizationServerConfigurer.tokenEndpoint(oAuth2TokenEndpointConfigurer -> {
-            oAuth2TokenEndpointConfigurer.errorResponseHandler(new CustomAuthenticationFailureHandler());
-        });
-
-        authorizationServerConfigurer.clientAuthentication(authenticationConfigurer -> {
-            authenticationConfigurer.errorResponseHandler(new CustomAuthenticationFailureHandler());
-        });
 
         RequestMatcher endpointsMatcher = authorizationServerConfigurer.getEndpointsMatcher();
         DefaultSecurityFilterChain securityFilterChain = http
                 // 拦截对授权服务器相关端点的请求
                 .requestMatcher(endpointsMatcher)
                 // 拦截对授权服务器相关端点的请求
-                .authorizeRequests(authorizeRequests ->
-                        authorizeRequests.anyRequest().authenticated()
-                )
+                .authorizeRequests().anyRequest().authenticated()
                 // 忽略掉相关端点的 CSRF(跨站请求): 对授权端点的访问可以是跨站的
-                .csrf(csrf -> csrf.ignoringRequestMatchers(endpointsMatcher))
-                .exceptionHandling(exceptions ->
-                        exceptions.authenticationEntryPoint(new LoginUrlAuthenticationEntryPoint("/login"))
-                )
-                .oauth2ResourceServer(OAuth2ResourceServerConfigurer::jwt)
+                .and().csrf().ignoringRequestMatchers(endpointsMatcher)
+                .and().exceptionHandling().authenticationEntryPoint(new CustomAuthenticationEntryPoint("/login"))
+                .and().oauth2ResourceServer(OAuth2ResourceServerConfigurer::jwt)
                 // 应用授权服务器的配置
-                .apply(authorizationServerConfigurer).and().build();
+                .apply(authorizationServerConfigurer)
+                .and().build();
 
         this.addCustomOAuth2ResourceOwnerAuthenticationProvider(http);
         // @formatter:on

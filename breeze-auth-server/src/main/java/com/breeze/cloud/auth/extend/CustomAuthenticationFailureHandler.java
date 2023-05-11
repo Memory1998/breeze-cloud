@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.breeze.cloud.auth.exception;
+package com.breeze.cloud.auth.extend;
 
 import com.breeze.cloud.core.enums.ResultCode;
 import com.breeze.cloud.core.utils.ResponseUtil;

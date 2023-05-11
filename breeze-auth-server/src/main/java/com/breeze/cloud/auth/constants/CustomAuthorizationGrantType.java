@@ -14,12 +14,14 @@
  * limitations under the License.
  */
 
-package com.breeze.cloud.auth.authentication.constants;
+package com.breeze.cloud.auth.constants;
 
+import com.google.common.collect.Lists;
 import org.springframework.security.oauth2.core.AuthorizationGrantType;
 import org.springframework.util.Assert;
 
 import java.io.Serializable;
+import java.util.List;
 
 /**
  * 自定义授权授予类型
@@ -38,6 +40,15 @@ public final class CustomAuthorizationGrantType implements Serializable {
         this.value = value;
     }
 
+    public static List<String> getGrantTypes() {
+        // @formatter:off
+        return Lists.newArrayList(
+                AuthorizationGrantType.PASSWORD.getValue(),
+                EMAIL_CODE.getValue(),
+                SMS_CODE.getValue()
+        );
+        // @formatter:on
+    }
     public String getValue() {
         return this.value;
     }

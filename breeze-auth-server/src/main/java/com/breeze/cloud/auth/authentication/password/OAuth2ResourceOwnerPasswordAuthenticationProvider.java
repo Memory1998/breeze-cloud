@@ -16,6 +16,7 @@
 
 package com.breeze.cloud.auth.authentication.password;
 
+import com.breeze.cloud.auth.constants.CustomScopes;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationProvider;
@@ -226,6 +227,17 @@ public class OAuth2ResourceOwnerPasswordAuthenticationProvider implements Authen
             log.trace("Authenticated token request");
         }
 
+        if (requestedScopes.contains(CustomScopes.USER_INFO) && idToken != null) {
+            additionalParameters.put("user_info", usernamePasswordAuthentication);
+        }
+        if (requestedScopes.contains(CustomScopes.USER_INFO) && idToken == null) {
+            additionalParameters = new HashMap<>();
+            additionalParameters.put("user_info", usernamePasswordAuthentication);
+        }
+
+        if (log.isTraceEnabled()) {
+            log.trace("user_info is setting");
+        }
         return new OAuth2AccessTokenAuthenticationToken(registeredClient, clientPrincipal, accessToken, refreshToken, additionalParameters);
     }
 

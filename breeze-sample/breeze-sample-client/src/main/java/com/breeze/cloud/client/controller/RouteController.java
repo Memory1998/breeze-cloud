@@ -19,6 +19,7 @@ package com.breeze.cloud.client.controller;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -31,6 +32,7 @@ import java.io.IOException;
  * @date 2023-04-20
  */
 @Controller
+@RequestMapping("")
 public class RouteController {
 
     /**
@@ -59,7 +61,7 @@ public class RouteController {
      * @param request  请求
      * @param response 响应
      */
-    @GetMapping("/custom/client/logout")
+    @GetMapping("/client/logout")
     public void logout(HttpServletRequest request,
                        HttpServletResponse response) {
 
@@ -70,7 +72,7 @@ public class RouteController {
 
         // 跳转认证中心退出页面
         try {
-            response.sendRedirect("http://localhost:8000/custom/auth/logout");
+            response.sendRedirect("http://localhost:8000/auth/logout");
         } catch (IOException e) {
             e.printStackTrace();
         }

@@ -63,7 +63,7 @@ public class SysRegisteredClientController {
      */
     @Operation(summary = "列表", description = "分页")
     @GetMapping
-    @PreAuthorize("hasAnyAuthority('auth:client:list')")
+    @PreAuthorize("hasAnyAuthority('sys:client:list')")
     public Result<Page<SysRegisteredClient>> list(RegisterClientQuery registerClientQuery) {
         return Result.ok(this.sysRegisterClientService.listPage(registerClientQuery));
     }
@@ -103,7 +103,7 @@ public class SysRegisteredClientController {
     @Operation(summary = "保存")
     @JumpAuth
     @PostMapping
-//    @PreAuthorize("hasAnyAuthority('auth:client:create')")
+//    @PreAuthorize("hasAnyAuthority('sys:client:create')")
     @BreezeSysLog(description = "客户端信息保存", type = LogType.SAVE)
     public Result<Boolean> save(@Valid @RequestBody RegisteredClientParams registeredClientParams) {
         return this.sysRegisterClientService.saveRegisteredClient(registeredClientParams);
@@ -117,7 +117,7 @@ public class SysRegisteredClientController {
      */
     @Operation(summary = "修改")
     @PutMapping
-    @PreAuthorize("hasAnyAuthority('auth:client:modify')")
+    @PreAuthorize("hasAnyAuthority('sys:client:modify')")
     @BreezeSysLog(description = "客户端信息修改", type = LogType.EDIT)
     public Result<Boolean> modify(@Valid @RequestBody RegisteredClientParams registeredClientParams) {
         return Result.ok(this.sysRegisterClientService.update(registeredClientParams));
@@ -131,7 +131,7 @@ public class SysRegisteredClientController {
      */
     @Operation(summary = "删除")
     @DeleteMapping
-    @PreAuthorize("hasAnyAuthority('auth:client:delete')")
+    @PreAuthorize("hasAnyAuthority('sys:client:delete')")
     @BreezeSysLog(description = "客户端信息删除", type = LogType.DELETE)
     public Result<Boolean> delete(@NotNull(message = "参数不能为空") @RequestBody Long[] ids) {
         return this.sysRegisterClientService.deleteById(Arrays.asList(ids));

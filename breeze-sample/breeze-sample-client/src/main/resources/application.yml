@@ -17,7 +17,7 @@ spring:
         registration:
           messaging-client-oidc:
             provider: sas # 指向 provider 唯一标识【sas】
-            client-id: messaging-client
+            client-id: messaging-test
             client-secret: secret
             authorization-grant-type: authorization_code
             redirect-uri: "http://127.0.0.1:8080/login/oauth2/code/{registrationId}"
@@ -25,7 +25,7 @@ spring:
             client-name: messaging-client-oidc
           messaging-client-authorization-code:
             provider: sas
-            client-id: messaging-client
+            client-id: messaging-test
             client-secret: secret
             authorization-grant-type: authorization_code
             redirect-uri: "http://127.0.0.1:8080/authorized"
@@ -33,7 +33,7 @@ spring:
             client-name: messaging-client-authorization-code
           messaging-client-client-credentials:
             provider: sas
-            client-id: messaging-client
+            client-id: messaging-test
             client-secret: secret
             authorization-grant-type: client_credentials
             scope: message.read,message.write

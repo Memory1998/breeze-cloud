@@ -17,39 +17,34 @@
 package com.breeze.cloud.auth.extend;
 
 import cn.hutool.json.JSONUtil;
-import com.breeze.cloud.auth.authentication.constants.CustomAuthorizationGrantType;
 import com.breeze.cloud.auth.authentication.utils.OAuth2EndpointUtils;
+import com.breeze.cloud.auth.exception.NotSupportException;
 import com.breeze.cloud.core.utils.Utils;
 import com.breeze.cloud.system.client.SysRegisterClientFeign;
 import com.breeze.cloud.system.domain.SysRegisteredClient;
-import com.fasterxml.jackson.databind.Module;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.jackson2.SecurityJackson2Modules;
 import org.springframework.security.oauth2.core.AuthorizationGrantType;
 import org.springframework.security.oauth2.core.ClientAuthenticationMethod;
-import org.springframework.security.oauth2.core.OAuth2ErrorCodes;
-import org.springframework.security.oauth2.core.endpoint.OAuth2ParameterNames;
-import org.springframework.security.oauth2.core.oidc.OidcScopes;
 import org.springframework.security.oauth2.jose.jws.SignatureAlgorithm;
 import org.springframework.security.oauth2.server.authorization.client.RegisteredClient;
 import org.springframework.security.oauth2.server.authorization.client.RegisteredClientRepository;
-import org.springframework.security.oauth2.server.authorization.jackson2.OAuth2AuthorizationServerJackson2Module;
 import org.springframework.security.oauth2.server.authorization.settings.ClientSettings;
 import org.springframework.security.oauth2.server.authorization.settings.OAuth2TokenFormat;
 import org.springframework.security.oauth2.server.authorization.settings.TokenSettings;
 
 import java.time.Duration;
-import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 import java.util.Arrays;
-import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
+import static com.breeze.cloud.auth.authentication.utils.OAuth2EndpointUtils.ACCESS_TOKEN_REQUEST_ERROR_URI;
 import static org.springframework.security.oauth2.core.AuthorizationGrantType.*;
 import static org.springframework.security.oauth2.core.ClientAuthenticationMethod.*;
+import static org.springframework.security.oauth2.core.OAuth2ErrorCodes.INVALID_CLIENT;
+import static org.springframework.security.oauth2.core.OAuth2TokenIntrospectionClaimNames.CLIENT_ID;
 import static org.springframework.security.oauth2.jose.jws.SignatureAlgorithm.*;
 import static org.springframework.security.oauth2.server.authorization.settings.ConfigurationSettingNames.Client.TOKEN_ENDPOINT_AUTHENTICATION_SIGNING_ALGORITHM;
 import static org.springframework.security.oauth2.server.authorization.settings.ConfigurationSettingNames.Token.*;
@@ -74,11 +69,6 @@ public class RemoteRegisterClientService implements RegisteredClientRepository {
      */
     private final SysRegisterClientFeign registerClientFeign;
 
-    /**
-     * 工具
-     */
-    Utils<Map<String, Object>> utils = new Utils<>(new ObjectMapper());
-
     Utils<Map<String, Object>> mapper = new Utils<>(new ObjectMapper());
 
     /**
@@ -90,92 +80,6 @@ public class RemoteRegisterClientService implements RegisteredClientRepository {
     public RemoteRegisterClientService(PasswordEncoder passwordEncoder, SysRegisterClientFeign registerClientFeign) {
         this.passwordEncoder = passwordEncoder;
         this.registerClientFeign = registerClientFeign;
-        ClassLoader classLoader = RemoteRegisterClientService.class.getClassLoader();
-        List<Module> securityModules = SecurityJackson2Modules.getModules(classLoader);
-        utils.register(securityModules);
-        utils.register(new OAuth2AuthorizationServerJackson2Module());
-    }
-
-    /**
-     * 初始化 客户端注册数据，测试使用
-     */
-    public void init() {
-        // @formatter:off
-        RegisteredClient registeredClient =
-                RegisteredClient.withId("messaging-client")
-                        // clientId客户端标识符
-                        .clientId("messaging-client")
-                        // 名称可不定义
-                        .clientName("messaging")
-                        //
-                        .clientSecretExpiresAt(LocalDateTime.now().plusDays(1).toInstant(ZoneOffset.UTC))
-                        // clientSecret客户端密钥
-                        .clientSecret("{bcrypt}" + passwordEncoder.encode("secret"))
-                        // clientAuthenticationMethod 客户端使用的身份验证方法
-                        // params: [client_secret_basic, client_secret_post, private_key_jwt, client_secret_jwt, none]
-                        .clientAuthenticationMethod(CLIENT_SECRET_POST)
-                        .clientAuthenticationMethod(CLIENT_SECRET_BASIC)
-                        // authorizationGrantType 客户端可以使用的授权类型
-                        // params: [authorization_code, client_credentials, refresh_token, sms_code, password]
-                        .authorizationGrantType(CustomAuthorizationGrantType.SMS_CODE)
-                        .authorizationGrantType(PASSWORD)
-                        .authorizationGrantType(AUTHORIZATION_CODE)
-                        .authorizationGrantType(REFRESH_TOKEN)
-                        .authorizationGrantType(CLIENT_CREDENTIALS)
-                        // redirectUri客户端已注册重定向的URI，不在此列将被拒绝，使用IP或者域名，不能使用localhost
-                        .redirectUri("http://127.0.0.1:8080/login/oauth2/code/messaging-client-oidc")
-                        .redirectUri("http://127.0.0.1:8080/authorized")
-                        .redirectUri("http://www.baidu.com")
-                        // scope允许客户端请求的范围
-                        // 开启支持OIDC
-                        .scope(OidcScopes.OPENID)
-                        .scope(OidcScopes.PROFILE)
-                        .scope("message.read")
-                        .scope("message.write")
-                        // clientSetting 客户端自定义设置，包括验证密钥或者是否需要授权页面
-                        .clientSettings(ClientSettings.builder()
-                                .requireAuthorizationConsent(true)
-                                .requireProofKey(false)
-                                .tokenEndpointAuthenticationSigningAlgorithm(RS256)
-                                .build())
-
-                        // tokenSetting发布给客户端的 OAuth2 令牌的自定义设置
-                        .tokenSettings(TokenSettings.builder()
-                                .idTokenSignatureAlgorithm(RS256)
-                                // 是否可重用刷新令牌
-                                .accessTokenTimeToLive(Duration.ofSeconds(30 * 60))
-                                // refreshToken 的有效期
-                                .refreshTokenTimeToLive(Duration.ofSeconds(60 * 60))
-                                // 是否可重用刷新令牌
-                                .reuseRefreshTokens(true)
-                                .build())
-                        .build();
-
-
-        RegisteredClient registeredClientPkce = RegisteredClient.withId("pkce-client").clientId("pkce-client")
-                //客户端认证模式为none
-                .clientAuthenticationMethod(NONE)
-                .authorizationGrantType(AUTHORIZATION_CODE)
-                .redirectUri("http://127.0.0.1:8070/login/oauth2/code/messaging-client-pkce")
-                .redirectUri("http://www.baidu.com")
-                .scope("message.read")
-                .clientSettings(ClientSettings.builder()
-                        .requireAuthorizationConsent(true)
-                        //仅支持PKCE
-                        .requireProofKey(true)
-                        .build())
-                .tokenSettings(TokenSettings.builder()
-                        // 生成JWT令牌
-                        .accessTokenFormat(SELF_CONTAINED)
-                        .idTokenSignatureAlgorithm(RS256)
-                        .accessTokenTimeToLive(Duration.ofSeconds(30 * 60))
-                        .refreshTokenTimeToLive(Duration.ofSeconds(60 * 60))
-                        .reuseRefreshTokens(true)
-                        .build())
-                .build();
-        // @formatter:on
-        log.info(JSONUtil.toJsonStr(registeredClient));
-        log.info(JSONUtil.toJsonStr(registeredClientPkce));
     }
 
     /**
@@ -185,6 +89,7 @@ public class RemoteRegisterClientService implements RegisteredClientRepository {
      */
     @Override
     public void save(RegisteredClient registeredClient) {
+        throw new NotSupportException("保存服务在system服务提供");
     }
 
     /**
@@ -214,9 +119,9 @@ public class RemoteRegisterClientService implements RegisteredClientRepository {
     private RegisteredClient convertRegisteredClient(SysRegisteredClient registeredClient) {
         // @formatter:off
         Optional.ofNullable(registeredClient).orElseThrow(() ->
-                OAuth2EndpointUtils.newError(OAuth2ErrorCodes.INVALID_CLIENT,
-                        OAuth2ParameterNames.CLIENT_ID,
-                        OAuth2EndpointUtils.ACCESS_TOKEN_REQUEST_ERROR_URI));
+                OAuth2EndpointUtils.newError(INVALID_CLIENT,
+                        CLIENT_ID,
+                        ACCESS_TOKEN_REQUEST_ERROR_URI));
 
         RegisteredClient.Builder build = RegisteredClient.withId(registeredClient.getId())
                 // clientId客户端标识符
@@ -224,7 +129,7 @@ public class RemoteRegisterClientService implements RegisteredClientRepository {
                 // 名称可不定义
                 .clientName(registeredClient.getClientName())
                 .clientIdIssuedAt(registeredClient.getClientIdIssuedAt().toInstant(ZoneOffset.UTC))
-                .clientSecretExpiresAt(registeredClient.getClientSecretExpiresAt().toInstant(ZoneOffset.UTC))
+                .clientSecretExpiresAt(Optional.ofNullable(registeredClient.getClientSecretExpiresAt()).map(time -> time.toInstant(ZoneOffset.UTC)).orElse(null))
                 // clientSecret客户端密钥
                 .clientSecret(registeredClient.getClientSecret())
                 // clientAuthenticationMethod 客户端使用的身份验证方法
@@ -330,64 +235,6 @@ public class RemoteRegisterClientService implements RegisteredClientRepository {
             return tokenSettingsMap.put(key, value);
         }
         return tokenSettingsMap;
-    }
-
-    /**
-     * 获得注册客户端
-     *
-     * @param registeredClient 注册客户端
-     * @return {@link RegisteredClient}
-     */
-    @Deprecated
-    private RegisteredClient getRegisteredClient(SysRegisteredClient registeredClient) {
-        // @formatter:off
-        Optional.ofNullable(registeredClient).orElseThrow(() ->
-                OAuth2EndpointUtils.newError(OAuth2ErrorCodes.INVALID_CLIENT,
-                OAuth2ParameterNames.CLIENT_ID,
-                OAuth2EndpointUtils.ACCESS_TOKEN_REQUEST_ERROR_URI));
-        RegisteredClient.Builder build = RegisteredClient.withId(registeredClient.getId())
-                // clientId客户端标识符
-                .clientId(registeredClient.getClientId())
-                // 名称可不定义
-                .clientName(registeredClient.getClientName())
-                //
-                .clientIdIssuedAt(registeredClient.getClientIdIssuedAt().toInstant(ZoneOffset.UTC))
-                .clientSecretExpiresAt(registeredClient.getClientSecretExpiresAt().toInstant(ZoneOffset.UTC))
-                // clientSecret客户端密钥
-                .clientSecret(registeredClient.getClientSecret())
-                // clientAuthenticationMethod 客户端使用的身份验证方法
-                // params: [client_secret_basic, client_secret_post, private_key_jwt, client_secret_jwt, none]
-                .clientAuthenticationMethods((authenticationMethods) ->
-                        Arrays.asList(registeredClient.getClientAuthenticationMethods().split(","))
-                        .forEach(authenticationMethod -> authenticationMethods.add(resolveClientAuthenticationMethod(authenticationMethod)))
-                )
-
-                // authorizationGrantType 客户端可以使用的授权类型
-                // params: [authorization_code, client_credentials, refresh_token, sms_code, password]
-                .authorizationGrantTypes((grantTypes) ->
-                        Arrays.asList(registeredClient.getAuthorizationGrantTypes().split(","))
-                                .forEach(grantType -> grantTypes.add(resolveAuthorizationGrantType(grantType))))
-
-                // redirectUri客户端已注册重定向的URI，不在此列将被拒绝，使用IP或者域名，不能使用localhost
-                .redirectUris((uris) -> uris.addAll(Arrays.asList(registeredClient.getRedirectUris().split(","))))
-                // scope允许客户端请求的范围
-                .scopes((scopes) -> scopes.addAll(Arrays.asList(registeredClient.getScopes().split(","))));
-        // @formatter:on
-
-        // clientSetting 客户端自定义设置，包括验证密钥或者是否需要授权页面
-        Map<String, Object> clientSettingsMap = utils.parse(registeredClient.getClientSettings());
-        build.clientSettings(ClientSettings.withSettings(clientSettingsMap).build());
-
-        // tokenSetting发布给客户端的 OAuth2 令牌的自定义设置
-        Map<String, Object> tokenSettingsMap = utils.parse(registeredClient.getTokenSettings());
-        TokenSettings.Builder tokenSettingsBuilder = TokenSettings.withSettings(tokenSettingsMap);
-        if (!tokenSettingsMap.containsKey(ACCESS_TOKEN_FORMAT)) {
-            tokenSettingsBuilder.accessTokenFormat(SELF_CONTAINED);
-        }
-        build.tokenSettings(tokenSettingsBuilder.build());
-        RegisteredClient client = build.build();
-        log.info(JSONUtil.toJsonStr(client));
-        return client;
     }
 
     /**

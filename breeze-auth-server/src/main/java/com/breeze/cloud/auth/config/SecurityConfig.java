@@ -16,7 +16,8 @@
 
 package com.breeze.cloud.auth.config;
 
-import com.breeze.cloud.auth.authentication.FormLoginBeforeProcessorFilter;
+import com.breeze.cloud.auth.extend.LoginFailHandler;
+import com.breeze.cloud.auth.extend.LoginSuccessHandler;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -26,7 +27,6 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 /**
  * 安全配置
@@ -55,40 +55,28 @@ public class SecurityConfig {
         // @formatter:off
        http.authorizeRequests(authorizeRequests ->
                // 开放自定义的需要开放的端点
-               authorizeRequests.antMatchers("/login").permitAll()
+               authorizeRequests.antMatchers("/auth/*").permitAll()
                        .anyRequest().authenticated()
        );
 
         http.headers()
                 .frameOptions()
                 .sameOrigin();
-        // 设置登录表单页面
-        http.formLogin().loginPage("/login")
-                .loginProcessingUrl("/custom/auth/login")
-                .successHandler((request,response,authentication)-> {
-                    String url = "http://localhost:8000/oauth2/authorize" +
-                            "?response_type=code" +
-                            "&client_id=messaging-test" +
-                            "&scope=openid%20profile" +
-                            "&state=Tuh4Jf_MoLkJn6C9Iga8qWUraoHZgiAok0TXk6eWgNc%3D" +
-                            "&redirect_uri=http://127.0.0.1:8080/login/oauth2/code/messaging-client-oidc" +
-                            "&nonce=e8_WBpeuUCN5gf0UH5TfL9tkwsXIV08aW3RePI6ptsM" +
-                            "&tenantId=" + request.getParameter("tenantId");
-                    response.sendRedirect(url);
-                })
-                .failureHandler((request,response,exception)-> {
-                    System.out.println(exception.getMessage());
-                });
-        // 退出登录配置
-        http.logout().logoutSuccessUrl("/logout")
-                .logoutSuccessUrl("/custom/auth/logout")
-                .invalidateHttpSession(true)
-                .deleteCookies("JSESSIONID");
 
-        // 增加自定义过滤器
-        http.addFilterBefore(new FormLoginBeforeProcessorFilter(
-                "/custom/auth/login",
-                        authenticationManagerBuilder.getObject()), UsernamePasswordAuthenticationFilter.class);
+        http.csrf().disable();
+
+        // 登录
+        http.formLogin().loginPage("/auth/login")
+                .loginProcessingUrl("/auth/login")
+                .successHandler(new LoginSuccessHandler())
+                .failureHandler(new LoginFailHandler());
+
+        // 退出登录
+        http.logout()
+                .logoutSuccessHandler((request,response,authentication)-> System.out.println("退出成功"))
+                .deleteCookies("JSESSIONID")
+                .invalidateHttpSession(true);
+
         // @formatter:on
         return http.build();
     }
@@ -110,7 +98,7 @@ public class SecurityConfig {
      */
     @Bean
     WebSecurityCustomizer webSecurityCustomizer() {
-        return (web) -> web.ignoring().antMatchers("/favicon.ico", "/resources/**", "/webjars/**", "/error");
+        return (web) -> web.ignoring().antMatchers("/actuator/**", "/favicon.ico", "/resources/**", "/webjars/**", "/error");
     }
 
 }
