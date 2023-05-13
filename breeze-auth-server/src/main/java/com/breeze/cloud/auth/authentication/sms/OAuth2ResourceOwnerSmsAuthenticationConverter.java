@@ -103,7 +103,6 @@ public class OAuth2ResourceOwnerSmsAuthenticationConverter implements Authentica
                 .collect(Collectors.toMap(Map.Entry::getKey, e -> e.getValue().get(0)));
 
         return new OAuth2ResourceOwnerSmsAuthenticationToken(CustomAuthorizationGrantType.SMS_CODE, clientPrincipal, requestedScopes, additionalParameters);
-
     }
 
 }

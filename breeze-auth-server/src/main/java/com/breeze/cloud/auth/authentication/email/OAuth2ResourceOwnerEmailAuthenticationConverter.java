@@ -103,7 +103,6 @@ public class OAuth2ResourceOwnerEmailAuthenticationConverter implements Authenti
                 .collect(Collectors.toMap(Map.Entry::getKey, e -> e.getValue().get(0)));
 
         return new OAuth2ResourceOwnerEmailAuthenticationToken(CustomAuthorizationGrantType.EMAIL_CODE, clientPrincipal, requestedScopes, additionalParameters);
-
     }
 
 }

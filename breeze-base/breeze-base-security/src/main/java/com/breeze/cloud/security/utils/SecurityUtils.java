@@ -16,12 +16,12 @@
 
 package com.breeze.cloud.security.utils;
 
+import cn.hutool.core.util.StrUtil;
 import cn.hutool.extra.spring.SpringUtil;
 import com.breeze.cloud.core.base.BaseLoginUser;
 import org.springframework.cache.Cache;
 import org.springframework.cache.CacheManager;
 import org.springframework.security.access.AccessDeniedException;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.oauth2.jwt.BadJwtException;
 import org.springframework.security.oauth2.jwt.Jwt;
@@ -31,7 +31,7 @@ import java.util.Objects;
 import static com.breeze.cloud.core.constants.CacheConstants.LOGIN_USER;
 
 /**
- * 安全跑龙套
+ * 安全工具
  *
  * @author gaoweixuan
  * @date 2022-08-31
@@ -43,61 +43,26 @@ public class SecurityUtils {
      *
      * @return {@link Jwt}
      */
-    public static Jwt getCurrentJwt() {
-        Authentication authentication = getAuthentication();
-        if (authentication == null) {
-            return null;
-        }
-        Object principal = authentication.getPrincipal();
-        if (Objects.equals("anonymousUser", principal)) {
-            return null;
-        }
-        return (Jwt) principal;
-    }
-
-    /**
-     * 获取用户编码
-     *
-     * @return {@link String}
-     */
-    public static String getUserCode() {
-        Jwt jwt = SecurityUtils.getCurrentJwt();
-        if (Objects.isNull(jwt)) {
-            return "";
-        }
-        return jwt.getClaims().get("userCode").toString();
-    }
-
-    /**
-     * 获得用户名
-     *
-     * @return {@link String}
-     */
-    public static String getUsername() {
-        Jwt jwt = SecurityUtils.getCurrentJwt();
-        if (Objects.isNull(jwt)) {
-            return "";
-        }
-        return jwt.getClaims().get("username").toString();
-    }
-
-    /**
-     * 获取认证
-     * 获取Authentication
-     *
-     * @return {@link Authentication}
-     */
-    public static Authentication getAuthentication() {
-        return SecurityContextHolder.getContext().getAuthentication();
-    }
-
     public static BaseLoginUser getCurrentUser() {
+        String name = getName();
+        if (StrUtil.isAllBlank(name)) {
+            return null;
+        }
         CacheManager cacheManager = SpringUtil.getBean(CacheManager.class);
         Cache cache = cacheManager.getCache(LOGIN_USER);
         if (Objects.isNull(cache)) {
             throw new AccessDeniedException("用户未登录");
         }
-        return cache.get(SecurityUtils.getUsername(), BaseLoginUser.class);
+        return cache.get(name, BaseLoginUser.class);
+    }
+
+    /**
+     * 获取用户名
+     *
+     * @return {@link String}
+     */
+    public static String getName() {
+        return SecurityContextHolder.getContext().getAuthentication().getName();
     }
 
     /**
@@ -106,11 +71,11 @@ public class SecurityUtils {
      * @return long
      */
     public static long getTenantId() {
-        Jwt jwt = SecurityUtils.getCurrentJwt();
-        if (Objects.isNull(jwt)) {
-            throw new BadJwtException("JWT验证失败");
+        BaseLoginUser loginUser = getCurrentUser();
+        if (Objects.isNull(loginUser)) {
+            throw new RuntimeException("JWT验证失败");
         }
-        return (long) jwt.getClaims().get("tenantId");
+        return loginUser.getTenantId();
     }
 
 }

@@ -228,11 +228,11 @@ public class OAuth2ResourceOwnerPasswordAuthenticationProvider implements Authen
         }
 
         if (requestedScopes.contains(CustomScopes.USER_INFO) && idToken != null) {
-            additionalParameters.put("user_info", usernamePasswordAuthentication);
+            additionalParameters.put("user_info", usernamePasswordAuthentication.getPrincipal());
         }
         if (requestedScopes.contains(CustomScopes.USER_INFO) && idToken == null) {
             additionalParameters = new HashMap<>();
-            additionalParameters.put("user_info", usernamePasswordAuthentication);
+            additionalParameters.put("user_info", usernamePasswordAuthentication.getPrincipal());
         }
 
         if (log.isTraceEnabled()) {
