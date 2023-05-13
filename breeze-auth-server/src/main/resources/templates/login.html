@@ -18,12 +18,6 @@
     <div class="box">
         <div class="row">
             <form method="post" th:action="@{/auth/login}">
-                <div class="alert alert-danger" role="alert" th:if="${param.error}">
-                    用户名或密码无效
-                </div>
-                <div class="alert alert-success" role="alert" th:if="${param.logout}">
-                    您已注销
-                </div>
                 <h2 class="form-signin-heading">登录中心</h2>
                 <div class="col text-center">
                     <label class="form-label" for="username"></label>

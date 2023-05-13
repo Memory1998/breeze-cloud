@@ -19,6 +19,7 @@ package com.breeze.cloud.system.service.impl;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.breeze.cloud.core.utils.Result;
+import com.breeze.cloud.core.utils.Utils;
 import com.breeze.cloud.system.domain.SysRegisteredClient;
 import com.breeze.cloud.system.mapper.SysRegisterClientMapper;
 import com.breeze.cloud.system.params.RegisteredClientParams;
@@ -33,6 +34,9 @@ import org.springframework.util.Assert;
 
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
+import java.util.Set;
+import java.util.function.Function;
 
 /**
  * 重写auth注册客户端库
@@ -49,7 +53,7 @@ public class SysRegisterClientService extends ServiceImpl<SysRegisterClientMappe
      */
     private final PasswordEncoder passwordEncoder;
 
-    private final ObjectMapper mapper = new ObjectMapper();
+    private final Utils<Object> mapper = new Utils<>(new ObjectMapper());
 
     public SysRegisterClientService(PasswordEncoder passwordEncoder) {
         this.passwordEncoder = passwordEncoder;
@@ -61,6 +65,7 @@ public class SysRegisterClientService extends ServiceImpl<SysRegisterClientMappe
      * @param registerClientQuery 注册客户端参数
      * @return {@link Page}<{@link SysRegisteredClient}>
      */
+    @Override
     public Page<SysRegisteredClient> listPage(RegisterClientQuery registerClientQuery) {
         return this.baseMapper.listPage(new Page<>(registerClientQuery.getCurrent(), registerClientQuery.getSize()), registerClientQuery);
     }
@@ -68,85 +73,78 @@ public class SysRegisterClientService extends ServiceImpl<SysRegisterClientMappe
     /**
      * 保存
      *
-     * @param registeredClientParams 注册客户端参数
+     * @param client 注册客户端参数
      */
     @SneakyThrows
     @Override
-    public Result<Boolean> saveRegisteredClient(RegisteredClientParams registeredClientParams) {
-        Assert.notNull(registeredClientParams, "registeredClient cannot be null");
+    public Result<Boolean> saveRegisteredClient(RegisteredClientParams client) {
+        Assert.notNull(client, "registeredClient cannot be null");
 
-        RegisteredClientParams.ClientSettings clientSettings = registeredClientParams.getClientSettings();
+        RegisteredClientParams.ClientSettings clientSettings = client.getClientSettings();
         Assert.notNull(clientSettings, "clientSettings cannot be null");
 
-        RegisteredClientParams.TokenSettings tokenSettings = registeredClientParams.getTokenSettings();
+        RegisteredClientParams.TokenSettings tokenSettings = client.getTokenSettings();
         Assert.notNull(tokenSettings, "tokenSettings cannot be null");
-        SysRegisteredClient byClientId = this.getByClientId(registeredClientParams.getClientId());
+        SysRegisteredClient byClientId = this.getByClientId(client.getClientId());
         if (Objects.nonNull(byClientId)) {
             return Result.fail(Boolean.FALSE, "已经存在此客户端");
         }
-        this.insertRegisteredClient(registeredClientParams);
+        this.insertRegisteredClient(client);
         return Result.ok();
     }
 
     /**
      * 更新
      *
-     * @param registeredClientParams 注册客户端参数
+     * @param client 注册客户端参数
      * @return {@link Boolean}
      */
     @Override
-    public Boolean update(RegisteredClientParams registeredClientParams) {
-        this.updateRegisteredClient(registeredClientParams);
+    public Boolean update(RegisteredClientParams client) {
+        this.updateRegisteredClient(client);
         return Boolean.TRUE;
     }
 
     /**
      * 插入注册客户端
      *
-     * @param registeredClientParams 注册客户端
+     * @param client 注册客户端
      */
+    private void insertRegisteredClient(RegisteredClientParams client) {
+        this.save(this.buildClient(client));
+    }
+
     @SneakyThrows
-    private void insertRegisteredClient(RegisteredClientParams registeredClientParams) {
+    private SysRegisteredClient buildClient(RegisteredClientParams client) {
         // @formatter:off
-        this.save(SysRegisteredClient.builder()
-                .clientId(registeredClientParams.getClientId())
-                .clientName(registeredClientParams.getClientName())
-                .clientSecret(this.passwordEncoder.encode("{bcrypt}" + registeredClientParams.getClientSecret()))
-                .clientIdIssuedAt(registeredClientParams.getClientIdIssuedAt())
-                .clientSecretExpiresAt(registeredClientParams.getClientSecretExpiresAt())
-                .clientSettings(mapper.writeValueAsString(registeredClientParams.getClientSettings()))
-                .tokenSettings(mapper.writeValueAsString(registeredClientParams.getTokenSettings()))
-                .clientAuthenticationMethods(String.join(",", registeredClientParams.getClientAuthenticationMethods()))
-                .scopes(String.join(",", registeredClientParams.getScopes()))
-                .authorizationGrantTypes(String.join(",", registeredClientParams.getAuthorizationGrantTypes()))
-                .redirectUris(String.join(",", registeredClientParams.getRedirectUris()))
-                .build());
+        return SysRegisteredClient.builder()
+                .id(client.getId())
+                .clientId(client.getClientId())
+                .clientName(client.getClientName())
+                .clientIdIssuedAt(client.getClientIdIssuedAt())
+                .clientSecretExpiresAt(client.getClientSecretExpiresAt())
+                .clientSecret(Optional.ofNullable(client.getClientSecret()).map(this.passwordEncoder::encode).orElse(null))
+                .clientAuthenticationMethods(Optional.ofNullable(client.getClientAuthenticationMethods()).map(getSetString()).orElse(null))
+                .authorizationGrantTypes(Optional.ofNullable(client.getAuthorizationGrantTypes()).map(getSetString()).orElse(null))
+                .scopes(Optional.ofNullable(client.getScopes()).map(getSetString()).orElse(null))
+                .redirectUris(Optional.ofNullable(client.getRedirectUris()).map(getSetString()).orElse(null))
+                .clientSettings(Optional.ofNullable(client.getClientSettings()).map(mapper::write).orElse(null))
+                .tokenSettings(Optional.ofNullable(client.getTokenSettings()).map(mapper::write).orElse(null))
+                .build();
         // @formatter:on
+    }
+
+    private static Function<Set<String>, String> getSetString() {
+        return str -> String.join(",", str);
     }
 
     /**
      * 更新注册客户端
      *
-     * @param registeredClientParams 注册客户端参数
+     * @param client 注册客户端参数
      */
-    @SneakyThrows
-    private void updateRegisteredClient(RegisteredClientParams registeredClientParams) {
-        // @formatter:off
-        this.updateById(SysRegisteredClient.builder()
-                .id(registeredClientParams.getId())
-                .clientId(registeredClientParams.getClientId())
-                .clientName(registeredClientParams.getClientName())
-                .clientSecret(this.passwordEncoder.encode("{bcrypt}" + registeredClientParams.getClientSecret()))
-                .clientIdIssuedAt(registeredClientParams.getClientIdIssuedAt())
-                .clientSecretExpiresAt(registeredClientParams.getClientSecretExpiresAt())
-                .clientSettings(mapper.writeValueAsString(registeredClientParams.getClientSettings()))
-                .tokenSettings(mapper.writeValueAsString(registeredClientParams.getTokenSettings()))
-                .clientAuthenticationMethods(String.join(",", registeredClientParams.getClientAuthenticationMethods()))
-                .scopes(String.join(",", registeredClientParams.getScopes()))
-                .authorizationGrantTypes(String.join(",", registeredClientParams.getAuthorizationGrantTypes()))
-                .redirectUris(String.join(",", registeredClientParams.getRedirectUris()))
-                .build());
-        // @formatter:on
+    private void updateRegisteredClient(RegisteredClientParams client) {
+        this.updateById(this.buildClient(client));
     }
 
     /**

@@ -71,6 +71,9 @@ import java.util.Arrays;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import static org.springframework.security.oauth2.core.endpoint.OAuth2ParameterNames.ACCESS_TOKEN;
+import static org.springframework.security.oauth2.core.oidc.endpoint.OidcParameterNames.ID_TOKEN;
+
 /**
  * 授权服务器配置
  *
@@ -151,6 +154,7 @@ public class AuthorizationServerConfiguration {
                 // 忽略掉相关端点的 CSRF(跨站请求): 对授权端点的访问可以是跨站的
                 .and().csrf().ignoringRequestMatchers(endpointsMatcher)
                 .and().exceptionHandling().authenticationEntryPoint(new CustomAuthenticationEntryPoint("/login"))
+                // 开启JWT
                 .and().oauth2ResourceServer(OAuth2ResourceServerConfigurer::jwt)
                 // 应用授权服务器的配置
                 .apply(authorizationServerConfigurer)
@@ -172,11 +176,16 @@ public class AuthorizationServerConfiguration {
         return context -> {
             JwtClaimsSet.Builder claims = context.getClaims();
             Authentication principal = context.getPrincipal();
-            Set<String> authorities = principal.getAuthorities().stream().map(GrantedAuthority::getAuthority).collect(Collectors.toSet());
-            claims.claim("clientId", context.getRegisteredClient().getClientId());
-            Set<String> authorizedScopes = context.getAuthorizedScopes();
-            authorities.addAll(authorizedScopes);
-            claims.claim("scope", authorities);
+            if (context.getTokenType().getValue().equals(ACCESS_TOKEN)) {
+                // Customize headers/claims for access_token
+                Set<String> authorities = principal.getAuthorities().stream().map(GrantedAuthority::getAuthority).collect(Collectors.toSet());
+                claims.claim("clientId", context.getRegisteredClient().getClientId());
+                Set<String> authorizedScopes = context.getAuthorizedScopes();
+                authorities.addAll(authorizedScopes);
+                claims.claim("scope", authorities);
+            } else if (context.getTokenType().getValue().equals(ID_TOKEN)) {
+                // Customize headers/claims for id_token
+            }
         };
     }
 

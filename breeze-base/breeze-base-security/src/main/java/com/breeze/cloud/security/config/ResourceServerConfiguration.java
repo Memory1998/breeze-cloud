@@ -46,19 +46,25 @@ public class ResourceServerConfiguration {
     @Bean
     @Order(Ordered.HIGHEST_PRECEDENCE)
     SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        ExpressionUrlAuthorizationConfigurer<HttpSecurity>.ExpressionInterceptUrlRegistry expressionInterceptUrlRegistry = http.authorizeRequests();
-        // 只有{{没有登录}}可以访问
-        jumpAuthPathInit.getIgnoreAuthProperties().getIgnoreUrls()
-                .forEach(url -> expressionInterceptUrlRegistry.antMatchers(url).permitAll());
+        CustomAuthenticationEntryPoint customAuthenticationEntryPoint = new CustomAuthenticationEntryPoint();
+        CustomAccessDeniedHandler customAccessDeniedHandler = new CustomAccessDeniedHandler();
         http
+                .authorizeRequests()
+                // 只有[没有登录]可以访问
+                .antMatchers(jumpAuthPathInit.getIgnoreAuthProperties().getIgnoreUrls().toArray(new String[]{})).permitAll()
                 // 拦截所有
-                .authorizeRequests().anyRequest().authenticated()
+                .anyRequest().authenticated()
                 .and()
                 .csrf().disable()
+                .exceptionHandling(exceptionConfigurer -> exceptionConfigurer
+                        .accessDeniedHandler(customAccessDeniedHandler)
+                        .authenticationEntryPoint(customAuthenticationEntryPoint)
+                )
+                // 配置oauth2 资源服务器
                 .oauth2ResourceServer()
                 // 自定义异常处理
-                .accessDeniedHandler(new CustomAccessDeniedHandler())
-                .authenticationEntryPoint(new CustomAuthenticationEntryPoint())
+                .accessDeniedHandler(customAccessDeniedHandler)
+                .authenticationEntryPoint(customAuthenticationEntryPoint)
                 .jwt()
                 .jwtAuthenticationConverter(jwtAuthenticationConverter())
 

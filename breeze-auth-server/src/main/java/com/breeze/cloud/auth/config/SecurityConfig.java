@@ -16,17 +16,19 @@
 
 package com.breeze.cloud.auth.config;
 
+import com.breeze.cloud.auth.extend.CustomLogoutSuccessHandler;
+import com.breeze.cloud.auth.extend.OidcLoginBeforeStoreProcessorFilter;
 import com.breeze.cloud.auth.extend.LoginFailHandler;
 import com.breeze.cloud.auth.extend.LoginSuccessHandler;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
-import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
 import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.access.ExceptionTranslationFilter;
 
 /**
  * 安全配置
@@ -37,11 +39,6 @@ import org.springframework.security.web.SecurityFilterChain;
 @RequiredArgsConstructor
 @EnableWebSecurity(debug = true)
 public class SecurityConfig {
-
-    /**
-     * 身份验证管理器生成器
-     */
-    private final AuthenticationManagerBuilder authenticationManagerBuilder;
 
     /**
      * 默认安全过滤器链，授权服务器本身的安全配置
@@ -66,17 +63,20 @@ public class SecurityConfig {
         http.csrf().disable();
 
         // 登录
-        http.formLogin().loginPage("/auth/login")
+        http.formLogin()
+                .loginPage("/auth/login")
                 .loginProcessingUrl("/auth/login")
-                .successHandler(new LoginSuccessHandler())
+                .successHandler(new LoginSuccessHandler(http))
                 .failureHandler(new LoginFailHandler());
 
         // 退出登录
         http.logout()
-                .logoutSuccessHandler((request,response,authentication)-> System.out.println("退出成功"))
+                .logoutSuccessHandler(new CustomLogoutSuccessHandler())
                 .deleteCookies("JSESSIONID")
                 .invalidateHttpSession(true);
 
+        // 增加自定义过滤器
+        http.addFilterBefore(new OidcLoginBeforeStoreProcessorFilter(http), ExceptionTranslationFilter.class);
         // @formatter:on
         return http.build();
     }

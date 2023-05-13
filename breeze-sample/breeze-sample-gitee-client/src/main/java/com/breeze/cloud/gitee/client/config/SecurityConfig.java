@@ -51,14 +51,21 @@ public class SecurityConfig {
     @Bean
     SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         return http
-                .authorizeRequests()
+                .antMatcher("/**").authorizeRequests()
+                // 访问权限
+                .antMatchers( "/oauth2Login").permitAll()
                 .anyRequest().authenticated()
                 .and()
                 // 支持 OAuth2 登录
                 .oauth2Login()
-                .and()
-                .csrf().disable()
-                .build();
+                //登录页面
+                .loginPage("/oauth2Login")
+                //登录成功后调转页面
+                .defaultSuccessUrl("/")
+                //登录失败调转页面
+                .failureUrl("/failure")
+                .and().build();
+
     }
 
 }

@@ -17,7 +17,7 @@
 package com.breeze.cloud.auth.extend;
 
 import cn.hutool.json.JSONUtil;
-import com.breeze.cloud.auth.authentication.utils.OAuth2EndpointUtils;
+import com.breeze.cloud.auth.utils.OAuth2EndpointUtils;
 import com.breeze.cloud.auth.exception.NotSupportException;
 import com.breeze.cloud.core.utils.Utils;
 import com.breeze.cloud.system.client.SysRegisterClientFeign;
@@ -40,7 +40,7 @@ import java.util.Arrays;
 import java.util.Map;
 import java.util.Optional;
 
-import static com.breeze.cloud.auth.authentication.utils.OAuth2EndpointUtils.ACCESS_TOKEN_REQUEST_ERROR_URI;
+import static com.breeze.cloud.auth.utils.OAuth2EndpointUtils.ACCESS_TOKEN_REQUEST_ERROR_URI;
 import static org.springframework.security.oauth2.core.AuthorizationGrantType.*;
 import static org.springframework.security.oauth2.core.ClientAuthenticationMethod.*;
 import static org.springframework.security.oauth2.core.OAuth2ErrorCodes.INVALID_CLIENT;

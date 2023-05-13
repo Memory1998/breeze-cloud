@@ -16,28 +16,39 @@
 
 package com.breeze.cloud.auth.extend;
 
+import cn.hutool.core.util.StrUtil;
 import lombok.SneakyThrows;
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.security.core.AuthenticationException;
-import org.springframework.security.web.authentication.AuthenticationFailureHandler;
+import org.springframework.http.HttpHeaders;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.web.authentication.logout.LogoutSuccessHandler;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.net.URLEncoder;
 
 /**
- * 登录失败处理程序
+ * 自定义注销成功处理程序
  *
  * @author gaoweixuan
- * @date 2023/05/13
+ * @date 2023/05/12
  */
-@Slf4j
-public class LoginFailHandler implements AuthenticationFailureHandler {
+public class CustomLogoutSuccessHandler implements LogoutSuccessHandler {
+
+    /**
+     * 注销成功
+     *
+     * @param request        请求
+     * @param response       响应
+     * @param authentication 身份验证
+     */
     @SneakyThrows
     @Override
-    public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response, AuthenticationException exception) {
-        log.error("[校验 {}] ", exception.getMessage(), exception);
-        response.sendRedirect("/auth/error?error=" + URLEncoder.encode(exception.getMessage(), "UTF-8"));
+    public void onLogoutSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) {
+        String referer = request.getHeader(HttpHeaders.REFERER);
+        if (StrUtil.isBlank(referer)) {
+            // 撒也不干
+            return;
+        }
+        response.sendRedirect(referer);
     }
 
 }

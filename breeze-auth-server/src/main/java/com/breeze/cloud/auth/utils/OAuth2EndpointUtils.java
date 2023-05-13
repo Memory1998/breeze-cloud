@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.breeze.cloud.auth.authentication.utils;
+package com.breeze.cloud.auth.utils;
 
 import org.springframework.security.oauth2.core.AuthorizationGrantType;
 import org.springframework.security.oauth2.core.OAuth2AuthenticationException;

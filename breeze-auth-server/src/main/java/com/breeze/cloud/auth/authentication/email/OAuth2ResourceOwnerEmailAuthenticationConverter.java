@@ -16,7 +16,7 @@
 
 package com.breeze.cloud.auth.authentication.email;
 
-import com.breeze.cloud.auth.authentication.utils.OAuth2EndpointUtils;
+import com.breeze.cloud.auth.utils.OAuth2EndpointUtils;
 import com.breeze.cloud.auth.constants.CustomAuthorizationGrantType;
 import com.breeze.cloud.auth.constants.CustomOAuth2ParameterNames;
 import org.springframework.security.core.Authentication;

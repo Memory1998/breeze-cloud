@@ -16,9 +16,13 @@
 
 package com.breeze.cloud.auth.extend;
 
+import com.breeze.cloud.auth.utils.UrlThreadLocal;
 import lombok.SneakyThrows;
+import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
+import org.springframework.security.web.savedrequest.RequestCache;
+import org.springframework.security.web.savedrequest.SavedRequest;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -31,18 +35,32 @@ import javax.servlet.http.HttpServletResponse;
  */
 public class LoginSuccessHandler implements AuthenticationSuccessHandler {
 
+    private final HttpSecurity httpSecurity;
+
+    public LoginSuccessHandler(HttpSecurity http) {
+        httpSecurity = http;
+    }
+
+    /**
+     * 身份验证成功
+     *
+     * @param request        请求
+     * @param response       响应
+     * @param authentication 身份验证
+     */
     @SneakyThrows
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) {
-        String url = "http://localhost:8000/oauth2/authorize" +
-                "?response_type=code" +
-                "&client_id=messaging-test" +
-                "&scope=openid%20profile" +
-                "&state=Tuh4Jf_MoLkJn6C9Iga8qWUraoHZgiAok0TXk6eWgNc%3D" +
-                "&redirect_uri=http://127.0.0.1:8080/login/oauth2/code/messaging-client-oidc" +
-                "&nonce=e8_WBpeuUCN5gf0UH5TfL9tkwsXIV08aW3RePI6ptsM" +
-                "&tenantId=" + request.getParameter("tenantId");
-        response.sendRedirect(url);
+        try {
+            RequestCache requestCache = httpSecurity.getSharedObject(RequestCache.class);
+            SavedRequest savedRequest = requestCache.getRequest(request, response);
+            String redirectUrl = savedRequest.getRedirectUrl();
+            // 由于RequestCache保存了上一次的请求地址，我们中转了一下页面导致上一次地址被覆盖，使用拦截器暂存
+            String url = UrlThreadLocal.get();
+            response.sendRedirect(url);
+        } finally {
+            UrlThreadLocal.remove();
+        }
     }
 
 }

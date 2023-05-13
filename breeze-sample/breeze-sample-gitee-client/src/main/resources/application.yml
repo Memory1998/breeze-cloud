@@ -14,30 +14,34 @@ spring:
   security:
     oauth2:
       client:
-        registration: # 定义应用信息
-          gitee-app: # 应用的唯一标识
-            clientName: breeze-gitee
-            client-id: ba7002b13ee57b211d5ee7bf9567cf8c6718bbc934aa38f06095398ba70e2ee8
-            client-secret: 5e55b2001bf704aa1f02113e909e9ba470408fe5e7eb30195b289e1e6263f58a
-            clientAuthenticationMethod: basic
-            authorizationGrantType: authorization_code
-            redirectUri: '{baseUrl}/{action}/oauth2/code/{registrationId}'
-            provider: gitee # 指向 provider 唯一标识，默认值是 registrationId
-
-          github-app:
-            clientName: breeze-github
+        registration:
+          gitee: # registrationId
+            client-name: gitee # 客户端名称
+            client-id: ba7002b13ee57b211d5ee7bf9567cf8c6718bbc934aa38f06095398ba70e2ee8 # 在gitee申请的客户端标识
+            client-secret: 74bae056b1aea984c0d856a159656aa3d912cda07de5bac55635c8cb89b17a5b  # 在gitee申请的客户端秘钥
+            client-authentication-method: basic
+            authorization-grant-type: authorization_code # 授权模式使用授权码模式
+            redirect-uri: '{baseUrl}/{action}/oauth2/code/{registrationId}' # 回调地址，填写的与Gitee上申请的一致
+            provider: gitee # 指向 provider 唯一标识【sas】,不填时为 registrationId
+          github:
+            client-name: github
             client-id: 1d5e67cf8c6718bbc93a38f060953
-            client-secret: f7211ba470408fe5e7eb30195b289e1e626
-            clientAuthenticationMethod: basic
-            authorizationGrantType: authorization_code
-            redirectUri: '{baseUrl}/login/oauth2/code/{registrationId}'
-            provider: GITHUB # CommonOAuth2Provider
-
+            client-Secret: f7211ba470408fe5e7eb30195b289e1e626
+            client-authentication-method: basic
+            authorization-grant-type: authorization_code
+            redirect-uri: '{baseUrl}/login/oauth2/code/{registrationId}'
+            provider: github # 指向 provider 唯一标识【sas】,不填时为 registrationId
         # 定义授权服务器信息
         provider:
           gitee: # 授权服务器的唯一标识
-            authorizationUri: https://gitee.com/oauth/authorize
-            tokenUri: https://gitee.com/oauth/token
-            userInfoUri: https://gitee.com/api/v5/user
-            userInfoAuthenticationMethod: GET
-            userNameAttribute: login
+            authorization-uri: https://gitee.com/oauth/authorize # 授权服务器地址
+            token-uri: https://gitee.com/oauth/token # 授权服务器获取token地址
+            user-info-uri: https://gitee.com/api/v5/user # 授权服务器获取用户信息的地址
+            user-info-authentication-method: GET
+            user-name-attribute: name # 用户信息中的用户名属性
+          github: # 授权服务器的唯一标识
+            authorization-uri: https://gitee.com/oauth/authorize
+            token-uri: https://gitee.com/oauth/token
+            user-info-uri: https://gitee.com/api/v5/user
+            user-info-authentication-method: GET
+            user-name-attribute: login

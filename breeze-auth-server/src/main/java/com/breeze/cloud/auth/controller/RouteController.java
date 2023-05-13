@@ -19,12 +19,14 @@ package com.breeze.cloud.auth.controller;
 import com.breeze.cloud.core.utils.Result;
 import com.breeze.cloud.system.client.SysTenantFeign;
 import lombok.AllArgsConstructor;
-import org.springframework.security.core.context.SecurityContextHolder;
+import lombok.SneakyThrows;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
-import javax.servlet.http.HttpServletRequest;
+import java.net.URLDecoder;
 import java.util.List;
 import java.util.Map;
 
@@ -44,29 +46,37 @@ public class RouteController {
      */
     private final SysTenantFeign tenantFeign;
 
+    /**
+     * 登录
+     *
+     * @param model 模型
+     * @return {@link String}
+     */
     @RequestMapping("/login")
     public String login(Model model) {
         Result<List<Map<String, Object>>> mapResult = this.tenantFeign.selectTenant();
         List<Map<String, Object>> tenantMap = mapResult.getData();
         if (tenantMap == null) {
+            model.addAttribute("loginError", "租户获取失败");
             return "error";
         }
-
         // 给login页面赋值
         model.addAttribute("tenant", tenantMap);
         return "login";
     }
 
-    @RequestMapping("/logout")
-    public String logout(HttpServletRequest request) {
-
-        // 清理客户端的session
-        request.getSession().invalidate();
-        // 清理客户端的安全上下文
-        SecurityContextHolder.clearContext();
-
-        // 拓展需要跳转页面 TODO
-        return "logout";
+    /**
+     * 错误
+     *
+     * @param error 登录异常错误信息
+     * @param model 模型
+     * @return {@link String}
+     */
+    @SneakyThrows
+    @GetMapping("/error")
+    public String error(Model model, @RequestParam(required = false) String error) {
+        model.addAttribute("error",URLDecoder.decode(error, "UTF-8"));
+        return "error";
     }
 
 }

@@ -72,7 +72,7 @@ public class RouteController {
 
         // 跳转认证中心退出页面
         try {
-            response.sendRedirect("http://localhost:8000/auth/logout");
+            response.sendRedirect("http://localhost:8000/logout");
         } catch (IOException e) {
             e.printStackTrace();
         }

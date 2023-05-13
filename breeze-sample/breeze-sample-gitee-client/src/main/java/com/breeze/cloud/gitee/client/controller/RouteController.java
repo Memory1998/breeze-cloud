@@ -16,9 +16,16 @@
 
 package com.breeze.cloud.gitee.client.controller;
 
+import org.apache.commons.compress.utils.Lists;
+import org.springframework.boot.autoconfigure.security.oauth2.client.OAuth2ClientProperties;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
+import java.util.List;
+import java.util.Map;
 
 /**
  * 路由控制器
@@ -29,33 +36,39 @@ import org.springframework.web.bind.annotation.GetMapping;
 @Controller
 public class RouteController {
 
-    /**
-     * 根路径。转发到index
-     *
-     * @return {@link String}
-     */
-    @GetMapping("/")
-    public String root() {
-        return "redirect:/index";
+    private final OAuth2ClientProperties oAuth2ClientProperties;
+
+    public RouteController(OAuth2ClientProperties properties) {
+        this.oAuth2ClientProperties = properties;
     }
 
-    /**
-     * index
-     *
-     * @return {@link String}
-     */
+    @GetMapping("/")
+    public String root() {
+        return "index";
+    }
+
     @GetMapping("/index")
     public String index() {
         return "index";
     }
 
-    /**
-     * index
-     *
-     * @return {@link String}
-     */
-    @GetMapping("/fail")
-    public String fail() {
-        return "fail";
+    @GetMapping("/oauth2Login")
+    public String oauth2Login(Model model) {
+        Map<String, OAuth2ClientProperties.Registration> registration = this.oAuth2ClientProperties.getRegistration();
+        String prefix = "/oauth2/authorization/";
+        List<String> resultList = Lists.newArrayList();
+        registration.forEach((k, v) -> resultList.add(prefix + k));
+        model.addAttribute("oauth2Url", resultList);
+        return "login";
+    }
+
+    @GetMapping("/failure")
+    public String failure() {
+        return "failure";
+    }
+
+    @GetMapping("/userInfo")
+    public OAuth2User userInfo(@AuthenticationPrincipal OAuth2User principal) {
+        return principal;
     }
 }

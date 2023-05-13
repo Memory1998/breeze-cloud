@@ -16,6 +16,7 @@
 
 package com.breeze.cloud.system.params;
 
+import cn.hutool.core.util.StrUtil;
 import com.fasterxml.jackson.annotation.JsonAlias;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -98,6 +99,10 @@ public class RegisteredClientParams implements Serializable {
      * 令牌设置
      */
     private TokenSettings tokenSettings;
+
+    public String getClientSecret() {
+        return StrUtil.isAllBlank(this.clientSecret) ? null : this.clientSecret;
+    }
 
     @Data
     public static class TokenSettings {
