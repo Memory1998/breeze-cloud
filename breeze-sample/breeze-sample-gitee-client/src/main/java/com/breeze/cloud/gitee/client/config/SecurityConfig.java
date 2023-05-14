@@ -20,7 +20,15 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.logout.LogoutSuccessHandler;
+
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.net.URLEncoder;
 
 /**
  * 安全配置
@@ -53,7 +61,7 @@ public class SecurityConfig {
         return http
                 .antMatcher("/**").authorizeRequests()
                 // 访问权限
-                .antMatchers( "/oauth2Login").permitAll()
+                .antMatchers("/oauth2Login").permitAll()
                 .anyRequest().authenticated()
                 .and()
                 // 支持 OAuth2 登录
@@ -61,9 +69,19 @@ public class SecurityConfig {
                 //登录页面
                 .loginPage("/oauth2Login")
                 //登录成功后调转页面
-                .defaultSuccessUrl("/")
+                .defaultSuccessUrl("/index")
                 //登录失败调转页面
-                .failureUrl("/failure")
+                .failureUrl("/oauth2Login")
+                .and()
+                .logout()
+                .logoutUrl("/logout")
+                .logoutSuccessUrl("/oauth2Login")
+                .logoutSuccessHandler(new LogoutSuccessHandler() {
+                    @Override
+                    public void onLogoutSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
+                        response.sendRedirect("oathLogin/msg=" + URLEncoder.encode("退出成功", "UTF-8"));
+                    }
+                })
                 .and().build();
 
     }

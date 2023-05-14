@@ -16,16 +16,21 @@
 
 package com.breeze.cloud.gitee.client.controller;
 
-import org.apache.commons.compress.utils.Lists;
+import com.google.common.collect.Maps;
+import lombok.SneakyThrows;
+import org.checkerframework.checker.nullness.qual.Nullable;
 import org.springframework.boot.autoconfigure.security.oauth2.client.OAuth2ClientProperties;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
-import java.util.List;
+import java.net.URLDecoder;
 import java.util.Map;
+import java.util.Objects;
+import java.util.stream.Collectors;
 
 /**
  * 路由控制器
@@ -44,31 +49,44 @@ public class RouteController {
 
     @GetMapping("/")
     public String root() {
-        return "index";
+        return "redirect:/index";
     }
-
     @GetMapping("/index")
-    public String index() {
+    public String index(Model model, @AuthenticationPrincipal OAuth2User principal) {
+        Map<@Nullable String, @Nullable Object> resultMap = Maps.newHashMap();
+        resultMap.put("name", principal.getName());
+        resultMap.put("attributes", principal.getAttributes());
+        resultMap.put("authorities", principal.getAuthorities().stream().map(GrantedAuthority::getAuthority).collect(Collectors.toList()));
+        model.addAttribute("userInfo", resultMap);
         return "index";
     }
 
-    @GetMapping("/oauth2Login")
-    public String oauth2Login(Model model) {
+    @SneakyThrows
+    @GetMapping("/logout")
+    public String login(Model model, String msg) {
         Map<String, OAuth2ClientProperties.Registration> registration = this.oAuth2ClientProperties.getRegistration();
         String prefix = "/oauth2/authorization/";
-        List<String> resultList = Lists.newArrayList();
-        registration.forEach((k, v) -> resultList.add(prefix + k));
-        model.addAttribute("oauth2Url", resultList);
+        Map<String, String> resultMap = Maps.newHashMap();
+        registration.forEach((k, v) -> resultMap.put(v.getClientName(), prefix + k));
+        model.addAttribute("oauthLogin", resultMap);
+        if(Objects.nonNull(msg)){
+            model.addAttribute("msg", URLDecoder.decode(msg, "UTF-8"));
+        }
         return "login";
     }
 
-    @GetMapping("/failure")
-    public String failure() {
-        return "failure";
+    @SneakyThrows
+    @GetMapping("/oauth2Login")
+    public String oauth2Login(Model model, String msg) {
+        Map<String, OAuth2ClientProperties.Registration> registration = this.oAuth2ClientProperties.getRegistration();
+        String prefix = "/oauth2/authorization/";
+        Map<String, String> resultMap = Maps.newHashMap();
+        registration.forEach((k, v) -> resultMap.put(v.getClientName(), prefix + k));
+        model.addAttribute("oauthLogin", resultMap);
+        if(Objects.nonNull(msg)){
+            model.addAttribute("msg", URLDecoder.decode(msg, "UTF-8"));
+        }
+        return "login";
     }
 
-    @GetMapping("/userInfo")
-    public OAuth2User userInfo(@AuthenticationPrincipal OAuth2User principal) {
-        return principal;
-    }
 }

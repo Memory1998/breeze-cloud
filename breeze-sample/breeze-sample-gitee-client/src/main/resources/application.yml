@@ -16,15 +16,15 @@ spring:
       client:
         registration:
           gitee: # registrationId
-            client-name: gitee # 客户端名称
-            client-id: ba7002b13ee57b211d5ee7bf9567cf8c6718bbc934aa38f06095398ba70e2ee8 # 在gitee申请的客户端标识
-            client-secret: 74bae056b1aea984c0d856a159656aa3d912cda07de5bac55635c8cb89b17a5b  # 在gitee申请的客户端秘钥
+            client-name: 码云登录 # 客户端名称
+            client-id: ba7002b13ee57b211d5ee7bf9567cf8c6718bbc934aa38f06095398ba70e2ee8       # 在gitee申请的客户端标识
+            client-secret: 74bae056b1aea984c0d856a159656aa3d912cda07de5bac55635c8cb89b17a5b   # 在gitee申请的客户端秘钥
             client-authentication-method: basic
             authorization-grant-type: authorization_code # 授权模式使用授权码模式
             redirect-uri: '{baseUrl}/{action}/oauth2/code/{registrationId}' # 回调地址，填写的与Gitee上申请的一致
-            provider: gitee # 指向 provider 唯一标识【sas】,不填时为 registrationId
+            provider: gitee # 指向 provider 唯一标识【gitee】,不填时为 registrationId
           github:
-            client-name: github
+            client-name: github登录
             client-id: 1d5e67cf8c6718bbc93a38f060953
             client-Secret: f7211ba470408fe5e7eb30195b289e1e626
             client-authentication-method: basic
