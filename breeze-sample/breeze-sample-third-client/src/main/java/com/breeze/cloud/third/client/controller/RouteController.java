@@ -59,6 +59,7 @@ public class RouteController {
         resultMap.put("attributes", principal.getAttributes());
         resultMap.put("authorities", principal.getAuthorities().stream().map(GrantedAuthority::getAuthority).collect(Collectors.toList()));
         model.addAttribute("userInfo", resultMap);
+        model.addAttribute("name", principal.getName());
         return "index";
     }
 
