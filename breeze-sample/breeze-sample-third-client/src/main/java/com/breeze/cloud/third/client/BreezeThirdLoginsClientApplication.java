@@ -14,22 +14,22 @@
  * limitations under the License.
  */
 
-package com.breeze.cloud.gitee.client;
+package com.breeze.cloud.third.client;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 /**
- * gitee客户端应用程序
+ * 三方登录客户端应用程序
  *
  * @author gaoweixuan
  * @date 2023-04-20
  */
 @SpringBootApplication
-public class BreezeGiteeClientApplication {
+public class BreezeThirdLoginsClientApplication {
 
     public static void main(String[] args) {
-        SpringApplication.run(BreezeGiteeClientApplication.class, args);
+        SpringApplication.run(BreezeThirdLoginsClientApplication.class, args);
     }
 
 }

@@ -9,7 +9,7 @@
         <version>1.0</version>
     </parent>
 
-    <artifactId>breeze-sample-gitee-client</artifactId>
+    <artifactId>breeze-sample-third-client</artifactId>
     <packaging>jar</packaging>
     <description>GITEE 客户端</description>
 

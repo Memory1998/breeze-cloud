@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.breeze.cloud.gitee.client.config;
+package com.breeze.cloud.third.client.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -76,12 +76,8 @@ public class SecurityConfig {
                 .logout()
                 .logoutUrl("/logout")
                 .logoutSuccessUrl("/oauth2Login")
-                .logoutSuccessHandler(new LogoutSuccessHandler() {
-                    @Override
-                    public void onLogoutSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
-                        response.sendRedirect("oathLogin/msg=" + URLEncoder.encode("退出成功", "UTF-8"));
-                    }
-                })
+                .logoutSuccessHandler((request, response, authentication)
+                        -> response.sendRedirect("oathLogin/msg=" + URLEncoder.encode("退出成功", "UTF-8")))
                 .and().build();
 
     }

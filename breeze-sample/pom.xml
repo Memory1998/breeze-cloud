@@ -14,8 +14,8 @@
     <description>DEMO</description>
 
     <modules>
-        <module>breeze-sample-gitee-client</module>
         <module>breeze-sample-client</module>
+        <module>breeze-sample-third-client</module>
         <module>breeze-sample-resource</module>
     </modules>
 

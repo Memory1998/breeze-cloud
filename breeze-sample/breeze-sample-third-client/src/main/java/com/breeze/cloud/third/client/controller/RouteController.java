@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.breeze.cloud.gitee.client.controller;
+package com.breeze.cloud.third.client.controller;
 
 import com.google.common.collect.Maps;
 import lombok.SneakyThrows;
@@ -27,6 +27,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
+import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.util.Map;
 import java.util.Objects;
@@ -64,6 +65,11 @@ public class RouteController {
     @SneakyThrows
     @GetMapping("/logout")
     public String login(Model model, String msg) {
+        this.buildLoginPage(model, msg);
+        return "login";
+    }
+
+    private void buildLoginPage(Model model, String msg) throws UnsupportedEncodingException {
         Map<String, OAuth2ClientProperties.Registration> registration = this.oAuth2ClientProperties.getRegistration();
         String prefix = "/oauth2/authorization/";
         Map<String, String> resultMap = Maps.newHashMap();
@@ -72,20 +78,12 @@ public class RouteController {
         if(Objects.nonNull(msg)){
             model.addAttribute("msg", URLDecoder.decode(msg, "UTF-8"));
         }
-        return "login";
     }
 
     @SneakyThrows
     @GetMapping("/oauth2Login")
     public String oauth2Login(Model model, String msg) {
-        Map<String, OAuth2ClientProperties.Registration> registration = this.oAuth2ClientProperties.getRegistration();
-        String prefix = "/oauth2/authorization/";
-        Map<String, String> resultMap = Maps.newHashMap();
-        registration.forEach((k, v) -> resultMap.put(v.getClientName(), prefix + k));
-        model.addAttribute("oauthLogin", resultMap);
-        if(Objects.nonNull(msg)){
-            model.addAttribute("msg", URLDecoder.decode(msg, "UTF-8"));
-        }
+        this.buildLoginPage(model, msg);
         return "login";
     }
 
