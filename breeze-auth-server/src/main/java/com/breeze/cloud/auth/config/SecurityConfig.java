@@ -17,9 +17,9 @@
 package com.breeze.cloud.auth.config;
 
 import com.breeze.cloud.auth.extend.CustomLogoutSuccessHandler;
-import com.breeze.cloud.auth.extend.OidcLoginBeforeStoreProcessorFilter;
 import com.breeze.cloud.auth.extend.LoginFailHandler;
 import com.breeze.cloud.auth.extend.LoginSuccessHandler;
+import com.breeze.cloud.auth.extend.OidcLoginBeforeStoreProcessorFilter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -29,6 +29,8 @@ import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.access.ExceptionTranslationFilter;
+import org.springframework.session.FindByIndexNameSessionRepository;
+import org.springframework.session.security.SpringSessionBackedSessionRegistry;
 
 /**
  * 安全配置
@@ -39,6 +41,8 @@ import org.springframework.security.web.access.ExceptionTranslationFilter;
 @RequiredArgsConstructor
 @EnableWebSecurity(debug = true)
 public class SecurityConfig {
+
+    private final FindByIndexNameSessionRepository sessionRepository;
 
     /**
      * 默认安全过滤器链，授权服务器本身的安全配置
@@ -56,6 +60,7 @@ public class SecurityConfig {
                        .anyRequest().authenticated()
        );
 
+        //解决不允许显示在iframe的问题
         http.headers()
                 .frameOptions()
                 .sameOrigin();
@@ -75,6 +80,17 @@ public class SecurityConfig {
                 .deleteCookies("JSESSIONID")
                 .invalidateHttpSession(true);
 
+        // session
+        http.sessionManagement()
+                //  Session的并发控制,这里设为最多一个，只允许一个用户登录,如果同一个账户两次登录,那么第一个账户将被踢下线
+                 .maximumSessions(1)
+                 .maxSessionsPreventsLogin(false)
+                 .sessionRegistry(sessionBackedSessionRegistry());
+
+        // 默认是开通session fixation防护的,
+        // 防护的原理为，每当用户认证过后，就会重新生成一个新的session，并抛弃旧的session
+         http.sessionManagement().sessionFixation().migrateSession();
+
         // 增加自定义过滤器
         http.addFilterBefore(new OidcLoginBeforeStoreProcessorFilter(http), ExceptionTranslationFilter.class);
         // @formatter:on
@@ -89,6 +105,16 @@ public class SecurityConfig {
     @Bean
     public PasswordEncoder passwordEncoder() {
         return PasswordEncoderFactories.createDelegatingPasswordEncoder();
+    }
+
+    /**
+     * 会话支持会话注册表
+     *
+     * @return {@link SpringSessionBackedSessionRegistry}
+     */
+    @Bean
+    public SpringSessionBackedSessionRegistry sessionBackedSessionRegistry() {
+        return new SpringSessionBackedSessionRegistry(sessionRepository);
     }
 
     /**
