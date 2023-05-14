@@ -18,10 +18,12 @@ package com.breeze.cloud.client.controller;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.oauth2.client.OAuth2AuthorizedClient;
 import org.springframework.security.oauth2.client.annotation.RegisteredOAuth2AuthorizedClient;
 import org.springframework.security.oauth2.core.OAuth2Error;
 import org.springframework.security.oauth2.core.endpoint.OAuth2ParameterNames;
+import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.StringUtils;
@@ -57,9 +59,10 @@ public class AuthorizationController {
      * @param authorizedClient 授权客户端
      * @return {@link String}
      */
-    @GetMapping(value = "/testAuthorizationCodeGrantType", params = "grant_type=authorization_code")
-    public String testAuthorizationCodeGrantType(Model model,
-                                                 @RegisteredOAuth2AuthorizedClient("messaging-client-authorization-code") OAuth2AuthorizedClient authorizedClient) {
+    @GetMapping(value = "/authorize", params = "grant_type=authorization_code")
+    public String authorize(Model model,
+                            @AuthenticationPrincipal OAuth2User principal,
+                            @RegisteredOAuth2AuthorizedClient("messaging-client-authorization-code") OAuth2AuthorizedClient authorizedClient) {
         log.info("[获取信息，AuthorizationCodeGrantType]: {}", authorizedClient);
 
         List messages = this.webClient
@@ -73,6 +76,7 @@ public class AuthorizationController {
 
         // 给页面赋值
         model.addAttribute("messages", messages);
+        model.addAttribute("name", principal.getName());
 
         return "index";
     }
@@ -102,16 +106,17 @@ public class AuthorizationController {
      * @return {@link String}
      */
     @GetMapping(value = "/authorize", params = "grant_type=client_credentials")
-    public String clientCredentialsGrant(Model model) {
+    public String clientCredentialsGrant(Model model, @AuthenticationPrincipal OAuth2User principal) {
         List messages = this.webClient
                 .get()
-                .uri(this.messagesBaseUri + "/read/hello!")
+                .uri(this.messagesBaseUri + "/read/hello")
                 .attributes(clientRegistrationId("messaging-client-client-credentials"))
                 .retrieve()
                 .bodyToMono(List.class)
                 .block();
         log.info("[读取到的信息]： {}", messages);
         model.addAttribute("messages", messages);
+        model.addAttribute("name", principal.getName());
 
         return "index";
     }

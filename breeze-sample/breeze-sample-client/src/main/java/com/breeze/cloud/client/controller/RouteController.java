@@ -16,14 +16,22 @@
 
 package com.breeze.cloud.client.controller;
 
+import com.google.common.collect.Maps;
+import org.checkerframework.checker.nullness.qual.Nullable;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * 路由控制器
@@ -51,7 +59,12 @@ public class RouteController {
      * @return {@link String}
      */
     @GetMapping("/index")
-    public String index() {
+    public String index(Model model, @AuthenticationPrincipal OAuth2User principal) {
+        Map<@Nullable String, @Nullable Object> resultMap = Maps.newHashMap();
+        resultMap.put("attributes", principal.getAttributes());
+        resultMap.put("authorities", principal.getAuthorities().stream().map(GrantedAuthority::getAuthority).collect(Collectors.toList()));
+        model.addAttribute("userInfo", resultMap);
+        model.addAttribute("name",  principal.getName());
         return "index";
     }
 
