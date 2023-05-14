@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "443e32f8-f285-40b9-a9ac-707d83264c85",
+		"_postman_id": "e318ee22-de31-410d-937d-2d7ee0cfb13d",
 		"name": "breeze-cloud",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
@@ -15,7 +15,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"clientId\": \"messaging-test\",\r\n    \"clientIdIssuedAt\": \"2023-05-10 10:25:00\",\r\n    \"clientSecret\": \"{bcrypt}$2a$10$/SH5L7ukTaRdnFL94vWEzeJx8bz9.UpRk7j/KXx1KJR7gcxeclK0C\",\r\n    \"clientSecretExpiresAt\": \"2023-05-12 00:00:00\",\r\n    \"clientName\": \"messaging-test\",\r\n    \"clientAuthenticationMethods\": [\r\n        \"client_secret_post\",\r\n        \"client_secret_basic\"\r\n    ],\r\n    \"authorizationGrantTypes\": [\r\n        \"refresh_token\",\r\n        \"password\",\r\n        \"client_credentials\",\r\n        \"sms_code\",\r\n        \"authorization_code\",\r\n        \"email_code\"\r\n    ],\r\n    \"redirectUris\": [\r\n        \"http://127.0.0.1:8080/authorized\",\r\n        \"http://www.baidu.com\",\r\n        \"http://127.0.0.1:8080/login/oauth2/code/messaging-client-oidc\"\r\n    ],\r\n    \"scopes\": [\r\n        \"openid\",\r\n        \"profile\",\r\n        \"message.read\",\r\n        \"message.write\"\r\n    ],\r\n    \"clientSettings\": {\r\n        \"requireProofKey\": false,\r\n        \"requireAuthorizationConsent\": true,\r\n        // \"jwkSetUrl\":\"test_1502b9dbe735\",\r\n        \"tokenEndpointAuthenticationSigningAlgorithm\": \"RS256\"\r\n    },\r\n    \"tokenSettings\": {\r\n        \"idTokenSignatureAlgorithm\": \"RS256\",\r\n        \"accessTokenFormat\": \"self-contained\",\r\n        \"authorizationCodeTimeToLive\": 10,\r\n        \"accessTokenTimeToLive\": 10,\r\n        \"refreshTokenTimeToLive\": 24,\r\n        \"reuseRefreshTokens\": true\r\n    }\r\n}",
+							"raw": "{\r\n    \"clientId\": \"messaging-client\",\r\n    \"clientIdIssuedAt\": \"2023-05-13 10:25:00\",\r\n    \"clientSecret\": \"secret\",\r\n    \"clientSecretExpiresAt\": \"2023-12-30 00:00:00\",\r\n    \"clientName\": \"messaging-client\",\r\n    \"clientAuthenticationMethods\": [\r\n        \"client_secret_post\",\r\n        \"client_secret_basic\"\r\n    ],\r\n    \"authorizationGrantTypes\": [\r\n        \"refresh_token\",\r\n        \"password\",\r\n        \"client_credentials\",\r\n        \"sms_code\",\r\n        \"authorization_code\",\r\n        \"email_code\"\r\n    ],\r\n    \"redirectUris\": [\r\n        \"http://127.0.0.1:8080/authorized\",\r\n        \"http://www.baidu.com\",\r\n        \"http://127.0.0.1:8080/login/oauth2/code/messaging-client-oidc\"\r\n    ],\r\n    \"scopes\": [\r\n        \"openid\",\r\n        \"profile\",\r\n        \"message.read\",\r\n        \"message.write\",\r\n        \"user_info\"\r\n    ],\r\n    \"clientSettings\": {\r\n        \"requireProofKey\": false,\r\n        \"requireAuthorizationConsent\": true,\r\n        // \"jwkSetUrl\":\"test_1502b9dbe735\",\r\n        \"tokenEndpointAuthenticationSigningAlgorithm\": \"RS256\"\r\n    },\r\n    \"tokenSettings\": {\r\n        \"idTokenSignatureAlgorithm\": \"RS256\",\r\n        \"accessTokenFormat\": \"self-contained\",\r\n        \"authorizationCodeTimeToLive\": 10,\r\n        \"accessTokenTimeToLive\": 10,\r\n        \"refreshTokenTimeToLive\": 24,\r\n        \"reuseRefreshTokens\": true\r\n    }\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -46,7 +46,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"clientId\": \"pkce-client\",\r\n    \"clientIdIssuedAt\": \"2023-05-10 10:25:00\",\r\n    \"clientSecret\": \"pkce\",\r\n    \"clientSecretExpiresAt\": \"2023-05-12 00:00:00\",\r\n    \"clientName\": \"pkce-client\",\r\n    \"clientAuthenticationMethods\": [\r\n        \"none\"\r\n    ],\r\n    \"authorizationGrantTypes\": [\r\n        \"authorization_code\"\r\n    ],\r\n    \"redirectUris\": [\r\n        \"http://127.0.0.1:8070/login/oauth2/code/messaging-client-pkce\",\r\n        \"http://www.baidu.com\"\r\n    ],\r\n    \"scopes\": [\r\n        \"message.read\"\r\n    ],\r\n    \"clientSettings\": {\r\n        \"requireProofKey\": true,\r\n        \"requireAuthorizationConsent\": true\r\n    },\r\n    \"tokenSettings\": {\r\n        \"settings.token.reuse-refresh-tokens\": true,\r\n        \"settings.token.id-token-signature-algorithm\": \"RS256\",\r\n        \"settings.token.access-token-time-to-live\": 18,\r\n        \"settings.token.access-token-format\": \"self-contained\",\r\n        \"settings.token.refresh-token-time-to-live\": 360,\r\n        \"settings.token.authorization-code-time-to-live\": 30\r\n    }\r\n}",
+							"raw": "{\r\n    \"clientId\": \"pkce-client\",\r\n    \"clientIdIssuedAt\": \"2023-05-13 10:25:00\",\r\n    \"clientSecret\": \"\",\r\n    \"clientSecretExpiresAt\": null,\r\n    \"clientName\": \"pkce-client\",\r\n    \"clientAuthenticationMethods\": [\r\n        \"none\"\r\n    ],\r\n    \"authorizationGrantTypes\": [\r\n        \"authorization_code\"\r\n    ],\r\n    \"redirectUris\": [\r\n        \"http://127.0.0.1:8070/login/oauth2/code/messaging-client-pkce\",\r\n        \"http://www.baidu.com\"\r\n    ],\r\n    \"scopes\": [\r\n        \"message.read\"\r\n    ],\r\n    \"clientSettings\": {\r\n        \"requireProofKey\": true,\r\n        \"requireAuthorizationConsent\": true\r\n    },\r\n    \"tokenSettings\": {\r\n        \"settings.token.reuse-refresh-tokens\": true,\r\n        \"settings.token.id-token-signature-algorithm\": \"RS256\",\r\n        \"settings.token.access-token-time-to-live\": 18,\r\n        \"settings.token.access-token-format\": \"self-contained\",\r\n        \"settings.token.refresh-token-time-to-live\": 360,\r\n        \"settings.token.authorization-code-time-to-live\": 30\r\n    }\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -103,6 +103,49 @@
 							"port": "8000",
 							"path": [
 								"client"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "获取菜单",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJraWQiOiI0MjI3ZDVlMS0yNjM3LTQyMWQtYTM4NC1kZmM5MDg4NTYwZmMiLCJhbGciOiJSUzI1NiJ9.eyJzdWIiOiJhZG1pbiIsImF1ZCI6Im1lc3NhZ2luZy1jbGllbnQiLCJuYmYiOjE2ODM5OTc2NTEsImNsaWVudElkIjoibWVzc2FnaW5nLWNsaWVudCIsInNjb3BlIjpbImZsb3c6ZGVmaW5pdGlvbjpzdXNwZW5kZWQiLCJhdXRoOmNsaWVudDpsaXN0Iiwic3lzOnBvc3Q6bW9kaWZ5Iiwic3lzOnVzZXI6Y3JlYXRlIiwic3lzOnBsYXRmb3JtOmRlbGV0ZSIsInN5czp1c2VyTXNnOmRlbGV0ZSIsImZsb3c6ZGVmaW5pdGlvbjpkZWxldGUiLCJzeXM6cGVybWlzc2lvbjplZGl0Iiwic3lzOnVzZXI6ZXhwb3J0Iiwic3lzOmRlcHQ6ZGVsZXRlIiwic3lzOmpvYjptb2RpZnkiLCJmbG93OmRlZmluaXRpb246bGlzdCIsImZsb3c6aW5zdGFuY2U6cHVibGlzaCIsInN5czpkaWN0OmNyZWF0ZSIsInN5czpsb2c6ZGVsZXRlIiwic3lzOnRlbmFudDpkZWxldGUiLCJzeXM6ZGVwdDpsaXN0IiwidXNlcl9pbmZvIiwiZmxvdzpjYXRlZ29yeTpkZWxldGUiLCJzeXM6cm9sZTpsaXN0Iiwic3lzOnBlcm1pc3Npb246bGlzdCIsInN5czptc2c6bW9kaWZ5Iiwic3lzOnRlbmFudDptb2RpZnkiLCJmbG93OmNhdGVnb3J5Omxpc3QiLCJzeXM6am9iOmNyZWF0ZSIsInN5czp1c2VyOm1vZGlmeSIsInN5czpwb3N0OmRlbGV0ZSIsInN5czpwbGF0Zm9ybTptb2RpZnkiLCJzeXM6dXNlcjpyZXNldFBhc3MiLCJzeXM6cm9sZTpjcmVhdGUiLCJzeXM6bWVudTptb2RpZnkiLCJzeXM6cGVybWlzc2lvbjpjcmVhdGUiLCJzeXM6akxvZzpkZWxldGUiLCJzeXM6ZmlsZTp1cGxvYWQiLCJST0xFX1NJTVBMRSIsImtlZXA6Y3JlYXRlIiwic3lzOmRpY3Q6bW9kaWZ5Iiwic3lzOmZpbGU6ZGVsZXRlIiwic3lzOm1zZzpjcmVhdGUiLCJmbG93OmRlZmluaXRpb246aW5mbyIsInN5czppdGVtOmxpc3QiLCJzeXM6akxvZzp0cnVuY2F0ZSIsInN5czpsb2c6dHJ1bmNhdGUiLCJzeXM6bWVudTpkZWxldGUiLCJzeXM6dGVuYW50OmNyZWF0ZSIsImZsb3c6ZGVzaWduZXIiLCJzeXM6cG9zdDpsaXN0IiwiZmxvdzppbnN0YW5jZTpsaXN0Iiwic3lzOmRpY3Q6ZGVsZXRlIiwic3lzOm1zZzpkZWxldGUiLCJzeXM6bWVudTpsaXN0Iiwic3lzOnJvbGU6bW9kaWZ5Iiwic3lzOnBsYXRmb3JtOmxpc3QiLCJzeXM6cGVybWlzc2lvbjptb2RpZnkiLCJzeXM6am9iOmRlbGV0ZSIsInN5czpwb3N0OmNyZWF0ZSIsInN5czp1c2VyTXNnOm1vZGlmeSIsImZsb3c6ZGVmaW5pdGlvbjpkZXBsb3kiLCJzeXM6dXNlcjpkZWxldGUiLCJzeXM6dXNlck1zZzpsaXN0Iiwic3lzOmpvYjpydW4iLCJmbG93OmRlZmluaXRpb246Y3JlYXRlIiwic3lzOnRlbmFudDpsaXN0Iiwic3lzOnBsYXRmb3JtOmNyZWF0ZSIsImZsb3c6Y2F0ZWdvcnk6bW9kaWZ5Iiwic3lzOmpvYjpsaXN0Iiwic3lzOm1zZzpsaXN0Iiwic3lzOmRpY3Q6bGlzdCIsInN5czpmaWxlOmxpc3QiLCJzeXM6ZGVwdDptb2RpZnkiLCJzeXM6dXNlcjpsaXN0IiwiZmxvdzpjYXRlZ29yeTpjcmVhdGUiLCJzeXM6ZmlsZTpkb3dubG9hZCIsInN5czpqTG9nOmxpc3QiLCJzeXM6dXNlcjp1c2VyU2V0Um9sZSIsInN5czptZW51OmNyZWF0ZSIsInN5czp1c2VyOmluZm8iLCJzeXM6ZGVwdDpjcmVhdGUiLCJzeXM6cm9sZTpkZWxldGUiLCJzeXM6cGVybWlzc2lvbjpkZWxldGUiLCJST0xFX0FETUlOIiwiZmxvdzppbnN0YW5jZTpzdGFydCIsInN5czpmaWxlOnByZXZpZXciLCJzeXM6bG9nOmxpc3QiXSwiaXNzIjoiaHR0cDpcL1wvbG9jYWxob3N0OjgwMDAiLCJleHAiOjE2ODQwMzM2NTEsImlhdCI6MTY4Mzk5NzY1MX0.OQKuetJ9XdkRELOv-WeuF2hVW7qWX4OBuOwRa0-eeKRxQ_gFx7kscorUzX101mhJJhzbefMmIC7sI2QoGFnWtD0TbU2ieBUTs2iKzj9t1al27UhkJ7X7VzzkyPwLaomy0-bxJBOd9yIHdx1MuCLWTjrYvi9RTXT9Mh67xX9ASVFh94miZSyCB5WecdjYCK5dC51Z5i6TjHrzfmHIUbDiNm1RC-K9hLYH33MfJtg_0vryWECGSEzyJyDMjcfRyuHHaQHiQAvmN0RM9X7lDs8nVM_2v8qiy3_pekGmq59Ak1se9wxlvBgLRf4tXs3uRuJnDQsENekT9qRC6k2V6uZhnQ",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "TENANT_ID",
+								"value": "1",
+								"type": "default"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:9000/system/menu/listTreeMenu?platformCode=managementCenter",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "9000",
+							"path": [
+								"system",
+								"menu",
+								"listTreeMenu"
+							],
+							"query": [
+								{
+									"key": "platformCode",
+									"value": "managementCenter"
+								}
 							]
 						}
 					},
@@ -251,7 +294,7 @@
 								"method": "GET",
 								"header": [],
 								"url": {
-									"raw": "http://localhost:8000/oauth2/authorize?response_type=code&client_id=messaging-test&redirect_uri=http://www.baidu.com&scope=message.read",
+									"raw": "http://localhost:8000/oauth2/authorize?response_type=code&client_id=messaging-client&redirect_uri=http://www.baidu.com&scope=message.read",
 									"protocol": "http",
 									"host": [
 										"localhost"
@@ -268,7 +311,7 @@
 										},
 										{
 											"key": "client_id",
-											"value": "messaging-test"
+											"value": "messaging-client"
 										},
 										{
 											"key": "redirect_uri",
@@ -495,13 +538,13 @@
 									"type": "basic",
 									"basic": [
 										{
-											"key": "password",
-											"value": "secret",
+											"key": "username",
+											"value": "messaging-client",
 											"type": "string"
 										},
 										{
-											"key": "username",
-											"value": "messaging-test",
+											"key": "password",
+											"value": "secret",
 											"type": "string"
 										}
 									]
@@ -642,7 +685,7 @@
 									"basic": [
 										{
 											"key": "username",
-											"value": "messaging-test",
+											"value": "messaging-client",
 											"type": "string"
 										},
 										{
@@ -661,7 +704,7 @@
 									}
 								],
 								"url": {
-									"raw": "http://127.0.0.1:8000/oauth2/token?grant_type=password&username=admin&password=123456&scope=profile",
+									"raw": "http://127.0.0.1:8000/oauth2/token?grant_type=password&username=admin&password=123456&scope=user_info",
 									"protocol": "http",
 									"host": [
 										"127",
@@ -689,7 +732,7 @@
 										},
 										{
 											"key": "scope",
-											"value": "profile"
+											"value": "user_info"
 										}
 									]
 								}
@@ -832,7 +875,7 @@
 									"basic": [
 										{
 											"key": "username",
-											"value": "messaging-test",
+											"value": "messaging-client",
 											"type": "string"
 										},
 										{

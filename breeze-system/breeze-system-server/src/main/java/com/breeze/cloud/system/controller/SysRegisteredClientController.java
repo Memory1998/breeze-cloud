@@ -101,9 +101,8 @@ public class SysRegisteredClientController {
      * @return {@link Result}<{@link Boolean}>
      */
     @Operation(summary = "保存")
-    @JumpAuth
     @PostMapping
-//    @PreAuthorize("hasAnyAuthority('sys:client:create')")
+    @PreAuthorize("hasAnyAuthority('sys:client:create')")
     @BreezeSysLog(description = "客户端信息保存", type = LogType.SAVE)
     public Result<Boolean> save(@Valid @RequestBody RegisteredClientParams registeredClientParams) {
         return this.sysRegisterClientService.saveRegisteredClient(registeredClientParams);
