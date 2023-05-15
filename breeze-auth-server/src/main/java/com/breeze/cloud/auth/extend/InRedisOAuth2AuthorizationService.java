@@ -17,7 +17,7 @@
 package com.breeze.cloud.auth.extend;
 
 import com.breeze.cloud.auth.jackson2.OAuth2AuthorizationModule;
-import com.breeze.cloud.core.utils.Utils;
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.Module;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
@@ -64,10 +64,7 @@ public class InRedisOAuth2AuthorizationService implements OAuth2AuthorizationSer
      */
     private final RegisteredClientRepository clientRepository;
 
-    /**
-     * 工具
-     */
-    Utils<OAuth2Authorization> utils = new Utils<>(new ObjectMapper());
+    private final ObjectMapper mapper = new ObjectMapper();
 
     /**
      * 在Redis,oauth2授权服务
@@ -83,15 +80,13 @@ public class InRedisOAuth2AuthorizationService implements OAuth2AuthorizationSer
         this.redisOperations = redisOperations;
         this.clientRepository = clientRepository;
 
+        // 配置mapper
         ClassLoader classLoader = InRedisOAuth2AuthorizationService.class.getClassLoader();
         List<Module> securityModules = SecurityJackson2Modules.getModules(classLoader);
-
-        utils.register(securityModules);
-        utils.register(new OAuth2AuthorizationServerJackson2Module());
-        utils.register(new OAuth2AuthorizationModule());
-
-        ObjectMapper objectMapper = utils.getObjectMapper();
-        objectMapper.setHandlerInstantiator(new SpringHandlerInstantiator(beanFactory));
+        mapper.registerModules(securityModules);
+        mapper.registerModules(new OAuth2AuthorizationServerJackson2Module());
+        mapper.registerModules(new OAuth2AuthorizationModule());
+        mapper.setHandlerInstantiator(new SpringHandlerInstantiator(beanFactory));
     }
 
     /**
@@ -121,7 +116,7 @@ public class InRedisOAuth2AuthorizationService implements OAuth2AuthorizationSer
         // 获取保存auth数据的Key
         String authorizationKey = AUTHORIZATION + authorizationId;
         // 保存 [OAuth2Authorization] 数据, 格式[authId : OAuth2Authorization]
-        redisOperations.opsForValue().set(authorizationKey, utils.write(authorization), ttl.max.getSeconds(), TimeUnit.SECONDS);
+        redisOperations.opsForValue().set(authorizationKey, this.write(authorization), ttl.max.getSeconds(), TimeUnit.SECONDS);
 
         Set<String> correlcationsHashSet = new HashSet<>();
         // state和authId的关系维护
@@ -203,7 +198,11 @@ public class InRedisOAuth2AuthorizationService implements OAuth2AuthorizationSer
      */
     @Override
     public OAuth2Authorization findById(String id) {
-        return Optional.ofNullable(redisOperations.opsForValue().get(AUTHORIZATION + id)).map(utils::parse).orElse(null);
+        // @formatter:off
+        return Optional.ofNullable(redisOperations.opsForValue().get(AUTHORIZATION + id))
+                .map(this::readValue)
+                .orElse(null);
+        // @formatter:on
     }
 
     /**
@@ -273,6 +272,34 @@ public class InRedisOAuth2AuthorizationService implements OAuth2AuthorizationSer
     }
 
     /**
+     * 写
+     *
+     * @param data 数据
+     * @return {@link String}
+     */
+    public String write(Object data) {
+        try {
+            return mapper.writeValueAsString(data);
+        } catch (Exception ex) {
+            throw new IllegalArgumentException(ex.getMessage(), ex);
+        }
+    }
+
+    /**
+     * 解析
+     *
+     * @param data 数据
+     */
+    public OAuth2Authorization readValue(String data) {
+        try {
+            return mapper.readValue(data, new TypeReference<OAuth2Authorization>() {
+            });
+        } catch (Exception ex) {
+            throw new IllegalArgumentException(ex.getMessage(), ex);
+        }
+    }
+
+    /**
      * ttl
      *
      * @author gaoweixuan
@@ -292,7 +319,7 @@ public class InRedisOAuth2AuthorizationService implements OAuth2AuthorizationSer
          */
         public final Duration refreshTokenTtl;
         /**
-         * 马克斯
+         * 最大值
          */
         public final Duration max;
 

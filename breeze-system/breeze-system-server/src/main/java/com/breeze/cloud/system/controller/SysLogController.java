@@ -19,7 +19,9 @@ package com.breeze.cloud.system.controller;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.breeze.cloud.core.utils.Result;
 import com.breeze.cloud.log.annotation.BreezeSysLog;
+import com.breeze.cloud.log.bo.SysLogBO;
 import com.breeze.cloud.log.enums.LogType;
+import com.breeze.cloud.security.annotation.JumpAuth;
 import com.breeze.cloud.system.domain.SysLog;
 import com.breeze.cloud.system.query.LogQuery;
 import com.breeze.cloud.system.service.SysLogService;
@@ -61,6 +63,17 @@ public class SysLogController {
     @PreAuthorize("hasAnyAuthority('sys:log:list')")
     public Result<Page<SysLog>> list(@RequestBody LogQuery logQuery) {
         return Result.ok(this.sysLogService.listPage(logQuery));
+    }
+
+    /**
+     * 远程保存接口
+     *
+     * @param sysLogBO 日志BO
+     */
+    @PostMapping("/save")
+    @JumpAuth
+    public void save(@RequestBody SysLogBO sysLogBO) {
+        this.sysLogService.saveSysLog(sysLogBO);
     }
 
     /**

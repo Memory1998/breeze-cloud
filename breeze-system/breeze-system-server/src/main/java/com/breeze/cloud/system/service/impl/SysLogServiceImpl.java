@@ -57,7 +57,6 @@ public class SysLogServiceImpl extends ServiceImpl<SysLogMapper, SysLog> impleme
     public void saveSysLog(SysLogBO sysLogBO) {
         SysLog sysLog = new SysLog();
         BeanUtil.copyProperties(sysLogBO, sysLog);
-        sysLog.setSystemModule("权限系统");
         this.save(sysLog);
     }
 

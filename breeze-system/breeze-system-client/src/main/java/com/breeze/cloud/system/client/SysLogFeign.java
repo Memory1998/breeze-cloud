@@ -14,35 +14,29 @@
  * limitations under the License.
  */
 
-package com.breeze.cloud.system.params;
+package com.breeze.cloud.system.client;
 
-import io.swagger.v3.oas.annotations.media.Schema;
-import lombok.*;
+import com.breeze.cloud.core.constants.ContextConstants;
+import com.breeze.cloud.log.bo.SysLogBO;
+import org.springframework.cloud.openfeign.FeignClient;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 
 /**
- * 短信登录参数
+ * 系统日志控制器
  *
  * @author gaoweixuan
- * @date 2022-08-31
+ * @date 2023-05-15
  */
-@Data
-@Builder
-@NoArgsConstructor
-@AllArgsConstructor
-@EqualsAndHashCode(callSuper = false)
-@Schema(description = "短信登录参数")
-public class SmsLoginParam {
+@FeignClient(name = ContextConstants.SYSTEM, contextId = "SysLogFeign")
+public interface SysLogFeign {
 
     /**
-     * 手机号
+     * 远程保存接口
+     *
+     * @param sysLogBO 日志BO
      */
-    @Schema(description = "手机号")
-    private String phone;
-
-    /**
-     * 验证码
-     */
-    @Schema(description = "验证码")
-    private String code;
+    @PostMapping("/log/save")
+    void save(@RequestBody SysLogBO sysLogBO);
 
 }

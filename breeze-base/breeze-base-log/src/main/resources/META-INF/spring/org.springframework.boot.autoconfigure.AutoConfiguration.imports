@@ -1,1 +1,2 @@
+com.breeze.cloud.log.events.PublisherSaveSysLogEvent
 com.breeze.cloud.log.EnableSysLogConfiguration

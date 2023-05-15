@@ -6,18 +6,18 @@
     <select id="listPage"
             resultType="com.breeze.cloud.system.domain.SysRegisteredClient">
         SELECT
-            id,
-            client_id,
-            client_id_issued_at,
-            client_secret,
-            client_secret_expires_at,
-            client_name,
-            client_authentication_methods,
-            authorization_grant_types,
-            redirect_uris,
-            scopes,
-            client_settings,
-            token_settings
+        id,
+        client_id,
+        client_id_issued_at,
+        client_secret,
+        client_secret_expires_at,
+        client_name,
+        client_authentication_methods,
+        authorization_grant_types,
+        redirect_uris,
+        scopes,
+        json_client_settings,
+        json_token_settings
         FROM
         sys_registered_client
         <where>
@@ -40,8 +40,8 @@
         authorization_grant_types,
         redirect_uris,
         scopes,
-        client_settings,
-        token_settings
+        json_client_settings,
+        json_token_settings
         FROM
         sys_registered_client
         <where>

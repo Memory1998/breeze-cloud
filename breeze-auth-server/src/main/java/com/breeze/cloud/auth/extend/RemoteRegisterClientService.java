@@ -17,14 +17,13 @@
 package com.breeze.cloud.auth.extend;
 
 import cn.hutool.json.JSONUtil;
-import com.breeze.cloud.auth.utils.OAuth2EndpointUtils;
 import com.breeze.cloud.auth.exception.NotSupportException;
-import com.breeze.cloud.core.utils.Utils;
+import com.breeze.cloud.auth.utils.OAuth2EndpointUtils;
 import com.breeze.cloud.system.client.SysRegisterClientFeign;
 import com.breeze.cloud.system.domain.SysRegisteredClient;
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.core.AuthorizationGrantType;
 import org.springframework.security.oauth2.core.ClientAuthenticationMethod;
 import org.springframework.security.oauth2.jose.jws.SignatureAlgorithm;
@@ -60,25 +59,17 @@ import static org.springframework.security.oauth2.server.authorization.settings.
 public class RemoteRegisterClientService implements RegisteredClientRepository {
 
     /**
-     * 密码编码器
-     */
-    private final PasswordEncoder passwordEncoder;
-
-    /**
      * 注册客户端装
      */
     private final SysRegisterClientFeign registerClientFeign;
-
-    Utils<Map<String, Object>> mapper = new Utils<>(new ObjectMapper());
+    private final ObjectMapper mapper = new ObjectMapper();
 
     /**
      * 构造方法  身份验证注册客户服务
      *
-     * @param passwordEncoder     密码编码器
      * @param registerClientFeign 注册客户端装
      */
-    public RemoteRegisterClientService(PasswordEncoder passwordEncoder, SysRegisterClientFeign registerClientFeign) {
-        this.passwordEncoder = passwordEncoder;
+    public RemoteRegisterClientService(SysRegisterClientFeign registerClientFeign) {
         this.registerClientFeign = registerClientFeign;
     }
 
@@ -101,7 +92,7 @@ public class RemoteRegisterClientService implements RegisteredClientRepository {
     @Override
     public RegisteredClient findById(String id) {
         SysRegisteredClient registeredClient = registerClientFeign.getById(id);
-        return convertRegisteredClient(registeredClient);
+        return buildRegisteredClient(registeredClient);
     }
 
     /**
@@ -113,15 +104,20 @@ public class RemoteRegisterClientService implements RegisteredClientRepository {
     @Override
     public RegisteredClient findByClientId(String clientId) {
         SysRegisteredClient registeredClient = registerClientFeign.getByClientId(clientId);
-        return convertRegisteredClient(registeredClient);
+        return buildRegisteredClient(registeredClient);
     }
 
-    private RegisteredClient convertRegisteredClient(SysRegisteredClient registeredClient) {
+    /**
+     * 注册客户端
+     *
+     * @param registeredClient 注册客户端
+     * @return {@link RegisteredClient}
+     */
+    private RegisteredClient buildRegisteredClient(SysRegisteredClient registeredClient) {
         // @formatter:off
-        Optional.ofNullable(registeredClient).orElseThrow(() ->
-                OAuth2EndpointUtils.newError(INVALID_CLIENT,
-                        CLIENT_ID,
-                        ACCESS_TOKEN_REQUEST_ERROR_URI));
+        Optional.ofNullable(registeredClient).orElseThrow(() -> OAuth2EndpointUtils.newError(INVALID_CLIENT,
+                CLIENT_ID,
+                ACCESS_TOKEN_REQUEST_ERROR_URI));
 
         RegisteredClient.Builder build = RegisteredClient.withId(registeredClient.getId())
                 // clientId客户端标识符
@@ -129,66 +125,95 @@ public class RemoteRegisterClientService implements RegisteredClientRepository {
                 // 名称可不定义
                 .clientName(registeredClient.getClientName())
                 .clientIdIssuedAt(registeredClient.getClientIdIssuedAt().toInstant(ZoneOffset.UTC))
-                .clientSecretExpiresAt(Optional.ofNullable(registeredClient.getClientSecretExpiresAt()).map(time -> time.toInstant(ZoneOffset.UTC)).orElse(null))
+                .clientSecretExpiresAt(Optional.ofNullable(registeredClient.getClientSecretExpiresAt())
+                        .map(time -> time.toInstant(ZoneOffset.UTC)).orElse(null))
                 // clientSecret客户端密钥
                 .clientSecret(registeredClient.getClientSecret())
-                // clientAuthenticationMethod 客户端使用的身份验证方法
-                // params: [client_secret_basic, client_secret_post, private_key_jwt, client_secret_jwt, none]
+                // clientAuthenticationMethod 客户端使用的身份验证方法； params: [client_secret_basic, client_secret_post, private_key_jwt, client_secret_jwt, none]
                 .clientAuthenticationMethods((authenticationMethods) ->
                         Arrays.asList(registeredClient.getClientAuthenticationMethods().split(","))
                                 .forEach(authenticationMethod -> authenticationMethods.add(resolveClientAuthenticationMethod(authenticationMethod)))
                 )
-
-                // authorizationGrantType 客户端可以使用的授权类型
-                // params: [authorization_code, client_credentials, refresh_token, sms_code, password]
+                // authorizationGrantType 客户端可以使用的授权类型； params: [authorization_code, client_credentials, refresh_token, sms_code, password]
                 .authorizationGrantTypes((grantTypes) ->
                         Arrays.asList(registeredClient.getAuthorizationGrantTypes().split(","))
                                 .forEach(grantType -> grantTypes.add(resolveAuthorizationGrantType(grantType))))
-
                 // redirectUri客户端已注册重定向的URI，不在此列将被拒绝，使用IP或者域名，不能使用localhost
                 .redirectUris((uris) -> uris.addAll(Arrays.asList(registeredClient.getRedirectUris().split(","))))
                 // scope允许客户端请求的范围
                 .scopes((scopes) -> scopes.addAll(Arrays.asList(registeredClient.getScopes().split(","))));
 
         // clientSetting 客户端自定义设置，包括验证密钥或者是否需要授权页面
-        Map<String, Object> clientSettingsMap = mapper.parse(registeredClient.getClientSettings());
-
-        Optional.ofNullable(clientSettingsMap.get(TOKEN_ENDPOINT_AUTHENTICATION_SIGNING_ALGORITHM))
-                .map(signatureAlgorithm -> this.convertSignatureAlgorithm(clientSettingsMap, signatureAlgorithm))
-                .orElseGet(() -> this.convertSignatureAlgorithm(clientSettingsMap, RS256));
-
+        Map<String, Object> clientSettingsMap = this.getClientSettingsMap(registeredClient);
         build.clientSettings(ClientSettings.withSettings(clientSettingsMap).build());
 
         // tokenSetting发布给客户端的 OAuth2 令牌的自定义设置
-        Map<String, Object> tokenSettingsMap = mapper.parse(registeredClient.getTokenSettings());
+        Map<String, Object> tokenSettingsMap = this.getTokenSettingsMap(registeredClient);
+        build.tokenSettings(TokenSettings.withSettings(tokenSettingsMap).build());
+        RegisteredClient client = build.build();
+        log.info(JSONUtil.toJsonStr(client));
+        // @formatter:on
+        return client;
+    }
 
+    /**
+     * tokenSetting发布给客户端的 OAuth2 令牌的自定义设置
+     * <p>
+     * 判空设置默认值，并且转换类型
+     *
+     * @param registeredClient 注册客户端
+     * @return {@link Map}<{@link String}, {@link Object}>
+     */
+    private Map<String, Object> getTokenSettingsMap(SysRegisteredClient registeredClient) {
+        // @formatter:off
+        Map<String, Object> tokenSettingsMap = this.readValue(registeredClient.getJsonTokenSettings());
         Optional.ofNullable(tokenSettingsMap.get(ACCESS_TOKEN_TIME_TO_LIVE))
                 .map(time -> this.putValue(tokenSettingsMap, ACCESS_TOKEN_TIME_TO_LIVE, time))
-                .orElseGet(() -> this.putValue(tokenSettingsMap, ACCESS_TOKEN_TIME_TO_LIVE, 20 * 60));
-
+                // 默认一天
+                .orElseGet(() -> this.putValue(tokenSettingsMap, ACCESS_TOKEN_TIME_TO_LIVE, 60 * 12));
         Optional.ofNullable(tokenSettingsMap.get(REFRESH_TOKEN_TIME_TO_LIVE))
                 .map(time -> this.putValue(tokenSettingsMap, REFRESH_TOKEN_TIME_TO_LIVE, time))
-                .orElseGet(() -> this.putValue(tokenSettingsMap, REFRESH_TOKEN_TIME_TO_LIVE, 20 * 60));
-
+                // 默认两天
+                .orElseGet(() -> this.putValue(tokenSettingsMap, REFRESH_TOKEN_TIME_TO_LIVE, 60 * 12 * 2));
         Optional.ofNullable(tokenSettingsMap.get(AUTHORIZATION_CODE_TIME_TO_LIVE))
                 .map(time -> this.putValue(tokenSettingsMap, AUTHORIZATION_CODE_TIME_TO_LIVE, time))
-                .orElseGet(() -> this.putValue(tokenSettingsMap, AUTHORIZATION_CODE_TIME_TO_LIVE, 10 * 60));
-
+                // 默认一分钟
+                .orElseGet(() -> this.putValue(tokenSettingsMap, AUTHORIZATION_CODE_TIME_TO_LIVE, 1));
         Optional.ofNullable(tokenSettingsMap.get(ACCESS_TOKEN_FORMAT))
                 .map(accessTokenFormat -> this.putValue(tokenSettingsMap, ACCESS_TOKEN_FORMAT, accessTokenFormat))
                 .orElseGet(() -> this.putValue(tokenSettingsMap, ACCESS_TOKEN_FORMAT, SELF_CONTAINED));
-
         Optional.ofNullable(tokenSettingsMap.get(ID_TOKEN_SIGNATURE_ALGORITHM))
                 .map(signatureAlgorithm -> this.convertSignatureAlgorithm(tokenSettingsMap, signatureAlgorithm))
                 .orElseGet(() -> this.convertSignatureAlgorithm(tokenSettingsMap, RS256));
         // @formatter:on
-
-        build.tokenSettings(TokenSettings.withSettings(tokenSettingsMap).build());
-        RegisteredClient client = build.build();
-        log.info(JSONUtil.toJsonStr(client));
-        return client;
+        return tokenSettingsMap;
     }
 
+    /**
+     * clientSetting 客户端自定义设置，包括验证密钥或者是否需要授权页面
+     * <p>
+     * 判空设置默认值，并且转换类型
+     *
+     * @param registeredClient 注册客户端
+     * @return {@link Map}<{@link String}, {@link Object}>
+     */
+    private Map<String, Object> getClientSettingsMap(SysRegisteredClient registeredClient) {
+        // @formatter:off
+        Map<String, Object> clientSettingsMap = this.readValue(registeredClient.getJsonClientSettings());
+        Optional.ofNullable(clientSettingsMap.get(TOKEN_ENDPOINT_AUTHENTICATION_SIGNING_ALGORITHM))
+                .map(signatureAlgorithm -> this.convertSignatureAlgorithm(clientSettingsMap, signatureAlgorithm))
+                .orElseGet(() -> this.convertSignatureAlgorithm(clientSettingsMap, RS256));
+        // @formatter:on
+        return clientSettingsMap;
+    }
+
+    /**
+     * 获取签名算法
+     *
+     * @param tokenSettingsMap   令牌设置地图
+     * @param signatureAlgorithm 签名算法
+     * @return {@link SignatureAlgorithm}
+     */
     private SignatureAlgorithm convertSignatureAlgorithm(Map<String, Object> tokenSettingsMap, Object signatureAlgorithm) {
         if (signatureAlgorithm instanceof SignatureAlgorithm) {
             return (SignatureAlgorithm) signatureAlgorithm;
@@ -226,7 +251,7 @@ public class RemoteRegisterClientService implements RegisteredClientRepository {
 
     private Object putValue(Map<String, Object> tokenSettingsMap, String key, Object value) {
         if (value instanceof Integer) {
-            return tokenSettingsMap.put(key, Duration.ofHours((Integer) value));
+            return tokenSettingsMap.put(key, Duration.ofMinutes((Integer) value));
         } else if (value instanceof String) {
             return tokenSettingsMap.put(key, new OAuth2TokenFormat((String) value));
         } else if (value instanceof OAuth2TokenFormat) {
@@ -271,5 +296,18 @@ public class RemoteRegisterClientService implements RegisteredClientRepository {
         return new ClientAuthenticationMethod(clientAuthenticationMethod);        // Custom client authentication method
     }
 
-
+    /**
+     * 解析
+     *
+     * @param data 数据
+     * @return {@link Map}<{@link String}, {@link Object}>
+     */
+    public Map<String, Object> readValue(String data) {
+        try {
+            return mapper.readValue(data, new TypeReference<Map<String, Object>>() {
+            });
+        } catch (Exception ex) {
+            throw new IllegalArgumentException(ex.getMessage(), ex);
+        }
+    }
 }

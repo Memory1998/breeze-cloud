@@ -17,30 +17,19 @@
 package com.breeze.cloud.system.service.impl;
 
 import com.breeze.cloud.system.service.OnlineLoginUserService;
-import org.springframework.security.core.session.SessionRegistry;
-import org.springframework.security.core.session.SessionRegistryImpl;
+import lombok.AllArgsConstructor;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Objects;
-import java.util.stream.Collectors;
 
 /**
  * @author gaoweixuan
  * @date 2023/05/14
  */
 @Service
+@AllArgsConstructor
 public class OnlineLoginUserServiceImpl implements OnlineLoginUserService {
-
-    /**
-     * 会话注册表
-     */
-    private final SessionRegistry sessionRegistry;
-
-    public OnlineLoginUserServiceImpl() {
-        this.sessionRegistry = new SessionRegistryImpl();
-    }
 
     /**
      * 获取所有在线用户
@@ -49,12 +38,6 @@ public class OnlineLoginUserServiceImpl implements OnlineLoginUserService {
      */
     @Override
     public List<User> listAllPrincipals() {
-        List<Object> allPrincipals = this.sessionRegistry.getAllPrincipals();
-        return allPrincipals.stream().map(o -> {
-            if (o instanceof User) {
-                return (User) o;
-            }
-            return null;
-        }).filter(Objects::isNull).collect(Collectors.toList());
+        return null;
     }
 }

@@ -73,10 +73,16 @@ public class RouteController {
     private void buildLoginPage(Model model, String msg) throws UnsupportedEncodingException {
         Map<String, OAuth2ClientProperties.Registration> registration = this.oAuth2ClientProperties.getRegistration();
         String prefix = "/oauth2/authorization/";
-        Map<String, String> resultMap = Maps.newHashMap();
-        registration.forEach((k, v) -> resultMap.put(v.getClientName(), prefix + k));
+        Map<String, Map<String, String>> resultMap = Maps.newHashMap();
+        registration.forEach((k, v) -> {
+            Map<String, String> valueMap = Maps.newHashMap();
+            valueMap.put("image", "/static/" + k + ".png");
+            valueMap.put("uri", prefix + k);
+            valueMap.put("name", v.getClientName());
+            resultMap.put(k, valueMap);
+        });
         model.addAttribute("oauthLogin", resultMap);
-        if(Objects.nonNull(msg)){
+        if (Objects.nonNull(msg)) {
             model.addAttribute("msg", URLDecoder.decode(msg, "UTF-8"));
         }
     }

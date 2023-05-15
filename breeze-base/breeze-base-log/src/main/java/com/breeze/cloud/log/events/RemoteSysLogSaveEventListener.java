@@ -16,24 +16,40 @@
 
 package com.breeze.cloud.log.events;
 
-import com.breeze.cloud.log.bo.SysLogBO;
-import org.springframework.context.ApplicationEvent;
+import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.context.event.EventListener;
+import org.springframework.scheduling.annotation.Async;
+
+import java.util.function.Consumer;
 
 /**
- * 本地日志保存事件
+ * 调用接口保存系统日志保存事件监听器
  *
  * @author gaoweixuan
  * @date 2022-10-19
  */
-public class SysLogSaveEvent extends ApplicationEvent {
+@Slf4j
+@AllArgsConstructor
+public class RemoteSysLogSaveEventListener {
 
     /**
-     * 系统日志保存事件
-     *
-     * @param sysLogBO 系统日志BO
+     * 消费者
+     * <p>
+     * 去执行保存逻辑
      */
-    public SysLogSaveEvent(SysLogBO sysLogBO) {
-        super(sysLogBO);
+    private Consumer<SysLogSaveEvent> consumer;
+
+    /**
+     * 应用程序事件
+     *
+     * @param sysLogSaveEvent 事件
+     */
+    @Async
+    @EventListener(SysLogSaveEvent.class)
+    public void onApplicationEvent(SysLogSaveEvent sysLogSaveEvent) {
+        log.info("[远程接口日志消息投递保存]");
+        consumer.accept(sysLogSaveEvent);
     }
 
 }

@@ -17,9 +17,10 @@
 package com.breeze.cloud.auth.config;
 
 import com.breeze.cloud.auth.extend.CustomLogoutSuccessHandler;
-import com.breeze.cloud.auth.extend.LoginFailHandler;
-import com.breeze.cloud.auth.extend.LoginSuccessHandler;
+import com.breeze.cloud.auth.extend.FormLoginFailHandler;
+import com.breeze.cloud.auth.extend.FormOidcLoginSuccessHandler;
 import com.breeze.cloud.auth.extend.OidcLoginBeforeStoreProcessorFilter;
+import com.breeze.cloud.log.events.PublisherSaveSysLogEvent;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -29,7 +30,7 @@ import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.access.ExceptionTranslationFilter;
-import org.springframework.session.FindByIndexNameSessionRepository;
+import org.springframework.session.data.redis.RedisIndexedSessionRepository;
 import org.springframework.session.security.SpringSessionBackedSessionRegistry;
 
 /**
@@ -42,7 +43,16 @@ import org.springframework.session.security.SpringSessionBackedSessionRegistry;
 @EnableWebSecurity(debug = true)
 public class SecurityConfig {
 
-    private final FindByIndexNameSessionRepository sessionRepository;
+
+    /**
+     * 发布系统日志事件
+     */
+    private final PublisherSaveSysLogEvent publisherSaveSysLogEvent;
+
+    /**
+     * redis session仓库
+     */
+    private final RedisIndexedSessionRepository sessionRepository;
 
     /**
      * 默认安全过滤器链，授权服务器本身的安全配置
@@ -56,7 +66,7 @@ public class SecurityConfig {
         // @formatter:off
        http.authorizeRequests(authorizeRequests ->
                // 开放自定义的需要开放的端点
-               authorizeRequests.antMatchers("/auth/*").permitAll()
+               authorizeRequests.antMatchers("/auth/**").permitAll()
                        .anyRequest().authenticated()
        );
 
@@ -71,8 +81,8 @@ public class SecurityConfig {
         http.formLogin()
                 .loginPage("/auth/login")
                 .loginProcessingUrl("/auth/login")
-                .successHandler(new LoginSuccessHandler(http))
-                .failureHandler(new LoginFailHandler());
+                .successHandler(new FormOidcLoginSuccessHandler(publisherSaveSysLogEvent))
+                .failureHandler(new FormLoginFailHandler(publisherSaveSysLogEvent));
 
         // 退出登录
         http.logout()
@@ -82,7 +92,7 @@ public class SecurityConfig {
 
         // session
         http.sessionManagement()
-                //  Session的并发控制,这里设为最多一个，只允许一个用户登录,如果同一个账户两次登录,那么第一个账户将被踢下线
+                // Session的并发控制,这里设置最多一个【只允许一个用户登录】,如果同一个账户两次登录,那么第一个账户将被踢下线
                  .maximumSessions(1)
                  .maxSessionsPreventsLogin(false)
                  .sessionRegistry(sessionBackedSessionRegistry());
@@ -113,8 +123,8 @@ public class SecurityConfig {
      * @return {@link SpringSessionBackedSessionRegistry}
      */
     @Bean
-    public SpringSessionBackedSessionRegistry sessionBackedSessionRegistry() {
-        return new SpringSessionBackedSessionRegistry(sessionRepository);
+    public SpringSessionBackedSessionRegistry<?> sessionBackedSessionRegistry() {
+        return new SpringSessionBackedSessionRegistry<>(sessionRepository);
     }
 
     /**

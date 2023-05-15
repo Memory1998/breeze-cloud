@@ -37,12 +37,6 @@
             </exclusions>
         </dependency>
 
-        <!-- redis -->
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-data-redis</artifactId>
-        </dependency>
-
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-aop</artifactId>
@@ -72,11 +66,6 @@
         </dependency>
 
         <dependency>
-            <groupId>org.springframework.session</groupId>
-            <artifactId>spring-session-data-redis</artifactId>
-        </dependency>
-
-        <dependency>
             <groupId>com.breeze</groupId>
             <artifactId>breeze-base-security</artifactId>
         </dependency>
@@ -84,11 +73,6 @@
         <dependency>
             <groupId>com.breeze</groupId>
             <artifactId>breeze-base-mybatis</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>com.breeze</groupId>
-            <artifactId>breeze-base-log</artifactId>
         </dependency>
 
         <dependency>
@@ -116,6 +100,7 @@
             <artifactId>breeze-base-websocket</artifactId>
         </dependency>
 
+        <!-- redis -->
         <dependency>
             <groupId>com.breeze</groupId>
             <artifactId>breeze-base-redis-cache</artifactId>

@@ -28,6 +28,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.Objects;
 
 /**
  * oidc登录之前存储处理器过滤器
@@ -44,7 +45,8 @@ public class OidcLoginBeforeStoreProcessorFilter extends OncePerRequestFilter {
     }
 
     /**
-     * 进行拦截
+     * 进行拦截，存放地址 【/oauth2/authorize?response_type=code&client_id=messaging-test&scope=openid%20profile&state=WY06QMNukJogMcy3nU87Ilog82JHK_L_aPTCDNIRt60%
+     * &redirect_uri=http://127.0.0.1:8080/login/oauth2/code/messaging-client-oidc&nonce=fJ-9NwHGPH2dDVsoicQaheBggqOzQeYuQOwKQS36mSM'】
      *
      * @param request     请求
      * @param response    响应
@@ -52,18 +54,16 @@ public class OidcLoginBeforeStoreProcessorFilter extends OncePerRequestFilter {
      */
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) {
-        // /oauth2/authorize?response_type=code&client_id=messaging-test&scope=openid%20profile
-        // &state=WY06QMNukJogMcy3nU87Ilog82JHK_L_aPTCDNIRt60%3D
-        // &redirect_uri=http://127.0.0.1:8080/login/oauth2/code/messaging-client-oidc&nonce=fJ-9NwHGPH2dDVsoicQaheBggqOzQeYuQOwKQS36mSM':
         try {
             RequestCache requestCache = httpSecurity.getSharedObject(RequestCache.class);
             SavedRequest savedRequest = requestCache.getRequest(request, response);
+            if (Objects.isNull(savedRequest)) {
+                filterChain.doFilter(request, response);
+                return;
+            }
             String url = savedRequest.getRedirectUrl();
             if (savedRequest.getRedirectUrl().contains("/oauth2/authorize?response_type=code") && url.contains("openid")) {
                 UrlThreadLocal.set(url);
-            } else {
-                // 不是oidc
-                // TODO
             }
             filterChain.doFilter(request, response);
         } catch (IOException | ServletException e) {

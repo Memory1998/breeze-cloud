@@ -1,0 +1,12 @@
+server:
+  port: 8080
+spring:
+  application:
+    name: @artifactId@
+  profiles:
+    active: @profiles.active@
+  thymeleaf:
+    cache: false
+
+logging:
+  config: classpath:logback-spring.xml

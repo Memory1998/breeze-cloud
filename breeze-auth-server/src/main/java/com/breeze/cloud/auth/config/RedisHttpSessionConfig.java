@@ -16,7 +16,6 @@
 
 package com.breeze.cloud.auth.config;
 
-import com.breeze.cloud.core.utils.Utils;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.AllArgsConstructor;
 import org.springframework.context.annotation.Bean;
@@ -43,8 +42,6 @@ import org.springframework.session.data.redis.config.annotation.web.http.EnableR
 @EnableRedisHttpSession
 public class RedisHttpSessionConfig {
 
-    private final Utils<Object> utils = new Utils<>(new ObjectMapper());
-
     /**
      * spring会话默认 redis 序列化器
      *
@@ -52,15 +49,15 @@ public class RedisHttpSessionConfig {
      */
     @Bean
     public RedisSerializer<Object> springSessionDefaultRedisSerializer() {
-        utils.register(SecurityJackson2Modules.getModules(getClass().getClassLoader()));
-        utils.register(new CoreJackson2Module());
-        utils.register(new WebJackson2Module());
-        utils.register(new WebServletJackson2Module());
-        utils.register(new WebServerJackson2Module());
-        utils.register(new OAuth2ClientJackson2Module());
-        ObjectMapper objectMapper = utils.getObjectMapper();
-        SecurityJackson2Modules.enableDefaultTyping(objectMapper);
-        return new GenericJackson2JsonRedisSerializer(objectMapper);
+        ObjectMapper mapper = new ObjectMapper();
+        mapper.registerModules(SecurityJackson2Modules.getModules(getClass().getClassLoader()));
+        mapper.registerModules(new CoreJackson2Module());
+        mapper.registerModules(new WebJackson2Module());
+        mapper.registerModules(new WebServletJackson2Module());
+        mapper.registerModules(new WebServerJackson2Module());
+        mapper.registerModules(new OAuth2ClientJackson2Module());
+        SecurityJackson2Modules.enableDefaultTyping(mapper);
+        return new GenericJackson2JsonRedisSerializer(mapper);
     }
 
     /**

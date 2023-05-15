@@ -18,12 +18,12 @@
     <div class="box">
         <div class="row">
             <label>其他方式登录</label>
-            <div class="form-check py-1" th:each="oauth: ${oauthLogin}">
-                <a th:href="${oauth.value}" style="margin-left: 10px">
-                    <span th:text="${oauth.key}"></span>
+            <div th:each="oauth: ${oauthLogin}">
+                <a style="margin-left: 10px" th:href="${oauth.value.uri}">
+                    <img th:src="${oauth.value.image}"/>
+                    <span th:txt="${oauth.value.name}"/>
                 </a>
             </div>
-
         </div>
     </div>
 </div>

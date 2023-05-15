@@ -17,7 +17,7 @@
 package com.breeze.cloud.auth.extend;
 
 import com.breeze.cloud.auth.jackson2.OAuth2AuthorizationConsentModule;
-import com.breeze.cloud.core.utils.Utils;
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.Module;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.config.AutowireCapableBeanFactory;
@@ -43,15 +43,12 @@ import static com.breeze.cloud.core.constants.CacheConstants.CONSENT;
  */
 public class InRedisOAuth2AuthorizationConsentService implements OAuth2AuthorizationConsentService {
 
+    private final ObjectMapper mapper = new ObjectMapper();
+
     /**
      * redis 操作
      */
     private final RedisOperations<String, String> redisOperations;
-
-    /**
-     * 工具
-     */
-    Utils<OAuth2AuthorizationConsent> utils = new Utils<>(new ObjectMapper());
 
     /**
      * Constructs an {@code InRedisOAuth2AuthorizationConsentService}.
@@ -62,14 +59,13 @@ public class InRedisOAuth2AuthorizationConsentService implements OAuth2Authoriza
     public InRedisOAuth2AuthorizationConsentService(RedisOperations<String, String> redisOperations, AutowireCapableBeanFactory beanFactory) {
         Assert.notNull(redisOperations, "redisOperations mut not be null");
         this.redisOperations = redisOperations;
+
+        // 构造 objectMapper
         ClassLoader classLoader = this.getClass().getClassLoader();
         List<Module> securityModules = SecurityJackson2Modules.getModules(classLoader);
-
-        utils.register(securityModules);
-        utils.register(new OAuth2AuthorizationConsentModule());
-
-        ObjectMapper objectMapper = utils.getObjectMapper();
-        objectMapper.setHandlerInstantiator(new SpringHandlerInstantiator(beanFactory));
+        mapper.registerModules(securityModules);
+        mapper.registerModules(new OAuth2AuthorizationConsentModule());
+        mapper.setHandlerInstantiator(new SpringHandlerInstantiator(beanFactory));
     }
 
     private static String getId(String registeredClientId, String principalName) {
@@ -84,7 +80,7 @@ public class InRedisOAuth2AuthorizationConsentService implements OAuth2Authoriza
     public void save(OAuth2AuthorizationConsent authorizationConsent) {
         Assert.notNull(authorizationConsent, "authorizationConsent cannot be null");
         String id = getId(authorizationConsent);
-        this.redisOperations.opsForValue().set(id, utils.write(authorizationConsent));
+        this.redisOperations.opsForValue().set(id, this.write(authorizationConsent));
     }
 
     @Override
@@ -100,7 +96,38 @@ public class InRedisOAuth2AuthorizationConsentService implements OAuth2Authoriza
         Assert.hasText(registeredClientId, "registeredClientId cannot be empty");
         Assert.hasText(principalName, "principalName cannot be empty");
         String id = getId(registeredClientId, principalName);
-        return Optional.ofNullable(this.redisOperations.opsForValue().get(id)).map(utils::parse).orElse(null);
+        // @formatter:off
+        return Optional.ofNullable(this.redisOperations.opsForValue().get(id))
+                .map(this::readValue).orElse(null);
+        // @formatter:on
     }
 
+    /**
+     * 解析
+     *
+     * @param data 数据
+     * @return {@link OAuth2AuthorizationConsent}
+     */
+    public OAuth2AuthorizationConsent readValue(String data) {
+        try {
+            return mapper.readValue(data, new TypeReference<OAuth2AuthorizationConsent>() {
+            });
+        } catch (Exception ex) {
+            throw new IllegalArgumentException(ex.getMessage(), ex);
+        }
+    }
+
+    /**
+     * 写
+     *
+     * @param data 数据
+     * @return {@link String}
+     */
+    public String write(Object data) {
+        try {
+            return mapper.writeValueAsString(data);
+        } catch (Exception ex) {
+            throw new IllegalArgumentException(ex.getMessage(), ex);
+        }
+    }
 }

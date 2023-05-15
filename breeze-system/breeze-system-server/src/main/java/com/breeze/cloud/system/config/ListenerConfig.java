@@ -17,7 +17,7 @@
 package com.breeze.cloud.system.config;
 
 import com.breeze.cloud.log.bo.SysLogBO;
-import com.breeze.cloud.log.events.SysLogSaveEventListener;
+import com.breeze.cloud.log.events.LocalSysLogSaveEventListener;
 import com.breeze.cloud.system.service.SysLogService;
 import com.breeze.cloud.system.service.impl.StompJsWebSocketMsgServiceImpl;
 import com.breeze.cloud.websocket.bo.UserMsgBO;
@@ -50,11 +50,11 @@ public class ListenerConfig {
     /**
      * 日志保存侦听器
      *
-     * @return {@link SysLogSaveEventListener}
+     * @return {@link LocalSysLogSaveEventListener}
      */
     @Bean
-    public SysLogSaveEventListener sysLogSaveEventListener() {
-        return new SysLogSaveEventListener((source) -> this.sysLogService.saveSysLog((SysLogBO) source.getSource()));
+    public LocalSysLogSaveEventListener sysLogSaveEventListener() {
+        return new LocalSysLogSaveEventListener((source) -> this.sysLogService.saveSysLog((SysLogBO) source.getSource()));
     }
 
     /**

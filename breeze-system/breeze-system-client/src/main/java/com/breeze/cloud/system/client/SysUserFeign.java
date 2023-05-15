@@ -20,7 +20,6 @@ import com.breeze.cloud.core.base.BaseLoginUser;
 import com.breeze.cloud.core.constants.ContextConstants;
 import com.breeze.cloud.core.utils.Result;
 import com.breeze.cloud.system.params.AuthLoginParam;
-import com.breeze.cloud.system.params.LoginUserParam;
 import com.breeze.cloud.system.params.WxLoginParam;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.*;
@@ -77,7 +76,7 @@ public interface SysUserFeign {
      * 三方登录
      *
      * @param authLoginParam 三方登录用户
-     * @return {@link Result}<{@link LoginUserParam}>
+     * @return {@link Result}<{@link BaseLoginUser}>
      */
     @PostMapping("/user/loadCreateAuthUserByPhone")
     Result<BaseLoginUser> loadCreateAuthUserByPhone(AuthLoginParam authLoginParam);

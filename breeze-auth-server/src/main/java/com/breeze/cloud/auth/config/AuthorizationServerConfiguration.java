@@ -192,14 +192,12 @@ public class AuthorizationServerConfiguration {
     /**
      * 注册客户端库
      *
-     * @param passwordEncoder     密码编码器
      * @param registerClientFeign 注册客户端装
      * @return {@link RegisteredClientRepository}
      */
     @Bean
-    public RegisteredClientRepository registeredClientRepository(PasswordEncoder passwordEncoder,
-                                                                 SysRegisterClientFeign registerClientFeign) {
-        return new RemoteRegisterClientService(passwordEncoder, registerClientFeign);
+    public RegisteredClientRepository registeredClientRepository(SysRegisterClientFeign registerClientFeign) {
+        return new RemoteRegisterClientService(registerClientFeign);
     }
 
     /**

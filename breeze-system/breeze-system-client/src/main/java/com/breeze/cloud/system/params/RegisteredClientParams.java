@@ -104,13 +104,19 @@ public class RegisteredClientParams implements Serializable {
         return StrUtil.isAllBlank(this.clientSecret) ? null : this.clientSecret;
     }
 
+    /**
+     * 令牌设置
+     *
+     * @author gaoweixuan
+     * @date 2023/05/15
+     */
     @Data
     public static class TokenSettings {
         /**
          * 标识牌签名算法
          */
-        @JsonAlias({"settings.token.id-token-signature-algorithm", "idTokenSignatureAlgorithm"})
-        @JsonProperty("settings.token.id-token-signature-algorithm")
+        @JsonAlias({"settings.token.id-token-signature-algorithm", "idTokenSignatureAlgorithm"}) // 反序列化的别名 接收前端json的别名
+        @JsonProperty("settings.token.id-token-signature-algorithm") // 序列化反序列化的别名
         private String idTokenSignatureAlgorithm;
         /**
          * 访问令牌格式
@@ -144,10 +150,16 @@ public class RegisteredClientParams implements Serializable {
         private boolean reuseRefreshTokens;
     }
 
+    /**
+     * 客户端设置
+     *
+     * @author gaoweixuan
+     * @date 2023/05/15
+     */
     @Data
     public static class ClientSettings {
         /**
-         * 是否需要证明关键
+         * 开启PKCE
          */
         @JsonAlias({"settings.client.require-proof-key", "requireProofKey"})
         @JsonProperty("settings.client.require-proof-key")
@@ -173,5 +185,3 @@ public class RegisteredClientParams implements Serializable {
     }
 
 }
-
-

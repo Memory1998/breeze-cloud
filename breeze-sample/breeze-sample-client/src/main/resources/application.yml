@@ -1,16 +1,4 @@
-server:
-  port: 8080
-
-logging:
-  config: classpath:logback-spring.xml
-
 spring:
-  application:
-    name: @artifactId@
-  profiles:
-    active: @profiles.active@
-  thymeleaf:
-    cache: false
   security:
     oauth2:
       client:

@@ -19,12 +19,14 @@ package com.breeze.cloud.system.service.impl;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.breeze.cloud.core.utils.Result;
-import com.breeze.cloud.core.utils.Utils;
+import com.breeze.cloud.system.domain.ClientSettings;
 import com.breeze.cloud.system.domain.SysRegisteredClient;
+import com.breeze.cloud.system.domain.TokenSettings;
 import com.breeze.cloud.system.mapper.SysRegisterClientMapper;
 import com.breeze.cloud.system.params.RegisteredClientParams;
 import com.breeze.cloud.system.query.RegisterClientQuery;
 import com.breeze.cloud.system.service.ISysRegisterClientService;
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
@@ -37,6 +39,7 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
 import java.util.function.Function;
+import java.util.stream.Collectors;
 
 /**
  * 重写auth注册客户端库
@@ -53,10 +56,19 @@ public class SysRegisterClientService extends ServiceImpl<SysRegisterClientMappe
      */
     private final PasswordEncoder passwordEncoder;
 
-    private final Utils<Object> mapper = new Utils<>(new ObjectMapper());
+    private final ObjectMapper mapper = new ObjectMapper();
 
     public SysRegisterClientService(PasswordEncoder passwordEncoder) {
         this.passwordEncoder = passwordEncoder;
+    }
+
+    /**
+     * set 转换 string + [,]
+     *
+     * @return {@link Function}<{@link Set}<{@link String}>, {@link String}>
+     */
+    private static Function<Set<String>, String> convertSet2String() {
+        return str -> String.join(",", str);
     }
 
     /**
@@ -67,7 +79,8 @@ public class SysRegisterClientService extends ServiceImpl<SysRegisterClientMappe
      */
     @Override
     public Page<SysRegisteredClient> listPage(RegisterClientQuery registerClientQuery) {
-        return this.baseMapper.listPage(new Page<>(registerClientQuery.getCurrent(), registerClientQuery.getSize()), registerClientQuery);
+        Page<SysRegisteredClient> registeredClientPage = this.baseMapper.listPage(new Page<>(registerClientQuery.getCurrent(), registerClientQuery.getSize()), registerClientQuery);
+        return registeredClientPage.setRecords(registeredClientPage.getRecords().stream().peek(this::getSettings).collect(Collectors.toList()));
     }
 
     /**
@@ -115,6 +128,24 @@ public class SysRegisterClientService extends ServiceImpl<SysRegisterClientMappe
     }
 
     @SneakyThrows
+    private void getSettings(SysRegisteredClient sysRegisteredClient) {
+        ClientSettings clientSettings = mapper.readValue(sysRegisteredClient.getJsonClientSettings(), new TypeReference<ClientSettings>() {
+        });
+        sysRegisteredClient.setRequireAuthorizationConsent(clientSettings.getRequireAuthorizationConsent());
+        sysRegisteredClient.setJwkSetUrl(clientSettings.getJwkSetUrl());
+        sysRegisteredClient.setRequireProofKey(clientSettings.getRequireProofKey());
+        sysRegisteredClient.setTokenEndpointAuthenticationSigningAlgorithm(clientSettings.getTokenEndpointAuthenticationSigningAlgorithm());
+        TokenSettings tokenSettings = mapper.readValue(sysRegisteredClient.getJsonTokenSettings(), new TypeReference<TokenSettings>() {
+        });
+        sysRegisteredClient.setReuseRefreshTokens(tokenSettings.isReuseRefreshTokens());
+        sysRegisteredClient.setIdTokenSignatureAlgorithm(tokenSettings.getIdTokenSignatureAlgorithm());
+        sysRegisteredClient.setAccessTokenFormat(tokenSettings.getAccessTokenFormat());
+        sysRegisteredClient.setRefreshTokenTimeToLive(tokenSettings.getRefreshTokenTimeToLive());
+        sysRegisteredClient.setAuthorizationCodeTimeToLive(tokenSettings.getAuthorizationCodeTimeToLive());
+        sysRegisteredClient.setAccessTokenTimeToLive(tokenSettings.getAccessTokenTimeToLive());
+    }
+
+    @SneakyThrows
     private SysRegisteredClient buildClient(RegisteredClientParams client) {
         // @formatter:off
         return SysRegisteredClient.builder()
@@ -124,18 +155,14 @@ public class SysRegisterClientService extends ServiceImpl<SysRegisterClientMappe
                 .clientIdIssuedAt(client.getClientIdIssuedAt())
                 .clientSecretExpiresAt(client.getClientSecretExpiresAt())
                 .clientSecret(Optional.ofNullable(client.getClientSecret()).map(this.passwordEncoder::encode).orElse(null))
-                .clientAuthenticationMethods(Optional.ofNullable(client.getClientAuthenticationMethods()).map(getSetString()).orElse(null))
-                .authorizationGrantTypes(Optional.ofNullable(client.getAuthorizationGrantTypes()).map(getSetString()).orElse(null))
-                .scopes(Optional.ofNullable(client.getScopes()).map(getSetString()).orElse(null))
-                .redirectUris(Optional.ofNullable(client.getRedirectUris()).map(getSetString()).orElse(null))
-                .clientSettings(Optional.ofNullable(client.getClientSettings()).map(mapper::write).orElse(null))
-                .tokenSettings(Optional.ofNullable(client.getTokenSettings()).map(mapper::write).orElse(null))
+                .clientAuthenticationMethods(Optional.ofNullable(client.getClientAuthenticationMethods()).map(convertSet2String()).orElse(null))
+                .authorizationGrantTypes(Optional.ofNullable(client.getAuthorizationGrantTypes()).map(convertSet2String()).orElse(null))
+                .scopes(Optional.ofNullable(client.getScopes()).map(convertSet2String()).orElse(null))
+                .redirectUris(Optional.ofNullable(client.getRedirectUris()).map(convertSet2String()).orElse(null))
+                .jsonClientSettings(Optional.ofNullable(client.getClientSettings()).map(this::write).orElse(null))
+                .jsonTokenSettings(Optional.ofNullable(client.getTokenSettings()).map(this::write).orElse(null))
                 .build();
         // @formatter:on
-    }
-
-    private static Function<Set<String>, String> getSetString() {
-        return str -> String.join(",", str);
     }
 
     /**
@@ -178,6 +205,20 @@ public class SysRegisterClientService extends ServiceImpl<SysRegisterClientMappe
     @Override
     public Result<Boolean> deleteById(List<Long> ids) {
         return Result.ok(this.removeBatchByIds(ids));
+    }
+
+    /**
+     * 写
+     *
+     * @param data 数据
+     * @return {@link String}
+     */
+    public String write(Object data) {
+        try {
+            return mapper.writeValueAsString(data);
+        } catch (Exception ex) {
+            throw new IllegalArgumentException(ex.getMessage(), ex);
+        }
     }
 
 }

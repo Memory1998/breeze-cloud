@@ -16,30 +16,23 @@
 
 package com.breeze.cloud.core.utils;
 
+import cn.hutool.core.util.StrUtil;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.Module;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.Setter;
-
-import java.util.List;
 
 /**
- * utils
+ * 不需要register的ObjectMapper工具类
  *
  * @author gaoweixuan
  * @date 2023/05/07
  */
-@AllArgsConstructor
-public class Utils<T> {
+public class MapperUtils {
 
     /**
      * 对象映射器
      */
-    @Getter
-    @Setter
-    private ObjectMapper objectMapper;
+    private static final ObjectMapper objectMapper = new ObjectMapper();
 
     /**
      * 写
@@ -47,9 +40,9 @@ public class Utils<T> {
      * @param data 数据
      * @return {@link String}
      */
-    public String write(T data) {
+    public static <T> String write(T data) {
         try {
-            return this.objectMapper.writeValueAsString(data);
+            return objectMapper.writeValueAsString(data);
         } catch (Exception ex) {
             throw new IllegalArgumentException(ex.getMessage(), ex);
         }
@@ -58,44 +51,27 @@ public class Utils<T> {
     /**
      * 解析
      *
-     * @param data 数据
-     * @return {@link T}
+     * @param data      数据
+     * @param reference 参考
      */
-    public T parse(String data) {
+    public static <T> T parse(String data, TypeReference<T> reference) {
         try {
-            return this.objectMapper.readValue(data, new TypeReference<T>() {
-            });
+            return objectMapper.readValue(data, reference);
         } catch (Exception ex) {
             throw new IllegalArgumentException(ex.getMessage(), ex);
         }
     }
 
-    /**
-     * 注册
-     *
-     * @param modules 模块
-     */
-    public void register(Module... modules) {
-        objectMapper.registerModules(modules);
+    public static <T> T parse(String json, Class<T> clazz) {
+        if (StrUtil.isAllBlank(json) || clazz == null) {
+            throw new RuntimeException("参数不能为null");
+        }
+        try {
+            return objectMapper.readValue(json, clazz);
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+            throw new RuntimeException("json转化异常");
+        }
     }
-
-    /**
-     * 注册
-     *
-     * @param module 模块
-     */
-    public void register(Module module) {
-        objectMapper.registerModule(module);
-    }
-
-    /**
-     * 注册
-     *
-     * @param modules 模块
-     */
-    public void register(List<Module> modules) {
-        objectMapper.registerModules(modules);
-    }
-
 
 }

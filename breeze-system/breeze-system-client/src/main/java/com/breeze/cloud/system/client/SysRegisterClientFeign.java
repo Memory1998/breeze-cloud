@@ -23,7 +23,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
 /**
- * 系统注册客户假装
  * 系统用户Feign
  *
  * @author gaoweixuan

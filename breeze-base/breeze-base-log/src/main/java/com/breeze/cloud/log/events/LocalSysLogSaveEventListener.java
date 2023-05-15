@@ -31,7 +31,7 @@ import java.util.function.Consumer;
  */
 @Slf4j
 @AllArgsConstructor
-public class SysLogSaveEventListener {
+public class LocalSysLogSaveEventListener {
 
     /**
      * 消费者
@@ -48,7 +48,7 @@ public class SysLogSaveEventListener {
     @Async
     @EventListener(SysLogSaveEvent.class)
     public void onApplicationEvent(SysLogSaveEvent sysLogSaveEvent) {
-        log.info("消息投递");
+        log.info("[本地日志消息投递保存]");
         consumer.accept(sysLogSaveEvent);
     }
 
