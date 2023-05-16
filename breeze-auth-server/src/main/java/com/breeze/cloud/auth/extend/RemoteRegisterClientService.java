@@ -119,7 +119,7 @@ public class RemoteRegisterClientService implements RegisteredClientRepository {
                 CLIENT_ID,
                 ACCESS_TOKEN_REQUEST_ERROR_URI));
 
-        RegisteredClient.Builder build = RegisteredClient.withId(registeredClient.getId())
+        RegisteredClient.Builder client = RegisteredClient.withId(registeredClient.getId().toString())
                 // clientId客户端标识符
                 .clientId(registeredClient.getClientId())
                 // 名称可不定义
@@ -145,15 +145,13 @@ public class RemoteRegisterClientService implements RegisteredClientRepository {
 
         // clientSetting 客户端自定义设置，包括验证密钥或者是否需要授权页面
         Map<String, Object> clientSettingsMap = this.getClientSettingsMap(registeredClient);
-        build.clientSettings(ClientSettings.withSettings(clientSettingsMap).build());
+        client.clientSettings(ClientSettings.withSettings(clientSettingsMap).build());
 
         // tokenSetting发布给客户端的 OAuth2 令牌的自定义设置
         Map<String, Object> tokenSettingsMap = this.getTokenSettingsMap(registeredClient);
-        build.tokenSettings(TokenSettings.withSettings(tokenSettingsMap).build());
-        RegisteredClient client = build.build();
-        log.info(JSONUtil.toJsonStr(client));
+        client.tokenSettings(TokenSettings.withSettings(tokenSettingsMap).build());
         // @formatter:on
-        return client;
+        return client.build();
     }
 
     /**
@@ -179,6 +177,11 @@ public class RemoteRegisterClientService implements RegisteredClientRepository {
                 .map(time -> this.putValue(tokenSettingsMap, AUTHORIZATION_CODE_TIME_TO_LIVE, time))
                 // 默认一分钟
                 .orElseGet(() -> this.putValue(tokenSettingsMap, AUTHORIZATION_CODE_TIME_TO_LIVE, 1));
+        /*
+          访问令牌access_token支持:
+          SELF_CONTAINED（默认）: 自签JWT类型
+          REFERENCE: 引用类型（Support opaque access tokens）即生成96位随机字符串，具体claim信息存储在DB中
+         */
         Optional.ofNullable(tokenSettingsMap.get(ACCESS_TOKEN_FORMAT))
                 .map(accessTokenFormat -> this.putValue(tokenSettingsMap, ACCESS_TOKEN_FORMAT, accessTokenFormat))
                 .orElseGet(() -> this.putValue(tokenSettingsMap, ACCESS_TOKEN_FORMAT, SELF_CONTAINED));

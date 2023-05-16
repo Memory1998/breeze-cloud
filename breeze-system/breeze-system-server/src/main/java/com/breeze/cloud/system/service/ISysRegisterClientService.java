@@ -20,8 +20,10 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.breeze.cloud.core.utils.Result;
 import com.breeze.cloud.system.domain.SysRegisteredClient;
-import com.breeze.cloud.system.params.RegisteredClientParams;
+import com.breeze.cloud.system.params.RegisteredClientParam;
+import com.breeze.cloud.system.params.ResetClientSecretParam;
 import com.breeze.cloud.system.query.RegisterClientQuery;
+import com.breeze.cloud.system.vo.RegisteredClientVO;
 
 import java.util.List;
 
@@ -37,25 +39,25 @@ public interface ISysRegisterClientService extends IService<SysRegisteredClient>
      * 列表页面
      *
      * @param registerClientQuery 注册客户端参数
-     * @return {@link Page}<{@link SysRegisteredClient}>
+     * @return {@link Page}<{@link RegisteredClientVO}>
      */
-    Page<SysRegisteredClient> listPage(RegisterClientQuery registerClientQuery);
+    Page<RegisteredClientVO> listPage(RegisterClientQuery registerClientQuery);
 
     /**
      * 保存注册客户端
      *
-     * @param registeredClientParams 注册客户端参数
+     * @param registeredClientParam 注册客户端参数
      * @return {@link Boolean}
      */
-    Result<Boolean> saveRegisteredClient(RegisteredClientParams registeredClientParams);
+    Result<Boolean> saveRegisteredClient(RegisteredClientParam registeredClientParam);
 
     /**
      * 更新
      *
-     * @param registeredClientParams 注册客户端参数
+     * @param registeredClientParam 注册客户端参数
      * @return {@link Boolean}
      */
-    Boolean update(RegisteredClientParams registeredClientParams);
+    Boolean update(RegisteredClientParam registeredClientParam);
 
     /**
      * 发现由客户端Id
@@ -81,5 +83,20 @@ public interface ISysRegisterClientService extends IService<SysRegisteredClient>
      */
     Result<Boolean> deleteById(List<Long> ids);
 
+    /**
+     * 重置客户端密钥
+     *
+     * @param resetClientSecretParam 重置客户端密钥
+     * @return {@link Boolean}
+     */
+    Boolean resetClientSecretParam(ResetClientSecretParam resetClientSecretParam);
+
+    /**
+     * 信息
+     *
+     * @param clientId 客户机id
+     * @return {@link RegisteredClientVO}
+     */
+    RegisteredClientVO info(Long clientId);
 
 }

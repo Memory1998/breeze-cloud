@@ -16,16 +16,20 @@
 
 package com.breeze.cloud.system.service.impl;
 
+import cn.hutool.core.bean.BeanUtil;
+import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.breeze.cloud.core.utils.Result;
-import com.breeze.cloud.system.domain.ClientSettings;
 import com.breeze.cloud.system.domain.SysRegisteredClient;
-import com.breeze.cloud.system.domain.TokenSettings;
 import com.breeze.cloud.system.mapper.SysRegisterClientMapper;
-import com.breeze.cloud.system.params.RegisteredClientParams;
+import com.breeze.cloud.system.params.RegisteredClientParam;
+import com.breeze.cloud.system.params.ResetClientSecretParam;
 import com.breeze.cloud.system.query.RegisterClientQuery;
 import com.breeze.cloud.system.service.ISysRegisterClientService;
+import com.breeze.cloud.system.vo.ClientSettingsVO;
+import com.breeze.cloud.system.vo.RegisteredClientVO;
+import com.breeze.cloud.system.vo.TokenSettingsVO;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.SneakyThrows;
@@ -34,10 +38,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
-import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
@@ -75,12 +76,12 @@ public class SysRegisterClientService extends ServiceImpl<SysRegisterClientMappe
      * 列表页面
      *
      * @param registerClientQuery 注册客户端参数
-     * @return {@link Page}<{@link SysRegisteredClient}>
+     * @return {@link Page}<{@link RegisteredClientVO}>
      */
     @Override
-    public Page<SysRegisteredClient> listPage(RegisterClientQuery registerClientQuery) {
-        Page<SysRegisteredClient> registeredClientPage = this.baseMapper.listPage(new Page<>(registerClientQuery.getCurrent(), registerClientQuery.getSize()), registerClientQuery);
-        return registeredClientPage.setRecords(registeredClientPage.getRecords().stream().peek(this::getSettings).collect(Collectors.toList()));
+    public Page<RegisteredClientVO> listPage(RegisterClientQuery registerClientQuery) {
+        Page<RegisteredClientVO> registeredClientPage = this.baseMapper.listPage(new Page<>(registerClientQuery.getCurrent(), registerClientQuery.getSize()), registerClientQuery);
+        return registeredClientPage.setRecords(registeredClientPage.getRecords().stream().peek(this::getClientVO).collect(Collectors.toList()));
     }
 
     /**
@@ -90,13 +91,13 @@ public class SysRegisterClientService extends ServiceImpl<SysRegisterClientMappe
      */
     @SneakyThrows
     @Override
-    public Result<Boolean> saveRegisteredClient(RegisteredClientParams client) {
+    public Result<Boolean> saveRegisteredClient(RegisteredClientParam client) {
         Assert.notNull(client, "registeredClient cannot be null");
 
-        RegisteredClientParams.ClientSettings clientSettings = client.getClientSettings();
+        RegisteredClientParam.ClientSettings clientSettings = client.getClientSettings();
         Assert.notNull(clientSettings, "clientSettings cannot be null");
 
-        RegisteredClientParams.TokenSettings tokenSettings = client.getTokenSettings();
+        RegisteredClientParam.TokenSettings tokenSettings = client.getTokenSettings();
         Assert.notNull(tokenSettings, "tokenSettings cannot be null");
         SysRegisteredClient byClientId = this.getByClientId(client.getClientId());
         if (Objects.nonNull(byClientId)) {
@@ -113,7 +114,7 @@ public class SysRegisterClientService extends ServiceImpl<SysRegisterClientMappe
      * @return {@link Boolean}
      */
     @Override
-    public Boolean update(RegisteredClientParams client) {
+    public Boolean update(RegisteredClientParam client) {
         this.updateRegisteredClient(client);
         return Boolean.TRUE;
     }
@@ -123,33 +124,26 @@ public class SysRegisterClientService extends ServiceImpl<SysRegisterClientMappe
      *
      * @param client 注册客户端
      */
-    private void insertRegisteredClient(RegisteredClientParams client) {
+    private void insertRegisteredClient(RegisteredClientParam client) {
         this.save(this.buildClient(client));
     }
 
     @SneakyThrows
-    private void getSettings(SysRegisteredClient sysRegisteredClient) {
-        ClientSettings clientSettings = mapper.readValue(sysRegisteredClient.getJsonClientSettings(), new TypeReference<ClientSettings>() {
-        });
-        sysRegisteredClient.setRequireAuthorizationConsent(clientSettings.getRequireAuthorizationConsent());
-        sysRegisteredClient.setJwkSetUrl(clientSettings.getJwkSetUrl());
-        sysRegisteredClient.setRequireProofKey(clientSettings.getRequireProofKey());
-        sysRegisteredClient.setTokenEndpointAuthenticationSigningAlgorithm(clientSettings.getTokenEndpointAuthenticationSigningAlgorithm());
-        TokenSettings tokenSettings = mapper.readValue(sysRegisteredClient.getJsonTokenSettings(), new TypeReference<TokenSettings>() {
-        });
-        sysRegisteredClient.setReuseRefreshTokens(tokenSettings.isReuseRefreshTokens());
-        sysRegisteredClient.setIdTokenSignatureAlgorithm(tokenSettings.getIdTokenSignatureAlgorithm());
-        sysRegisteredClient.setAccessTokenFormat(tokenSettings.getAccessTokenFormat());
-        sysRegisteredClient.setRefreshTokenTimeToLive(tokenSettings.getRefreshTokenTimeToLive());
-        sysRegisteredClient.setAuthorizationCodeTimeToLive(tokenSettings.getAuthorizationCodeTimeToLive());
-        sysRegisteredClient.setAccessTokenTimeToLive(tokenSettings.getAccessTokenTimeToLive());
+    private void getClientVO(RegisteredClientVO registeredClientVO) {
+        registeredClientVO.setClientSettings(mapper.readValue(registeredClientVO.getJsonClientSettings(), new TypeReference<ClientSettingsVO>() {
+        }));
+        registeredClientVO.setTokenSettings(mapper.readValue(registeredClientVO.getJsonTokenSettings(), new TypeReference<TokenSettingsVO>() {
+        }));
+        registeredClientVO.setAuthorizationGrantTypes(Arrays.stream(registeredClientVO.getStrAuthorizationGrantTypes().split(",")).collect(Collectors.toSet()));
+        registeredClientVO.setScopes(Arrays.stream(registeredClientVO.getStrScopes().split(",")).collect(Collectors.toSet()));
+        registeredClientVO.setClientAuthenticationMethods(Arrays.stream(registeredClientVO.getStrClientAuthenticationMethods().split(",")).collect(Collectors.toSet()));
+        registeredClientVO.setRedirectUris(Arrays.stream(registeredClientVO.getStrRedirectUris().split(",")).collect(Collectors.toSet()));
     }
 
     @SneakyThrows
-    private SysRegisteredClient buildClient(RegisteredClientParams client) {
+    private SysRegisteredClient buildClient(RegisteredClientParam client) {
         // @formatter:off
-        return SysRegisteredClient.builder()
-                .id(client.getId())
+        SysRegisteredClient registeredClient = SysRegisteredClient.builder()
                 .clientId(client.getClientId())
                 .clientName(client.getClientName())
                 .clientIdIssuedAt(client.getClientIdIssuedAt())
@@ -162,6 +156,8 @@ public class SysRegisterClientService extends ServiceImpl<SysRegisterClientMappe
                 .jsonClientSettings(Optional.ofNullable(client.getClientSettings()).map(this::write).orElse(null))
                 .jsonTokenSettings(Optional.ofNullable(client.getTokenSettings()).map(this::write).orElse(null))
                 .build();
+        registeredClient.setId(client.getId());
+        return registeredClient;
         // @formatter:on
     }
 
@@ -170,7 +166,7 @@ public class SysRegisterClientService extends ServiceImpl<SysRegisterClientMappe
      *
      * @param client 注册客户端参数
      */
-    private void updateRegisteredClient(RegisteredClientParams client) {
+    private void updateRegisteredClient(RegisteredClientParam client) {
         this.updateById(this.buildClient(client));
     }
 
@@ -205,6 +201,46 @@ public class SysRegisterClientService extends ServiceImpl<SysRegisterClientMappe
     @Override
     public Result<Boolean> deleteById(List<Long> ids) {
         return Result.ok(this.removeBatchByIds(ids));
+    }
+
+    /**
+     * 重置客户端密钥
+     *
+     * @param resetClientSecretParam 重置客户秘密参数
+     * @return {@link Boolean}
+     */
+    @Override
+    public Boolean resetClientSecretParam(ResetClientSecretParam resetClientSecretParam) {
+        resetClientSecretParam.setClientSecret(this.passwordEncoder.encode(resetClientSecretParam.getClientSecret()));
+        return this.update(Wrappers.<SysRegisteredClient>lambdaUpdate()
+                .set(SysRegisteredClient::getClientSecret, resetClientSecretParam.getClientSecret())
+                .eq(SysRegisteredClient::getId, resetClientSecretParam.getId()));
+    }
+
+    /**
+     * 信息
+     *
+     * @param clientId 客户机id
+     * @return {@link RegisteredClientVO}
+     */
+    @SneakyThrows
+    @Override
+    public RegisteredClientVO info(Long clientId) {
+        SysRegisteredClient registeredClient = this.getById(clientId);
+        RegisteredClientVO registeredClientVO = new RegisteredClientVO();
+        BeanUtil.copyProperties(registeredClient, registeredClientVO);
+        ClientSettingsVO clientSettings = mapper.readValue(registeredClientVO.getJsonClientSettings(), new TypeReference<ClientSettingsVO>() {
+        });
+        registeredClientVO.setClientSettings(clientSettings);
+        TokenSettingsVO tokenSettings = mapper.readValue(registeredClientVO.getJsonTokenSettings(), new TypeReference<TokenSettingsVO>() {
+        });
+        registeredClientVO.setTokenSettings(tokenSettings);
+
+        registeredClientVO.setAuthorizationGrantTypes(Arrays.stream(registeredClient.getAuthorizationGrantTypes().split(",")).collect(Collectors.toSet()));
+        registeredClientVO.setScopes(Arrays.stream(registeredClient.getScopes().split(",")).collect(Collectors.toSet()));
+        registeredClientVO.setClientAuthenticationMethods(Arrays.stream(registeredClient.getClientAuthenticationMethods().split(",")).collect(Collectors.toSet()));
+        registeredClientVO.setRedirectUris(Arrays.stream(registeredClient.getRedirectUris().split(",")).collect(Collectors.toSet()));
+        return registeredClientVO;
     }
 
     /**

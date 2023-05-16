@@ -20,6 +20,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.breeze.cloud.mybatis.mapper.BreezeBaseMapper;
 import com.breeze.cloud.system.domain.SysRegisteredClient;
 import com.breeze.cloud.system.query.RegisterClientQuery;
+import com.breeze.cloud.system.vo.RegisteredClientVO;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
@@ -39,7 +40,7 @@ public interface SysRegisterClientMapper extends BreezeBaseMapper<SysRegisteredC
      * @param registerClientQuery 注册客户端查询
      * @return {@link Page}<{@link SysRegisteredClient}>
      */
-    Page<SysRegisteredClient> listPage(@Param("page") Page<SysRegisteredClient> page, @Param("registerClientQuery") RegisterClientQuery registerClientQuery);
+    Page<RegisteredClientVO> listPage(@Param("page") Page<SysRegisteredClient> page, @Param("registerClientQuery") RegisterClientQuery registerClientQuery);
 
     /**
      * 获取注册客户端

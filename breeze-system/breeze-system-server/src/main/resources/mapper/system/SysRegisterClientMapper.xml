@@ -4,7 +4,7 @@
 <mapper namespace="com.breeze.cloud.system.mapper.SysRegisterClientMapper">
 
     <select id="listPage"
-            resultType="com.breeze.cloud.system.domain.SysRegisteredClient">
+            resultType="com.breeze.cloud.system.vo.RegisteredClientVO">
         SELECT
         id,
         client_id,
@@ -12,15 +12,16 @@
         client_secret,
         client_secret_expires_at,
         client_name,
-        client_authentication_methods,
-        authorization_grant_types,
-        redirect_uris,
-        scopes,
+        client_authentication_methods AS str_client_authentication_methods,
+        authorization_grant_types AS str_authorization_grant_types,
+        redirect_uris AS str_redirect_uris,
+        scopes AS str_scopes,
         json_client_settings,
         json_token_settings
         FROM
         sys_registered_client
         <where>
+            AND is_delete = 0
             <if test="registerClientQuery.clientName != null and registerClientQuery.clientName != ''">
                 AND client_name LIKE CONCAT( '%', #{registerClientQuery.clientName} ,'%')
             </if>
@@ -45,6 +46,7 @@
         FROM
         sys_registered_client
         <where>
+            AND is_delete = 0
             <if test="registeredClient.id != null and registeredClient.id != ''">
                 AND id = #{registeredClient.id}
             </if>

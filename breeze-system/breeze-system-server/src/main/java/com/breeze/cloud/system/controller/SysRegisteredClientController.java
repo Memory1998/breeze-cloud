@@ -22,9 +22,11 @@ import com.breeze.cloud.log.annotation.BreezeSysLog;
 import com.breeze.cloud.log.enums.LogType;
 import com.breeze.cloud.security.annotation.JumpAuth;
 import com.breeze.cloud.system.domain.SysRegisteredClient;
-import com.breeze.cloud.system.params.RegisteredClientParams;
+import com.breeze.cloud.system.params.RegisteredClientParam;
+import com.breeze.cloud.system.params.ResetClientSecretParam;
 import com.breeze.cloud.system.query.RegisterClientQuery;
 import com.breeze.cloud.system.service.ISysRegisterClientService;
+import com.breeze.cloud.system.vo.RegisteredClientVO;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -59,12 +61,12 @@ public class SysRegisteredClientController {
      * 列表
      *
      * @param registerClientQuery 客户端查询
-     * @return {@link Result}<{@link Page}<{@link SysRegisteredClient}>>
+     * @return {@link Result}<{@link Page}<{@link RegisteredClientVO}>>
      */
     @Operation(summary = "列表", description = "分页")
     @GetMapping
     @PreAuthorize("hasAnyAuthority('sys:client:list')")
-    public Result<Page<SysRegisteredClient>> list(RegisterClientQuery registerClientQuery) {
+    public Result<Page<RegisteredClientVO>> list(RegisterClientQuery registerClientQuery) {
         return Result.ok(this.sysRegisterClientService.listPage(registerClientQuery));
     }
 
@@ -95,31 +97,44 @@ public class SysRegisteredClientController {
     }
 
     /**
+     * 通过id获取客户端
+     *
+     * @param clientId 客户端ID
+     * @return {@link SysRegisteredClient}
+     */
+    @JumpAuth
+    @Operation(summary = "通过clientId获取客户端")
+    @GetMapping("/info/{clientId}")
+    public Result<RegisteredClientVO> info(@PathVariable("clientId") Long clientId) {
+        return Result.ok(this.sysRegisterClientService.info(clientId));
+    }
+
+    /**
      * 保存
      *
-     * @param registeredClientParams 注册客户端参数
+     * @param registeredClientParam 注册客户端参数
      * @return {@link Result}<{@link Boolean}>
      */
     @Operation(summary = "保存")
     @PostMapping
     @PreAuthorize("hasAnyAuthority('sys:client:create')")
     @BreezeSysLog(description = "客户端信息保存", type = LogType.SAVE)
-    public Result<Boolean> save(@Valid @RequestBody RegisteredClientParams registeredClientParams) {
-        return this.sysRegisterClientService.saveRegisteredClient(registeredClientParams);
+    public Result<Boolean> save(@Valid @RequestBody RegisteredClientParam registeredClientParam) {
+        return this.sysRegisterClientService.saveRegisteredClient(registeredClientParam);
     }
 
     /**
      * 修改
      *
-     * @param registeredClientParams 注册客户端参数
+     * @param registeredClientParam 注册客户端参数
      * @return {@link Result}<{@link Boolean}>
      */
     @Operation(summary = "修改")
     @PutMapping
     @PreAuthorize("hasAnyAuthority('sys:client:modify')")
     @BreezeSysLog(description = "客户端信息修改", type = LogType.EDIT)
-    public Result<Boolean> modify(@Valid @RequestBody RegisteredClientParams registeredClientParams) {
-        return Result.ok(this.sysRegisterClientService.update(registeredClientParams));
+    public Result<Boolean> modify(@Valid @RequestBody RegisteredClientParam registeredClientParam) {
+        return Result.ok(this.sysRegisterClientService.update(registeredClientParam));
     }
 
     /**
@@ -136,4 +151,17 @@ public class SysRegisteredClientController {
         return this.sysRegisterClientService.deleteById(Arrays.asList(ids));
     }
 
+    /**
+     * 重置密钥
+     *
+     * @param resetClientSecretParam 重置客户端密钥
+     * @return {@link Result}<{@link Boolean}>
+     */
+    @Operation(summary = "重置密钥")
+    @PutMapping("/resetClientSecret")
+    @PreAuthorize("hasAnyAuthority('sys:client:resetClientSecret')")
+    @BreezeSysLog(description = "重置密钥", type = LogType.EDIT)
+    public Result<Boolean> resetClientSecret(@Valid @RequestBody ResetClientSecretParam resetClientSecretParam) {
+        return Result.ok(this.sysRegisterClientService.resetClientSecretParam(resetClientSecretParam));
+    }
 }
