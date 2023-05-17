@@ -26,7 +26,6 @@ import com.breeze.cloud.system.mapper.SysRegisterClientMapper;
 import com.breeze.cloud.system.params.RegisteredClientParam;
 import com.breeze.cloud.system.params.ResetClientSecretParam;
 import com.breeze.cloud.system.query.RegisterClientQuery;
-import com.breeze.cloud.system.service.ISysRegisterClientService;
 import com.breeze.cloud.system.vo.ClientSettingsVO;
 import com.breeze.cloud.system.vo.RegisteredClientVO;
 import com.breeze.cloud.system.vo.TokenSettingsVO;
@@ -50,7 +49,7 @@ import java.util.stream.Collectors;
  */
 @Slf4j
 @Service
-public class SysRegisterClientService extends ServiceImpl<SysRegisterClientMapper, SysRegisteredClient> implements ISysRegisterClientService {
+public class SysRegisterClientServiceImpl extends ServiceImpl<SysRegisterClientMapper, SysRegisteredClient> implements com.breeze.cloud.system.service.SysRegisterClientService {
 
     /**
      * 密码编码器
@@ -59,7 +58,7 @@ public class SysRegisterClientService extends ServiceImpl<SysRegisterClientMappe
 
     private final ObjectMapper mapper = new ObjectMapper();
 
-    public SysRegisterClientService(PasswordEncoder passwordEncoder) {
+    public SysRegisterClientServiceImpl(PasswordEncoder passwordEncoder) {
         this.passwordEncoder = passwordEncoder;
     }
 

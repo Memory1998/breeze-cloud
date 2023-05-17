@@ -33,7 +33,7 @@ import java.util.List;
  * @author gaoweixuan
  * @date 2023/05/09
  */
-public interface ISysRegisterClientService extends IService<SysRegisteredClient> {
+public interface SysRegisterClientService extends IService<SysRegisteredClient> {
 
     /**
      * 列表页面

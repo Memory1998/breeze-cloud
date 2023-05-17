@@ -14,15 +14,17 @@
  * limitations under the License.
  */
 
-package com.breeze.cloud.system.vo;
+package com.breeze.cloud.system.domain;
 
+import com.baomidou.mybatisplus.annotation.TableName;
+import com.breeze.cloud.core.base.BaseModel;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.*;
 
 import java.io.Serializable;
 
 /**
- * 系统用户消息内容
+ * 系统用户消息实体
  *
  * @author gaoweixuan
  * @date 2022-11-26
@@ -32,54 +34,40 @@ import java.io.Serializable;
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode(callSuper = false)
-@Schema(description = "系统用户消息快照VO")
-public class SysUserMsgSnapshotVO implements Serializable {
+@TableName(value = "sys_msg_user")
+@Schema(description = "系统用户消息实体")
+public class SysMsgUser extends BaseModel<SysMsgUser> implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
     /**
      * 消息ID
      */
+    @Schema(description = "消息ID")
     private Long msgId;
 
     /**
-     * 消息标题
+     * 标记已读 0 未读 1 已读
      */
-    private String msgTitle;
+    @Schema(description = "标记已读 0 未读 1 已读")
+    private Integer isRead;
 
     /**
-     * 消息类型 0 通知 1 公告
+     * 标记关闭 0 未关闭 1 已关闭
      */
-    private Integer msgType;
+    @Schema(description = "标记关闭 0 未关闭 1 已关闭")
+    private Integer isClose;
 
     /**
-     * 消息级别 error 紧急消息（多次提醒） info 一般消息 warning 警示消消息 success 正常消息
+     * 部门ID
      */
-    private String msgLevel;
+    @Schema(description = "部门ID")
+    private Long deptId;
 
     /**
-     * 消息内容
+     * 用户Id
      */
-    private String content;
-
-    /**
-     * 用户名
-     */
-    private String username;
-
-    /**
-     * 关闭
-     */
-    private Integer markClose;
-
-    /**
-     * 已读
-     */
-    private Integer markRead;
-
-    /**
-     * 消息编码
-     */
-    private String msgCode;
+    @Schema(description = "用户Id")
+    private Long userId;
 
 }

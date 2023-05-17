@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.breeze.cloud.websocket.bo;
+package com.breeze.cloud.websocket.dto;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.*;
@@ -23,7 +23,7 @@ import java.io.Serializable;
 import java.util.List;
 
 /**
- * 用户消息BO
+ * 用户消息传输类
  *
  * @author gaoweixuan
  * @date 2022-11-23
@@ -33,14 +33,12 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode(callSuper = false)
-@Schema(description = "用户消息BO")
-public class UserMsgBO implements Serializable {
+@Schema(description = "用户消息DTO")
+public class UserMsgDTO implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    private SysUserMsgSnapshotBO sysUserMsgSnapshotBO;
-
-    private List<MsgBodyBO> msgBodyBOList;
+    private List<MsgBody> msgBodyList;
 
     @Data
     @Builder
@@ -48,36 +46,19 @@ public class UserMsgBO implements Serializable {
     @AllArgsConstructor
     @EqualsAndHashCode(callSuper = false)
     @Schema(description = "用户消息体")
-    public static class MsgBodyBO implements Serializable {
+    public static class MsgBody implements Serializable {
 
         private static final long serialVersionUID = 1L;
 
         /**
-         * 用户ID
+         * 消息标题
          */
-        private Long userId;
+        private String title;
 
         /**
          * 消息编码
          */
-        private String msgCode;
-
-        /**
-         * 消息快照ID
-         */
-        private Long msgSnapshotId;
-
-    }
-
-    @Data
-    @Builder
-    @NoArgsConstructor
-    @AllArgsConstructor
-    @EqualsAndHashCode(callSuper = false)
-    @Schema(description = "系统用户消息快照")
-    public static class SysUserMsgSnapshotBO implements Serializable {
-
-        private static final long serialVersionUID = 1L;
+        private String code;
 
         /**
          * 消息ID
@@ -85,25 +66,29 @@ public class UserMsgBO implements Serializable {
         private Long msgId;
 
         /**
-         * 消息标题
+         * 消息类型
          */
-        private String msgTitle;
+        private Integer type;
 
         /**
-         * 消息类型 0 通知 1 公告
+         * 消息等级
          */
-        private Integer msgType;
+        private String level;
 
         /**
-         * 消息级别 error 紧急消息（多次提醒） info 一般消息 warning 警示消消息 success 正常消息
-         */
-        private String msgLevel;
-
-        /**
-         * 消息内容
+         * 内容
          */
         private String content;
 
+        /**
+         * 部门ID
+         */
+        private Long deptId;
+
+        /**
+         * 用户ID
+         */
+        private Long userId;
     }
 
 }

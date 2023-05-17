@@ -18,7 +18,6 @@ package com.breeze.cloud.system.service.impl;
 
 import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.metadata.IPage;
-import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.conditions.query.LambdaQueryChainWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
@@ -49,19 +48,9 @@ public class SysMsgServiceImpl extends ServiceImpl<SysMsgMapper, SysMsg> impleme
     public IPage<SysMsg> listPage(MsgQuery msgQuery) {
         Page<SysMsg> msgPage = new Page<>(msgQuery.getCurrent(), msgQuery.getSize());
         return new LambdaQueryChainWrapper<>(this.getBaseMapper())
-                .like(StrUtil.isAllNotBlank(msgQuery.getMsgTitle()), SysMsg::getMsgTitle, msgQuery.getMsgTitle())
-                .like(StrUtil.isAllNotBlank(msgQuery.getMsgCode()), SysMsg::getMsgCode, msgQuery.getMsgCode())
+                .like(StrUtil.isAllNotBlank(msgQuery.getTitle()), SysMsg::getTitle, msgQuery.getTitle())
+                .like(StrUtil.isAllNotBlank(msgQuery.getCode()), SysMsg::getCode, msgQuery.getCode())
                 .page(msgPage);
     }
 
-    /**
-     * 得到系统消息
-     *
-     * @param msgCode 消息代码
-     * @return {@link SysMsg}
-     */
-    @Override
-    public SysMsg getSysMsg(String msgCode) {
-        return this.getOne(Wrappers.<SysMsg>lambdaQuery().eq(SysMsg::getMsgCode, msgCode));
-    }
 }

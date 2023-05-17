@@ -14,19 +14,17 @@
  * limitations under the License.
  */
 
-package com.breeze.cloud.system.mapper;
+package com.breeze.cloud.core.enums;
 
-import com.breeze.cloud.mybatis.mapper.BreezeBaseMapper;
-import com.breeze.cloud.system.domain.SysUserMsg;
-import org.apache.ibatis.annotations.Mapper;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
 
-/**
- * 系统用户消息映射器
- *
- * @author gaoweixuan
- * @date 2022-11-26
- */
-@Mapper
-public interface SysUserMsgMapper extends BreezeBaseMapper<SysUserMsg> {
+@Getter
+@AllArgsConstructor
+public enum DataRole {
+    DEPT_ID("dept_id"),
+    USER_ID("user_id");
+
+    private final String column;
 
 }

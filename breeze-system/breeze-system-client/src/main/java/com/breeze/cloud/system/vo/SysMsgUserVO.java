@@ -14,17 +14,16 @@
  * limitations under the License.
  */
 
-package com.breeze.cloud.system.domain;
+package com.breeze.cloud.system.vo;
 
-import com.baomidou.mybatisplus.annotation.TableName;
-import com.breeze.cloud.core.base.BaseModel;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.*;
 
 import java.io.Serializable;
+import java.time.LocalDateTime;
 
 /**
- * 系统用户消息内容
+ * 系统用户消息VO
  *
  * @author gaoweixuan
  * @date 2022-11-26
@@ -34,46 +33,68 @@ import java.io.Serializable;
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode(callSuper = false)
-@TableName(value = "sys_user_msg_snapshot")
-@Schema(description = "系统用户消息快照实体")
-public class SysUserMsgSnapshot extends BaseModel<SysUserMsgSnapshot> implements Serializable {
+@Schema(description = "系统用户消息VO")
+public class SysMsgUserVO implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
     /**
+     * ID
+     */
+    private Long id;
+
+    /**
      * 消息ID
      */
-    @Schema(description = "消息ID")
     private Long msgId;
 
     /**
      * 消息标题
      */
-    @Schema(description = "消息标题")
-    private String msgTitle;
+    private String title;
+
+    /**
+     * 消息标题
+     */
+    private String code;
 
     /**
      * 消息类型 0 通知 1 公告
      */
-    @Schema(description = "消息类型 0 通知 1 公告")
-    private Integer msgType;
+    private Integer type;
 
     /**
-     * 消息级别 error 紧急消息（多次提醒） info 一般消息 warning 警示消消息 success 正常消息
+     * 消息级别 error 紧急消息 info 一般消息 warning 警示消消息 success 正常消息
      */
-    @Schema(description = "消息级别 error 紧急消息（多次提醒） info 一般消息 warning 警示消消息 success 正常消息")
-    private String msgLevel;
+    private String level;
 
     /**
      * 消息内容
      */
-    @Schema(description = "消息内容")
     private String content;
 
     /**
-     * 部门ID
+     * 关闭
      */
-    @Schema(description = "部门ID")
-    private Long deptId;
+    private Integer isClose;
 
+    /**
+     * 已读
+     */
+    private Integer isRead;
+
+    /**
+     * 消息接收人ID
+     */
+    private Long userId;
+
+    /**
+     * 接收人用户名
+     */
+    private String username;
+
+    /**
+     * 消息接收时间
+     */
+    private LocalDateTime createTime;
 }

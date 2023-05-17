@@ -14,26 +14,30 @@
  * limitations under the License.
  */
 
-package com.breeze.cloud.websocket.events;
-
-import com.breeze.cloud.websocket.dto.UserMsgDTO;
-import org.springframework.context.ApplicationEvent;
+package com.breeze.cloud.system.exception;
 
 /**
- * 消息保存事件
+ * 没有发现异常
  *
  * @author gaoweixuan
- * @date 2022-11-28
+ * @date 2023/05/17
  */
-public class MsgSaveEvent extends ApplicationEvent {
+public class NotFoundException extends RuntimeException {
 
     /**
-     * 消息保存事件
-     *
-     * @param userMsgDTO 消息BO
+     * 错误码
      */
-    public MsgSaveEvent(UserMsgDTO userMsgDTO) {
-        super(userMsgDTO);
-    }
+    private final Integer code;
 
+    /**
+     * 错误提示
+     */
+    private final String msg;
+
+    public NotFoundException(String msg) {
+        super(msg);
+        this.code = 500;
+        this.msg = msg;
+    }
 }
+

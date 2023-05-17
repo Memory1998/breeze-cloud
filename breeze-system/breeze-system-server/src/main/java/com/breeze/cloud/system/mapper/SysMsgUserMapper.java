@@ -14,38 +14,44 @@
  * limitations under the License.
  */
 
-package com.breeze.cloud.system.service;
+package com.breeze.cloud.system.mapper;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
-import com.baomidou.mybatisplus.extension.service.IService;
-import com.breeze.cloud.system.domain.SysUserMsgSnapshot;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.breeze.cloud.mybatis.annotation.BreezeDataPermission;
+import com.breeze.cloud.mybatis.mapper.BreezeBaseMapper;
+import com.breeze.cloud.system.domain.SysMsgUser;
 import com.breeze.cloud.system.query.UserMsgQuery;
-import com.breeze.cloud.system.vo.SysUserMsgSnapshotVO;
+import com.breeze.cloud.system.vo.SysMsgUserVO;
+import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
 /**
- * 系统用户消息快照服务
+ * 系统用户消息映射器
  *
  * @author gaoweixuan
  * @date 2022-11-26
  */
-public interface SysUserMsgSnapshotService extends IService<SysUserMsgSnapshot> {
-
+@Mapper
+public interface SysMsgUserMapper extends BreezeBaseMapper<SysMsgUser> {
     /**
      * 列表页面
      *
+     * @param page         页面
      * @param userMsgQuery 用户消息查询
-     * @return {@link IPage}<{@link SysUserMsgSnapshotVO}>
+     * @return {@link IPage}<{@link SysMsgUserVO}>
      */
-    IPage<SysUserMsgSnapshotVO> listPage(UserMsgQuery userMsgQuery);
+    @BreezeDataPermission
+    IPage<SysMsgUserVO> listPage(Page<SysMsgUser> page, @Param("userMsgQuery") UserMsgQuery userMsgQuery);
 
     /**
      * 获取消息列表通过用户名
      *
      * @param username 用户名
-     * @return {@link List}<{@link SysUserMsgSnapshotVO}>
+     * @return {@link List}<{@link SysMsgUserVO}>
      */
-    List<SysUserMsgSnapshotVO> listMsgByUsername(String username);
+    List<SysMsgUserVO> listMsgByUsername(String username);
 
 }

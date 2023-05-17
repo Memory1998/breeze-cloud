@@ -151,12 +151,12 @@ public class BreezeDataPermissionInterceptor extends JsqlParserSupport implement
         if (StrUtil.isAllBlank(permissions)) {
             // 无论注解设置什么，没有配置权限就不查询出任何数据
             originalSql = String.format("SELECT %s FROM (%s) temp WHERE 1 = 2", column, originalSql);
-        } else if (StrUtil.isNotBlank(dataPer.own())) {
+        } else if (StrUtil.isNotBlank(dataPer.own().getColumn())) {
             // 个人范围权限
-            originalSql = String.format("SELECT %s FROM (%s) temp WHERE temp.%s = '%s'", column, originalSql, dataPer.own(), currentUser.getUsername());
-        } else if (StrUtil.isNotBlank(dataPer.scope())) {
+            originalSql = String.format("SELECT %s FROM (%s) temp WHERE temp.%s = '%s'", column, originalSql, dataPer.own().getColumn(), currentUser.getId());
+        } else if (StrUtil.isNotBlank(dataPer.scope().getColumn())) {
             // 部门范围权限
-            originalSql = String.format("SELECT %s FROM (%s) temp WHERE temp.%s IN (%s)", columns, originalSql, dataPer.scope(), permissions);
+            originalSql = String.format("SELECT %s FROM (%s) temp WHERE temp.%s IN (%s)", columns, originalSql, dataPer.scope().getColumn(), permissions);
         }
         return originalSql;
     }

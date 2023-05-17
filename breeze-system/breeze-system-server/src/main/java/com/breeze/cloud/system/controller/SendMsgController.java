@@ -33,7 +33,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.security.Principal;
 
 /**
- * 消息模块接口
+ * 发送消息模块接口
  *
  * @author gaoweixuan
  * @date 2022-10-08
@@ -41,8 +41,8 @@ import java.security.Principal;
 @Slf4j
 @AllArgsConstructor
 @RestController
-@Tag(name = "消息模块", description = "MsgController")
-public class MsgController {
+@Tag(name = "发送消息模块", description = "SendMsgController")
+public class SendMsgController {
 
     /**
      * 消息服务
@@ -56,7 +56,9 @@ public class MsgController {
      * @return {@link Result}<{@link MsgVO}>
      */
     @Operation(summary = "广播消息")
+    // 前端发送信息的路径
     @MessageMapping("/sendBroadcastMsg")
+    // 发送到websocket的路径，广播消息的路径/topic，发送的通道和订阅者确定后可通过这个路径接收消息/msg
     @SendTo("/topic/msg")
     public Result<MsgVO> sendBroadcastMsg(@Payload MsgParam msgParam) {
         return this.webSocketMsgService.sendBroadcastMsg(msgParam);
@@ -70,7 +72,9 @@ public class MsgController {
      * @return {@link Result}<{@link MsgVO}>
      */
     @Operation(summary = "发送消息给用户")
+    // 前端发送信息的路径
     @MessageMapping("/sendMsgUser")
+    // 发送到websocket的路径，/点对点发送的路径/queue，发送的通道和订阅者确定后可通过这个路径接收消息/userMsg
     @SendToUser("/queue/userMsg")
     public Result<MsgVO> sendMsgUser(Principal principal, @Payload MsgParam msgParam) {
         return this.webSocketMsgService.sendMsgToSingleUser(principal, msgParam);
@@ -83,6 +87,7 @@ public class MsgController {
      * @param msgParam  用户消息
      */
     @Operation(summary = "发送信息给指定的用户")
+    // 前端发送信息的路径
     @MessageMapping("/sendMsgToUser")
     public void sendMsgToUser(Principal principal, @Payload MsgParam msgParam) {
         this.webSocketMsgService.sendMsgToUser(principal, msgParam);

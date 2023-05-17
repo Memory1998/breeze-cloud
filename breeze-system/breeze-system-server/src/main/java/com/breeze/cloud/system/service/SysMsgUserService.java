@@ -16,9 +16,13 @@
 
 package com.breeze.cloud.system.service;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.breeze.cloud.core.utils.Result;
-import com.breeze.cloud.system.domain.SysUserMsg;
+import com.breeze.cloud.system.domain.SysMsgUser;
+import com.breeze.cloud.system.query.UserMsgQuery;
+import com.breeze.cloud.system.vo.SysMsgUserVO;
+import com.breeze.cloud.websocket.dto.UserMsgDTO;
 
 import java.util.List;
 
@@ -28,24 +32,47 @@ import java.util.List;
  * @author gaoweixuan
  * @date 2022-11-26
  */
-public interface SysUserMsgService extends IService<SysUserMsg> {
+public interface SysMsgUserService extends IService<SysMsgUser> {
+
+    /**
+     * 列表页面
+     *
+     * @param userMsgQuery 用户消息查询
+     * @return {@link IPage}<{@link SysMsgUserVO}>
+     */
+    IPage<SysMsgUserVO> listPage(UserMsgQuery userMsgQuery);
+
+    /**
+     * 获取消息列表通过用户名
+     *
+     * @param username 用户名
+     * @return {@link List}<{@link SysMsgUserVO}>
+     */
+    List<SysMsgUserVO> listMsgByUsername(String username);
+
+    /**
+     * 保存用户的消息
+     *
+     * @param userMsgDTO 用户味精dto
+     */
+    void
+    saveUserMsg(UserMsgDTO userMsgDTO);
 
     /**
      * 关闭
      *
-     * @param msgCode 消息编码
+     * @param msgId 消息Id
      * @return {@link Result}<{@link Boolean}>
      */
-    Result<Boolean> close(String msgCode);
+    Result<Boolean> close(Long msgId);
 
     /**
      * 标记已读
      *
-     * @param msgCode 消息编码
+     * @param msgId 消息Id
      * @return {@link Result}<{@link Boolean}>
      */
-    Result<Boolean> read(String msgCode);
-
+    Result<Boolean> read(Long msgId);
     /**
      * 删除用户的消息通过ids
      *

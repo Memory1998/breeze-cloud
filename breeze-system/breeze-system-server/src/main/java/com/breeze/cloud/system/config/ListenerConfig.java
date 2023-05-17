@@ -19,8 +19,8 @@ package com.breeze.cloud.system.config;
 import com.breeze.cloud.log.bo.SysLogBO;
 import com.breeze.cloud.log.events.LocalSysLogSaveEventListener;
 import com.breeze.cloud.system.service.SysLogService;
-import com.breeze.cloud.system.service.impl.StompJsWebSocketMsgServiceImpl;
-import com.breeze.cloud.websocket.bo.UserMsgBO;
+import com.breeze.cloud.system.service.SysMsgUserService;
+import com.breeze.cloud.websocket.dto.UserMsgDTO;
 import com.breeze.cloud.websocket.events.MsgSaveEventListener;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -42,10 +42,10 @@ public class ListenerConfig {
     private SysLogService sysLogService;
 
     /**
-     * stomp js消息服务
+     * 用户消息服务
      */
     @Autowired
-    private StompJsWebSocketMsgServiceImpl stompJsMsgService;
+    private SysMsgUserService sysMsgUserService;
 
     /**
      * 日志保存侦听器
@@ -64,7 +64,7 @@ public class ListenerConfig {
      */
     @Bean
     public MsgSaveEventListener msgSaveMsgSnappedEventListener() {
-        return new MsgSaveEventListener((source) -> this.stompJsMsgService.saveMsgSnapped((UserMsgBO) source.getSource()));
+        return new MsgSaveEventListener((source) -> this.sysMsgUserService.saveUserMsg((UserMsgDTO) source.getSource()));
     }
 
 }

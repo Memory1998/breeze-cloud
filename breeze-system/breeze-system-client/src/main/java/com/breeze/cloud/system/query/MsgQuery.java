@@ -35,15 +35,21 @@ import lombok.*;
 public class MsgQuery extends PageQuery {
 
     /**
+     * 消息ID
+     */
+    @Schema(description = "消息ID")
+    private Long id;
+
+    /**
      * 消息标题
      */
     @Schema(description = "消息标题")
-    private String msgTitle;
+    private String title;
 
     /**
      * 消息编码
      */
     @Schema(description = "消息编码")
-    private String msgCode;
+    private String code;
 
 }

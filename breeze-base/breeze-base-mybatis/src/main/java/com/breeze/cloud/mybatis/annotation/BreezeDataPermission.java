@@ -17,6 +17,7 @@
 package com.breeze.cloud.mybatis.annotation;
 
 import com.baomidou.mybatisplus.autoconfigure.MybatisPlusAutoConfiguration;
+import com.breeze.cloud.core.enums.DataRole;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnWebApplication;
 
@@ -39,11 +40,11 @@ public @interface BreezeDataPermission {
     /**
      * 范围权限字段名称
      */
-    String scope() default "";
+    DataRole scope() default DataRole.DEPT_ID;
 
     /**
      * 个人权限字段名称
      */
-    String own() default "";
+    DataRole own() default DataRole.USER_ID;
 
 }

@@ -25,7 +25,7 @@ import com.breeze.cloud.system.domain.SysRegisteredClient;
 import com.breeze.cloud.system.params.RegisteredClientParam;
 import com.breeze.cloud.system.params.ResetClientSecretParam;
 import com.breeze.cloud.system.query.RegisterClientQuery;
-import com.breeze.cloud.system.service.ISysRegisterClientService;
+import com.breeze.cloud.system.service.SysRegisterClientService;
 import com.breeze.cloud.system.vo.RegisteredClientVO;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
@@ -55,7 +55,7 @@ public class SysRegisteredClientController {
     /**
      * 客户端注册服务
      */
-    private final ISysRegisterClientService sysRegisterClientService;
+    private final SysRegisterClientService sysRegisterClientService;
 
     /**
      * 列表

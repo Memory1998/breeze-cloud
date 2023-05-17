@@ -21,13 +21,12 @@ import com.breeze.cloud.core.utils.Result;
 import com.breeze.cloud.log.annotation.BreezeSysLog;
 import com.breeze.cloud.log.enums.LogType;
 import com.breeze.cloud.system.query.UserMsgQuery;
-import com.breeze.cloud.system.service.SysUserMsgService;
-import com.breeze.cloud.system.service.SysUserMsgSnapshotService;
-import com.breeze.cloud.system.vo.SysUserMsgSnapshotVO;
+import com.breeze.cloud.system.service.SysMsgUserService;
+import com.breeze.cloud.system.vo.SysMsgUserVO;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
@@ -42,70 +41,64 @@ import java.util.List;
  * @date 2022-11-20
  */
 @RestController
+@AllArgsConstructor
 @SecurityRequirement(name = "Bearer")
-@RequestMapping("/userMsg")
+@RequestMapping("/msgUser")
 @Tag(name = "系统用户消息管理模块", description = "SysUserMsgController")
-public class SysUserMsgController {
+public class SysMsgUserController {
 
     /**
      * 系统用户消息快照服务
      */
-    @Autowired
-    private SysUserMsgSnapshotService sysUserMsgSnapshotService;
-
-    /**
-     * 系统用户消息服务
-     */
-    @Autowired
-    private SysUserMsgService sysUserMsgService;
+    private final SysMsgUserService sysMsgUserService;
 
     /**
      * 列表
      *
      * @param userMsgQuery 用户消息查询
-     * @return {@link Result}<{@link IPage}<{@link SysUserMsgSnapshotVO}>>
+     * @return {@link Result}<{@link IPage}<{@link SysMsgUserVO}>>
      */
     @Operation(summary = "列表")
     @PostMapping("/list")
-    @PreAuthorize("hasAnyAuthority('sys:userMsg:list')")
-    public Result<IPage<SysUserMsgSnapshotVO>> list(@RequestBody UserMsgQuery userMsgQuery) {
-        return Result.ok(this.sysUserMsgSnapshotService.listPage(userMsgQuery));
+    @PreAuthorize("hasAnyAuthority('sys:msgUser:list')")
+    public Result<IPage<SysMsgUserVO>> list(@RequestBody UserMsgQuery userMsgQuery) {
+        return Result.ok(this.sysMsgUserService.listPage(userMsgQuery));
     }
 
     /**
      * 获取消息列表通过用户名
      *
      * @param username 用户名
-     * @return {@link Result}<{@link List}<{@link SysUserMsgSnapshotVO}>>
+     * @return {@link Result}<{@link List}<{@link SysMsgUserVO}>>
      */
     @Operation(summary = "获取消息列表通过用户名")
     @GetMapping("/listMsgByUsername")
-    public Result<List<SysUserMsgSnapshotVO>> listMsgByUsername(@RequestParam String username) {
-        return Result.ok(this.sysUserMsgSnapshotService.listMsgByUsername(username));
+    public Result<List<SysMsgUserVO>> listMsgByUsername(@RequestParam String username) {
+        return Result.ok(this.sysMsgUserService.listMsgByUsername(username));
     }
 
     /**
      * 关闭
      *
-     * @param msgCode 消息编码
+     * @param msgId 消息Id
      * @return {@link Result}<{@link Boolean}>
      */
     @Operation(summary = "关闭")
-    @PutMapping("/close/{msgCode}")
-    public Result<Boolean> close(@PathVariable String msgCode) {
-        return this.sysUserMsgService.close(msgCode);
+    @PutMapping("/close/{msgId}")
+    public Result<Boolean> close(@PathVariable Long msgId) {
+        return this.sysMsgUserService.close(msgId);
     }
 
     /**
      * 标记已读
      *
-     * @param msgCode 消息编码
+     * @param msgId 消息Id
      * @return {@link Result}<{@link Boolean}>
      */
     @Operation(summary = "已读")
-    @PutMapping("/read/{msgCode}")
-    public Result<Boolean> read(@PathVariable String msgCode) {
-        return this.sysUserMsgService.read(msgCode);
+    @PutMapping("/read/{msgId}")
+    public Result<Boolean> read(@PathVariable Long msgId) {
+        return this.sysMsgUserService.read(msgId);
     }
 
     /**
@@ -116,10 +109,10 @@ public class SysUserMsgController {
      */
     @Operation(summary = "删除")
     @DeleteMapping("/delete")
-    @PreAuthorize("hasAnyAuthority('sys:userMsg:delete')")
+    @PreAuthorize("hasAnyAuthority('sys:msgUser:delete')")
     @BreezeSysLog(description = "消息信息删除", type = LogType.DELETE)
     public Result<Boolean> delete(@NotNull(message = "参数不能为空") @RequestBody Long[] ids) {
-        return this.sysUserMsgService.removeUserMsgByIds(Arrays.asList(ids));
+        return this.sysMsgUserService.removeUserMsgByIds(Arrays.asList(ids));
     }
 
 }
