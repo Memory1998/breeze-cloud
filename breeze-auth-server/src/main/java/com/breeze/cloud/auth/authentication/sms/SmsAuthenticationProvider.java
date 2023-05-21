@@ -20,14 +20,12 @@ import cn.hutool.core.util.StrUtil;
 import com.breeze.cloud.auth.domain.UserPrincipal;
 import com.breeze.cloud.auth.service.impl.UserDetailService;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.context.support.MessageSourceAccessor;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.InternalAuthenticationServiceException;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
-import org.springframework.security.core.SpringSecurityMessageSource;
 
 import static com.breeze.cloud.core.constants.CacheConstants.VALIDATE_PHONE_CODE;
 
@@ -52,8 +50,6 @@ public class SmsAuthenticationProvider implements AuthenticationProvider {
      * 用户详细信息服务
      */
     private final UserDetailService userDetailsService;
-
-    protected MessageSourceAccessor messages = SpringSecurityMessageSource.getAccessor();
 
     /**
      * 短信身份验证提供者
@@ -84,8 +80,7 @@ public class SmsAuthenticationProvider implements AuthenticationProvider {
         String code = authentication.getCredentials().toString();
         if (!StrUtil.equals(validateCode, String.valueOf(code))) {
             log.error("Failed to authenticate since code does not match stored value");
-            throw new BadCredentialsException(this.messages
-                    .getMessage("AbstractUserDetailsAuthenticationProvider.badCredentials", "Bad credentials"));
+            throw new BadCredentialsException("Bad credentials");
         }
         SmsAuthenticationToken smsAuthenticationToken = new SmsAuthenticationToken(loadedUser, code, loadedUser.getAuthorities());
         smsAuthenticationToken.setDetails(loadedUser);

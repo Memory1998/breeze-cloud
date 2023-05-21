@@ -56,32 +56,34 @@ public class CacheConstants {
     public static final String AUTHORIZATION = prefix + "authorization:";
 
     /**
-     * state 对应的 oauthId
+     * 使用 state 查询对应的 authorizationId
      */
     public static final String STATE_OAUTH = prefix + "state:oauth:";
 
     /**
-     * code 对应的 oauthId
+     * 使用 code 查询对应的 authorizationId
      */
     public static final String CODE_OAUTH = prefix + "code:oauth:";
 
     /**
-     * access_code 对应的 oauthId
+     * 使用 access_code 查询对应的 authorizationId
      */
     public static final String ACCESS_OAUTH = prefix + "access:oauth:";
 
     /**
-     * refresh_code 对应的 oauthId
+     * 使用 refresh_code 查询对应的 authorizationId
      */
     public static final String REFRESH_OAUTH = prefix + "refresh:oauth:";
 
     /**
-     * clientId 对应的 oauthId
+     * 使用 clientId 查询对应的 authorizationId
      */
     public static final String CLIENT_OAUTH = prefix + "client:oauth:";
 
     /**
-     * 相关的Key保存
+     * 字典目录
+     * 键：auth:correlations:authorizationId; 值: redis存放【state,refresh_code,clientId,access_code,code】的key
+     * 由此可以获取到此次登录一共存放了多少key
      */
     public static final String CORRELATIONS = prefix + "correlations:";
 

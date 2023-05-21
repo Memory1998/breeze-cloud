@@ -53,7 +53,7 @@ public class ResourceTestController {
      * @param request 请求
      * @return {@link List}<{@link String}>
      */
-    @PreAuthorize("hasAnyAuthority('message.read')")
+    @PreAuthorize("hasAnyAuthority('read')")
     @GetMapping("/read/{hello}")
     public List<String> Read(@PathVariable("hello") String hello, HttpServletRequest request) {
         return Lists.newArrayList(hello);

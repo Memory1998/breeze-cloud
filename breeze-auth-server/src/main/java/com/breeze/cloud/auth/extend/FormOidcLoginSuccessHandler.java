@@ -16,6 +16,7 @@
 
 package com.breeze.cloud.auth.extend;
 
+import cn.hutool.core.util.StrUtil;
 import com.breeze.cloud.auth.utils.UrlThreadLocal;
 import com.breeze.cloud.log.bo.SysLogBO;
 import com.breeze.cloud.log.events.PublisherSaveSysLogEvent;
@@ -59,7 +60,9 @@ public class FormOidcLoginSuccessHandler implements AuthenticationSuccessHandler
             // 由于RequestCache只保存了上一次的请求地址，自定义登录页使用controller【/login】中转了一下页面导致oidc的请求路径地址被覆盖，
             // 从线程本地获取
             String url = UrlThreadLocal.get();
-            response.sendRedirect(url);
+            if (StrUtil.isNotBlank(url)) {
+                response.sendRedirect(url);
+            }
         } finally {
             UrlThreadLocal.remove();
             // 保存日志

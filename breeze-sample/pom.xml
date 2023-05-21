@@ -14,7 +14,8 @@
     <description>DEMO</description>
 
     <modules>
-        <module>breeze-sample-client</module>
+        <module>breeze-sample-oidc-client</module>
+        <module>breeze-sample-pkce-client</module>
         <module>breeze-sample-third-client</module>
         <module>breeze-sample-resource</module>
     </modules>

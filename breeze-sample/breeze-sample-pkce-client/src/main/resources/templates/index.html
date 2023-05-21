@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org">
+<head>
+    <title> 测试 </title>
+    <meta charset="utf-8"/>
+    <meta content="IE=edge" http-equiv="X-UA-Compatible"/>
+    <meta content="width=device-width, initial-scale=1, shrink-to-fit=no" name="viewport">
+    <link href="/webjars/bootstrap/5.1.3/css/bootstrap.min.css" rel="stylesheet"
+          th:src="@{/webjars/bootstrap/5.1.3/css/bootstrap.min.css}">
+</head>
+<body>
+<div th:fragment="header">
+    <nav class="navbar navbar-default">
+        <div class="container">
+            <div class="container-fluid">
+                <div class="navbar-collapse collapse" id="navbar">
+                </div>
+            </div>
+        </div>
+    </nav>
+</div>
+
+<div class="container">
+    <nav class="navbar bg-body-tertiary px-3 mb-3">
+        <a class="navbar-brand" href="#">Navbar</a>
+        <ul class="nav nav-pills">
+            <li class="nav-item">
+                <a class="nav-link" href="#">First</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#">Second</a>
+            </li>
+            <li class="nav-item dropdown">
+                <a aria-expanded="false" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#"
+                   role="button">
+                    <span class="font-weight-bold" th:text="${username}"></span>
+                </a>
+                <ul class="dropdown-menu">
+                    <li>
+                        <a class="dropdown-item" th:href="@{/client/logout}">退出</a>
+                    </li>
+                </ul>
+            </li>
+        </ul>
+    </nav>
+    <div class="alert alert-danger alert-dismissible" role="alert" th:if="${error}">
+        <button aria-label="Close" class="close" data-dismiss="alert" type="button">
+            <span aria-hidden="true">&times;</span>
+        </button>
+        <h4 class="text-center" th:text="${error}"></h4>
+    </div>
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h3 class="panel-title">
+                客户端授权方式 <span style="font-family:monospace">grant_type</span>:
+            </h3>
+        </div>
+        <ul class="list-group">
+            <li class="list-group-item">
+                <a href="/authorize?grant_type=authorization_code"
+                   th:href="@{/authorize?grant_type=authorization_code}">
+                    <span style="font-size:medium">测试Authorization Code授权</span>
+                    <small class="text-muted">登录到授权中心《Spring Authorization Server》</small>
+                </a>
+            </li>
+            <li class="list-group-item">
+                <a href="/authorize?grant_type=client_credentials"
+                   th:href="@{/authorize?grant_type=client_credentials}">
+                    <span style="font-size:medium">测试Client Credentials授权</span>
+                </a>
+            </li>
+            <li class="list-group-item">
+                <a href="/pkce?grant_type=authorization_code"
+                   th:href="@{/pkce?grant_type=authorization_code}">
+                    <span style="font-size:medium">测试PKCE授权</span>
+                </a>
+            </li>
+        </ul>
+        <div class="panel-footer" th:if="${messages}">
+            <h4>Messages:</h4>
+            <table class="table table-condensed">
+                <tbody>
+                <tr class="row" th:each="message:${messages}">
+                    <td th:text="${message}">message</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+
+    <div th:if="${userInfo}">
+        <table class="table">
+            <thead>
+            <tr>
+                <th scope="col">key</th>
+                <th scope="col">value</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="attributy: ${userInfo.attributes}">
+                <th scope="row">
+                    <span class="text-primary" th:text="${attributy.key}"></span>
+                </th>
+                <td>
+                    <span class="text-primary" th:text="${attributy.value}"></span>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+
+        <table class="table">
+            <thead>
+            <tr>
+                <th scope="col">value</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="attributy: ${userInfo.authorities}">
+                <td scope="row">
+                    <span class="text-primary" th:text="${attributy}"></span>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+<script src="/webjars/bootstrap/5.1.3/js/bootstrap.min.js"
+        th:src="@{/webjars/bootstrap/5.1.3/js/bootstrap.min.js}"></script>
+<script src="/webjars/jquery/3.6.0/jquery.min.js" th:src="@{/webjars/jquery/3.6.0/jquery.min.js}"></script>
+</body>
+</html>

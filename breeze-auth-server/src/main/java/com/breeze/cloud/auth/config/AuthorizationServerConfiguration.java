@@ -274,17 +274,17 @@ public class AuthorizationServerConfiguration {
         OAuth2TokenGenerator<? extends OAuth2Token> tokenGenerator = http.getSharedObject(OAuth2TokenGenerator.class);
 
         OAuth2ResourceOwnerPasswordAuthenticationProvider resourceOwnerPasswordAuthenticationProvider
-                = new OAuth2ResourceOwnerPasswordAuthenticationProvider(authenticationManager, authorizationService, tokenGenerator);
+                = new OAuth2ResourceOwnerPasswordAuthenticationProvider(authorizationService, tokenGenerator, authenticationManager);
         http.authenticationProvider(resourceOwnerPasswordAuthenticationProvider);
 
         OAuth2ResourceOwnerSmsAuthenticationProvider resourceOwnerSmsAuthenticationProvider
-                = new OAuth2ResourceOwnerSmsAuthenticationProvider(authenticationManager, authorizationService, tokenGenerator);
+                = new OAuth2ResourceOwnerSmsAuthenticationProvider(authorizationService,tokenGenerator,authenticationManager);
         http.authenticationProvider(resourceOwnerSmsAuthenticationProvider);
         SmsAuthenticationProvider smsAuthenticationProvider = new SmsAuthenticationProvider(userDetailsService, redisTemplate);
         http.authenticationProvider(smsAuthenticationProvider);
 
         OAuth2ResourceOwnerEmailAuthenticationProvider resourceOwnerEmailAuthenticationProvider
-                = new OAuth2ResourceOwnerEmailAuthenticationProvider(authenticationManager, authorizationService, tokenGenerator);
+                = new OAuth2ResourceOwnerEmailAuthenticationProvider(authorizationService, tokenGenerator, authenticationManager);
         http.authenticationProvider(resourceOwnerEmailAuthenticationProvider);
         EmailAuthenticationProvider emailAuthenticationProvider = new EmailAuthenticationProvider(userDetailsService, redisTemplate);
         http.authenticationProvider(emailAuthenticationProvider);

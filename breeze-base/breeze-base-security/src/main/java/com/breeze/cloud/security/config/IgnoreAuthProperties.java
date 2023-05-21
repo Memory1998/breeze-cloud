@@ -22,7 +22,7 @@ import lombok.EqualsAndHashCode;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
 /**
- * 忽略url属性
+ * 忽略url属性配置文件
  *
  * @author gaoweixuan
  * @date 2022-08-31

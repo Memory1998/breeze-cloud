@@ -179,9 +179,11 @@ public class InRedisOAuth2AuthorizationService implements OAuth2AuthorizationSer
     @Override
     public void remove(OAuth2Authorization authorization) {
         List<String> keysToRemove = new ArrayList<>();
+        // auth信息
         keysToRemove.add(AUTHORIZATION + authorization.getId());
+        // 字典目录
         keysToRemove.add(CORRELATIONS + authorization.getId());
-        // set中的key
+        // 获取此次登录存放的key
         Optional.ofNullable(redisOperations.opsForSet().members(CORRELATIONS + authorization.getId())).ifPresent(keysToRemove::addAll);
         // 一起删除
         redisOperations.delete(keysToRemove);

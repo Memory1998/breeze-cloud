@@ -20,4 +20,5 @@ spring:
   config:
     import:
       - nacos:application-${spring.profiles.active}.${spring.cloud.nacos.config.file-extension}
+      - nacos:breeze-sentinel-${spring.profiles.active}.${spring.cloud.nacos.config.file-extension}
       - nacos:breeze-redis-standalone-${spring.profiles.active}.${spring.cloud.nacos.config.file-extension}

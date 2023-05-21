@@ -11,7 +11,7 @@
  Target Server Version : 80016
  File Encoding         : 65001
 
- Date: 17/05/2023 22:10:56
+ Date: 21/05/2023 11:30:34
 */
 
 SET NAMES utf8mb4;
@@ -86,9 +86,7 @@ INSERT INTO `sys_dict` VALUES (1599037528810590209, '存储方式', 'OSS_STYLE',
 INSERT INTO `sys_dict` VALUES (1599218032822394881, '结果', 'RESULT', 1, NULL, NULL, NULL, NULL, NULL, NULL, 0, NULL, 1);
 INSERT INTO `sys_dict` VALUES (1599288041217064962, '锁定', 'IS_LOCK', 1, NULL, NULL, NULL, NULL, NULL, NULL, 0, NULL, 1);
 INSERT INTO `sys_dict` VALUES (1599292998100058114, '读取状态', 'MARK_READ', 1, NULL, NULL, NULL, NULL, NULL, NULL, 0, NULL, 1);
-INSERT INTO `sys_dict` VALUES (1599293985942536193, '消息发送方式', 'SEND_MSG_TYPE', 1, NULL, NULL, NULL, NULL, NULL, NULL, 0, NULL, 1);
 INSERT INTO `sys_dict` VALUES (1601793691449020417, '数据权限固定编码', 'PERMISSION_CODE', 1, NULL, NULL, NULL, NULL, NULL, NULL, 0, NULL, 1);
-INSERT INTO `sys_dict` VALUES (1601817524482482177, '数据权限运算符', 'COMPARE', 1, NULL, NULL, NULL, NULL, NULL, NULL, 1, NULL, 1);
 INSERT INTO `sys_dict` VALUES (1637619982970351618, '任务策略', 'MISFIRE_POLICY', 1, NULL, NULL, NULL, NULL, NULL, NULL, 0, NULL, 1);
 INSERT INTO `sys_dict` VALUES (1637621879726895105, '并发', 'CONCURRENT', 1, NULL, NULL, NULL, NULL, NULL, NULL, 0, NULL, 1);
 INSERT INTO `sys_dict` VALUES (1637622109440536577, '任务状态', 'JOB_STATUS', 1, NULL, NULL, NULL, NULL, NULL, NULL, 0, NULL, 1);
@@ -99,7 +97,7 @@ INSERT INTO `sys_dict` VALUES (1658031007506415617, '权限范围', 'SCOPES', 1,
 INSERT INTO `sys_dict` VALUES (1658031278974353410, 'JWT签名算法', 'TOKEN_ENDPOINT_AUTHENTICATION_SIGNING_ALGORITHM', 1, NULL, NULL, NULL, NULL, NULL, NULL, 0, NULL, 1);
 INSERT INTO `sys_dict` VALUES (1658031392233144321, 'ID-TOKEN签名算法', 'ID_TOKEN_SIGNATURE_ALGORITHM', 1, NULL, NULL, NULL, NULL, NULL, NULL, 0, NULL, 1);
 INSERT INTO `sys_dict` VALUES (1658031447681843201, '访问令牌格式', 'ACCESS_TOKEN_FORMAT', 1, NULL, NULL, NULL, NULL, NULL, NULL, 0, NULL, 1);
-INSERT INTO `sys_dict` VALUES (1658303277953040385, '重定向Uris', 'REDIRECT_URIS', 1, 'admin', 'admin', '2023-05-16 10:48:06', NULL, NULL, '2023-05-16 10:48:07', 0, NULL, 1);
+INSERT INTO `sys_dict` VALUES (1658303277953040385, '重定向Uris', 'REDIRECT_URIS', 1, NULL, NULL, NULL, NULL, NULL, NULL, 0, NULL, 1);
 
 -- ----------------------------
 -- Table structure for sys_dict_item
@@ -161,8 +159,6 @@ INSERT INTO `sys_dict_item` VALUES (1599288066458386434, 1599288041217064962, '0
 INSERT INTO `sys_dict_item` VALUES (1599288094061101058, 1599288041217064962, '1', '锁定', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, NULL, 1);
 INSERT INTO `sys_dict_item` VALUES (1599293037463601154, 1599292998100058114, '1', '已读', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, NULL, 1);
 INSERT INTO `sys_dict_item` VALUES (1599293192749318145, 1599292998100058114, '0', '未读', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, NULL, 1);
-INSERT INTO `sys_dict_item` VALUES (1599294372594450433, 1599293985942536193, '1', '部门的用户', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, NULL, 1);
-INSERT INTO `sys_dict_item` VALUES (1599294501808373761, 1599293985942536193, '2', '自定义部门的用户', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, NULL, 1);
 INSERT INTO `sys_dict_item` VALUES (1601793891890614273, 1601793691449020417, 'ALL', '全部', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, NULL, 1);
 INSERT INTO `sys_dict_item` VALUES (1601793991845072897, 1601793691449020417, 'OWN', '自己', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, NULL, 1);
 INSERT INTO `sys_dict_item` VALUES (1601794253766774785, 1601793691449020417, 'DEPT_LEVEL', '部门范围权限', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, NULL, 1);
@@ -194,8 +190,8 @@ INSERT INTO `sys_dict_item` VALUES (1658275025167327233, 1658031007506415617, 'e
 INSERT INTO `sys_dict_item` VALUES (1658275048814813185, 1658031007506415617, 'address', 'address', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, NULL, 1);
 INSERT INTO `sys_dict_item` VALUES (1658275076136509441, 1658031007506415617, 'phone', 'phone', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, NULL, 1);
 INSERT INTO `sys_dict_item` VALUES (1658275140422606849, 1658031007506415617, 'user_info', 'user_info', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, NULL, 1);
-INSERT INTO `sys_dict_item` VALUES (1658275179521908738, 1658031007506415617, 'message.read', 'message.read', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, NULL, 1);
-INSERT INTO `sys_dict_item` VALUES (1658275224136720385, 1658031007506415617, 'message.write', 'message.write', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, NULL, 1);
+INSERT INTO `sys_dict_item` VALUES (1658275179521908738, 1658031007506415617, 'read', 'read', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, NULL, 1);
+INSERT INTO `sys_dict_item` VALUES (1658275224136720385, 1658031007506415617, 'write', 'write', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, NULL, 1);
 INSERT INTO `sys_dict_item` VALUES (1658275335071866882, 1658031392233144321, 'RS256', 'RS256', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, NULL, 1);
 INSERT INTO `sys_dict_item` VALUES (1658275360300605442, 1658031392233144321, 'RS384', 'RS384', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, NULL, 1);
 INSERT INTO `sys_dict_item` VALUES (1658275382203260930, 1658031392233144321, 'RS512', 'RS512', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, NULL, 1);
@@ -218,7 +214,8 @@ INSERT INTO `sys_dict_item` VALUES (1658276208971882498, 1658031278974353410, 'P
 INSERT INTO `sys_dict_item` VALUES (1658276255755149313, 1658031278974353410, 'PS512', 'PS512', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, NULL, 1);
 INSERT INTO `sys_dict_item` VALUES (1658303476360396801, 1658303277953040385, 'http://www.baidu.com', 'http://www.baidu.com', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, NULL, 1);
 INSERT INTO `sys_dict_item` VALUES (1658303552222773249, 1658303277953040385, 'http://127.0.0.1:8080/authorized', 'http://127.0.0.1:8080/authorized', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, NULL, 1);
-INSERT INTO `sys_dict_item` VALUES (1658303639636262913, 1658303277953040385, 'http://127.0.0.1:8080/login/oauth2/code/messaging-client-oidc', 'http://127.0.0.1:8080/login/oauth2/code/messaging-client-oidc', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, NULL, 1);
+INSERT INTO `sys_dict_item` VALUES (1658303639636262913, 1658303277953040385, 'http://127.0.0.1:8080/login/oauth2/code/breeze-oidc', 'http://127.0.0.1:8080/login/oauth2/code/breeze-oidc', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, NULL, 1);
+INSERT INTO `sys_dict_item` VALUES (1659034973417574401, 1658303277953040385, 'http://127.0.0.1:8070/login/oauth2/code/breeze-pkce', 'http://127.0.0.1:8070/login/oauth2/code/breeze-pkce', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, NULL, 1);
 
 -- ----------------------------
 -- Table structure for sys_file
@@ -597,8 +594,9 @@ CREATE TABLE `sys_registered_client`  (
 -- ----------------------------
 -- Records of sys_registered_client
 -- ----------------------------
-INSERT INTO `sys_registered_client` VALUES (1657300982050701313, 'pkce-client', '2023-05-13 10:25:00', NULL, NULL, 'pkce-client', 'none', 'authorization_code', 'http://www.baidu.com,http://127.0.0.1:8070/login/oauth2/code/messaging-client-pkce', 'message.read', '{\"settings.client.jwk-set-url\": null, \"settings.client.require-proof-key\": true, \"settings.client.require-authorization-consent\": true, \"settings.client.token-endpoint-authentication-signing-algorithm\": null}', '{\"settings.token.access-token-format\": \"self-contained\", \"settings.token.reuse-refresh-tokens\": true, \"settings.token.access-token-time-to-live\": 18, \"settings.token.refresh-token-time-to-live\": 360, \"settings.token.id-token-signature-algorithm\": \"RS256\", \"settings.token.authorization-code-time-to-live\": 30}', NULL, NULL, NULL, NULL, NULL, NULL, 0, NULL, 1);
-INSERT INTO `sys_registered_client` VALUES (1657300993757003778, 'messaging-client', '2023-05-13 10:25:00', '{bcrypt}$2a$10$zmgQCbGROXPedB/UpGsIM.iHenlCzk0bWy4X8eRlTfZFMBAlySyAS', '2023-12-30 00:00:00', 'messaging-client', 'client_secret_post,client_secret_basic', 'refresh_token,email_code,password,client_credentials,sms_code,authorization_code', 'http://127.0.0.1:8080/authorized,http://www.baidu.com,http://127.0.0.1:8080/login/oauth2/code/messaging-client-oidc', 'user_info,openid,profile,message.read,message.write', '{\"settings.client.jwk-set-url\": null, \"settings.client.require-proof-key\": false, \"settings.client.require-authorization-consent\": true, \"settings.client.token-endpoint-authentication-signing-algorithm\": \"RS256\"}', '{\"settings.token.access-token-format\": \"self-contained\", \"settings.token.reuse-refresh-tokens\": true, \"settings.token.access-token-time-to-live\": 60, \"settings.token.refresh-token-time-to-live\": 120, \"settings.token.id-token-signature-algorithm\": \"RS256\", \"settings.token.authorization-code-time-to-live\": 1}', NULL, NULL, NULL, NULL, NULL, NULL, 0, NULL, 1);
+INSERT INTO `sys_registered_client` VALUES (1657300982050701313, 'breeze-pkce', '2023-05-13 10:25:00', '{bcrypt}$2a$10$nEey4sGLDrp5oAOOJBY9GOlyuHt/30emUvRbBeiOHOUkNLTtGIJUi', NULL, 'breeze-pkce', 'none', 'authorization_code', 'http://127.0.0.1:8070/login/oauth2/code/breeze-pkce,http://www.baidu.com', 'read,openid,profile,write', '{\"settings.client.jwk-set-url\": null, \"settings.client.require-proof-key\": true, \"settings.client.require-authorization-consent\": true, \"settings.client.token-endpoint-authentication-signing-algorithm\": null}', '{\"settings.token.access-token-format\": \"self-contained\", \"settings.token.reuse-refresh-tokens\": true, \"settings.token.access-token-time-to-live\": 60, \"settings.token.refresh-token-time-to-live\": 120, \"settings.token.id-token-signature-algorithm\": \"RS256\", \"settings.token.authorization-code-time-to-live\": 1}', NULL, NULL, NULL, NULL, NULL, NULL, 0, NULL, 1);
+INSERT INTO `sys_registered_client` VALUES (1657300993757003778, 'breeze', '2023-05-13 10:25:00', '{bcrypt}$2a$10$9J/nj7YRmFFhUXJgQtlV5e7qsIS7wqts.zracnPv47FthwAb95G2y', '2023-12-30 00:00:00', 'breeze', 'client_secret_post,client_secret_basic', 'refresh_token,email_code,password,client_credentials,sms_code,authorization_code', 'http://127.0.0.1:8080/authorized,http://www.baidu.com,http://127.0.0.1:8080/login/oauth2/code/breeze-oidc', 'read,address,user_info,phone,openid,profile,write,email', '{\"settings.client.jwk-set-url\": null, \"settings.client.require-proof-key\": false, \"settings.client.require-authorization-consent\": true, \"settings.client.token-endpoint-authentication-signing-algorithm\": \"RS256\"}', '{\"settings.token.access-token-format\": \"self-contained\", \"settings.token.reuse-refresh-tokens\": true, \"settings.token.access-token-time-to-live\": 60, \"settings.token.refresh-token-time-to-live\": 120, \"settings.token.id-token-signature-algorithm\": \"RS256\", \"settings.token.authorization-code-time-to-live\": 1}', NULL, NULL, NULL, NULL, NULL, NULL, 0, NULL, 1);
+INSERT INTO `sys_registered_client` VALUES (1657300993757003779, 'breeze-opaque', '2023-05-13 10:25:00', '{bcrypt}$2a$10$3D0xLRPAKSehDMMI.FobI.IQwOmUFYKwJJu6vjieQ26N5NVVCpdjm', NULL, 'breeze-opaque', 'client_secret_post,client_secret_basic', 'refresh_token,client_credentials,authorization_code', 'http://www.baidu.com,http://127.0.0.1:8050/login/oauth2/code/breeze-oidc,http://127.0.0.1:8050/authorized', 'address,read,user_info,phone,openid,profile,write,email', '{\"settings.client.jwk-set-url\": null, \"settings.client.require-proof-key\": false, \"settings.client.require-authorization-consent\": true, \"settings.client.token-endpoint-authentication-signing-algorithm\": null}', '{\"settings.token.access-token-format\": \"reference\", \"settings.token.reuse-refresh-tokens\": false, \"settings.token.access-token-time-to-live\": 60, \"settings.token.refresh-token-time-to-live\": 120, \"settings.token.id-token-signature-algorithm\": null, \"settings.token.authorization-code-time-to-live\": 10}', NULL, NULL, NULL, NULL, NULL, NULL, 0, NULL, 1);
 
 -- ----------------------------
 -- Table structure for sys_role

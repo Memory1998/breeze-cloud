@@ -24,7 +24,7 @@ import org.springframework.util.Assert;
 import java.util.Collection;
 
 /**
- * 邮箱代码身份验证令牌
+ * 邮箱身份验证令牌
  * <p>
  * 参考：
  * {@link org.springframework.security.authentication.UsernamePasswordAuthenticationToken}

@@ -1,1 +1,2 @@
+com.breeze.cloud.system.client.fallback.SysLogFallbackFactory
 com.breeze.cloud.system.client.SysUserFeign
