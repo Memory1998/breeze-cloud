@@ -30,9 +30,13 @@ import java.util.List;
  * @date 2023-04-24
  */
 public final class CustomAuthorizationGrantType implements Serializable {
-    public static final AuthorizationGrantType SMS_CODE = new AuthorizationGrantType("sms_code");
-    public static final AuthorizationGrantType EMAIL_CODE = new AuthorizationGrantType("email_code");
+
     private static final long serialVersionUID = 580L;
+
+    public static final AuthorizationGrantType SMS_CODE = new AuthorizationGrantType("sms_code");
+
+    public static final AuthorizationGrantType EMAIL_CODE = new AuthorizationGrantType("email_code");
+
     private final String value;
 
     public CustomAuthorizationGrantType(String value) {
@@ -40,15 +44,6 @@ public final class CustomAuthorizationGrantType implements Serializable {
         this.value = value;
     }
 
-    public static List<String> getGrantTypes() {
-        // @formatter:off
-        return Lists.newArrayList(
-                AuthorizationGrantType.PASSWORD.getValue(),
-                EMAIL_CODE.getValue(),
-                SMS_CODE.getValue()
-        );
-        // @formatter:on
-    }
     public String getValue() {
         return this.value;
     }
@@ -69,4 +64,16 @@ public final class CustomAuthorizationGrantType implements Serializable {
     public int hashCode() {
         return this.getValue().hashCode();
     }
+
+
+    public static List<String> getGrantTypes() {
+        // @formatter:off
+        return Lists.newArrayList(
+                AuthorizationGrantType.PASSWORD.getValue(),
+                EMAIL_CODE.getValue(),
+                SMS_CODE.getValue()
+        );
+        // @formatter:on
+    }
+
 }

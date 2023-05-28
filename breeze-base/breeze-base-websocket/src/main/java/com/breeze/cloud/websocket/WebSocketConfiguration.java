@@ -28,7 +28,7 @@ import org.springframework.web.socket.config.annotation.StompEndpointRegistry;
 import org.springframework.web.socket.config.annotation.WebSocketMessageBrokerConfigurer;
 
 /**
- * 网络套接字配置
+ * websocket 配置
  *
  * @author gaoweixuan
  * @date 2022-11-16

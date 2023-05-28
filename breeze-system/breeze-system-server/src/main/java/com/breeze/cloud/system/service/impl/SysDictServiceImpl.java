@@ -27,7 +27,7 @@ import com.breeze.cloud.system.params.DictOpenParam;
 import com.breeze.cloud.system.query.DictQuery;
 import com.breeze.cloud.system.service.SysDictItemService;
 import com.breeze.cloud.system.service.SysDictService;
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -39,7 +39,7 @@ import java.util.List;
  * @date 2021-12-06 22:03:39
  */
 @Service
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class SysDictServiceImpl extends ServiceImpl<SysDictMapper, SysDict> implements SysDictService {
 
     /**

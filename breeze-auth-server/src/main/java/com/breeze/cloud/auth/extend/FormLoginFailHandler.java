@@ -19,7 +19,7 @@ package com.breeze.cloud.auth.extend;
 import com.breeze.cloud.log.bo.SysLogBO;
 import com.breeze.cloud.log.events.PublisherSaveSysLogEvent;
 import com.breeze.cloud.log.events.SysLogSaveEvent;
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.AuthenticationException;
@@ -36,7 +36,7 @@ import java.net.URLEncoder;
  * @date 2023/05/13
  */
 @Slf4j
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class FormLoginFailHandler implements AuthenticationFailureHandler {
 
     /**

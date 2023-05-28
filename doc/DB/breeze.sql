@@ -11,7 +11,7 @@
  Target Server Version : 80016
  File Encoding         : 65001
 
- Date: 17/05/2023 22:10:56
+ Date: 28/05/2023 16:18:32
 */
 
 SET NAMES utf8mb4;
@@ -86,30 +86,44 @@ INSERT INTO `sys_dict` VALUES (1599037528810590209, '存储方式', 'OSS_STYLE',
 INSERT INTO `sys_dict` VALUES (1599218032822394881, '结果', 'RESULT', 1, NULL, NULL, NULL, NULL, NULL, NULL, 0, NULL, 1);
 INSERT INTO `sys_dict` VALUES (1599288041217064962, '锁定', 'IS_LOCK', 1, NULL, NULL, NULL, NULL, NULL, NULL, 0, NULL, 1);
 INSERT INTO `sys_dict` VALUES (1599292998100058114, '读取状态', 'MARK_READ', 1, NULL, NULL, NULL, NULL, NULL, NULL, 0, NULL, 1);
-INSERT INTO `sys_dict` VALUES (1599293985942536193, '消息发送方式', 'SEND_MSG_TYPE', 1, NULL, NULL, NULL, NULL, NULL, NULL, 0, NULL, 1);
 INSERT INTO `sys_dict` VALUES (1601793691449020417, '数据权限固定编码', 'PERMISSION_CODE', 1, NULL, NULL, NULL, NULL, NULL, NULL, 0, NULL, 1);
-INSERT INTO `sys_dict` VALUES (1601817524482482177, '数据权限运算符', 'COMPARE', 1, NULL, NULL, NULL, NULL, NULL, NULL, 1, NULL, 1);
-INSERT INTO `sys_dict` VALUES (1637619982970351618, '任务策略', 'MISFIRE_POLICY', 1, NULL, NULL, NULL, NULL, NULL, NULL, 0, NULL, 1);
-INSERT INTO `sys_dict` VALUES (1637621879726895105, '并发', 'CONCURRENT', 1, NULL, NULL, NULL, NULL, NULL, NULL, 0, NULL, 1);
-INSERT INTO `sys_dict` VALUES (1637622109440536577, '任务状态', 'JOB_STATUS', 1, NULL, NULL, NULL, NULL, NULL, NULL, 0, NULL, 1);
-INSERT INTO `sys_dict` VALUES (1639508202175832066, '任务组', 'JOB_GROUP', 1, NULL, NULL, NULL, NULL, NULL, NULL, 0, NULL, 1);
-INSERT INTO `sys_dict` VALUES (1658030824311799809, '身份验证方法', 'CLIENT_AUTHENTICATION_METHODS', 1, NULL, NULL, NULL, NULL, NULL, NULL, 0, NULL, 1);
-INSERT INTO `sys_dict` VALUES (1658030901172420609, '授权许可类型', 'AUTHORIZATION_GRANT_TYPES', 1, NULL, NULL, NULL, NULL, NULL, NULL, 0, NULL, 1);
-INSERT INTO `sys_dict` VALUES (1658031007506415617, '权限范围', 'SCOPES', 1, NULL, NULL, NULL, NULL, NULL, NULL, 0, NULL, 1);
-INSERT INTO `sys_dict` VALUES (1658031278974353410, 'JWT签名算法', 'TOKEN_ENDPOINT_AUTHENTICATION_SIGNING_ALGORITHM', 1, NULL, NULL, NULL, NULL, NULL, NULL, 0, NULL, 1);
-INSERT INTO `sys_dict` VALUES (1658031392233144321, 'ID-TOKEN签名算法', 'ID_TOKEN_SIGNATURE_ALGORITHM', 1, NULL, NULL, NULL, NULL, NULL, NULL, 0, NULL, 1);
-INSERT INTO `sys_dict` VALUES (1658031447681843201, '访问令牌格式', 'ACCESS_TOKEN_FORMAT', 1, NULL, NULL, NULL, NULL, NULL, NULL, 0, NULL, 1);
-INSERT INTO `sys_dict` VALUES (1658303277953040385, '重定向Uris', 'REDIRECT_URIS', 1, 'admin', 'admin', '2023-05-16 10:48:06', NULL, NULL, '2023-05-16 10:48:07', 0, NULL, 1);
+INSERT INTO `sys_dict`
+VALUES (1637619982970351618, '任务策略', 'MISFIRE_POLICY', 1, NULL, NULL, NULL, NULL, NULL, NULL, 0, NULL, 1);
+INSERT INTO `sys_dict`
+VALUES (1637621879726895105, '并发', 'CONCURRENT', 1, NULL, NULL, NULL, NULL, NULL, NULL, 0, NULL, 1);
+INSERT INTO `sys_dict`
+VALUES (1637622109440536577, '任务状态', 'JOB_STATUS', 1, NULL, NULL, NULL, NULL, NULL, NULL, 0, NULL, 1);
+INSERT INTO `sys_dict`
+VALUES (1639508202175832066, '任务组', 'JOB_GROUP', 1, NULL, NULL, NULL, NULL, NULL, NULL, 0, NULL, 1);
+INSERT INTO `sys_dict`
+VALUES (1658030824311799809, '身份验证方法', 'CLIENT_AUTHENTICATION_METHODS', 1, NULL, NULL, NULL, NULL, NULL, NULL, 0,
+        NULL, 1);
+INSERT INTO `sys_dict`
+VALUES (1658030901172420609, '授权许可类型', 'AUTHORIZATION_GRANT_TYPES', 1, NULL, NULL, NULL, NULL, NULL, NULL, 0,
+        NULL, 1);
+INSERT INTO `sys_dict`
+VALUES (1658031007506415617, '权限范围', 'SCOPES', 1, NULL, NULL, NULL, NULL, NULL, NULL, 0, NULL, 1);
+INSERT INTO `sys_dict`
+VALUES (1658031278974353410, 'JWT签名算法', 'TOKEN_ENDPOINT_AUTHENTICATION_SIGNING_ALGORITHM', 1, NULL, NULL, NULL,
+        NULL, NULL, NULL, 0, NULL, 1);
+INSERT INTO `sys_dict`
+VALUES (1658031392233144321, 'ID-TOKEN签名算法', 'ID_TOKEN_SIGNATURE_ALGORITHM', 1, NULL, NULL, NULL, NULL, NULL, NULL,
+        0, NULL, 1);
+INSERT INTO `sys_dict`
+VALUES (1658031447681843201, '访问令牌格式', 'ACCESS_TOKEN_FORMAT', 1, NULL, NULL, NULL, NULL, NULL, NULL, 0, NULL, 1);
+INSERT INTO `sys_dict`
+VALUES (1658303277953040385, '重定向Uris', 'REDIRECT_URIS', 1, NULL, NULL, NULL, NULL, NULL, NULL, 0, NULL, 1);
 
 -- ----------------------------
 -- Table structure for sys_dict_item
 -- ----------------------------
 DROP TABLE IF EXISTS `sys_dict_item`;
-CREATE TABLE `sys_dict_item`  (
-  `id` bigint(22) NOT NULL COMMENT '主键ID',
-  `dict_id` bigint(22) NULL DEFAULT NULL COMMENT '字典ID',
-  `key` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '0' COMMENT '字典项的值',
-  `value` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '字典项的名称',
+CREATE TABLE `sys_dict_item`
+(
+  `id`          bigint(22) NOT NULL COMMENT '主键ID',
+  `dict_id`     bigint(22) NULL DEFAULT NULL COMMENT '字典ID',
+  `key`         varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '0' COMMENT '字典项的值',
+  `value`       varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '字典项的名称',
   `sort` tinyint(1) NULL DEFAULT NULL COMMENT '排序',
   `create_by` varchar(16) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '创建人编码',
   `create_name` varchar(16) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '创建人姓名',
@@ -161,8 +175,6 @@ INSERT INTO `sys_dict_item` VALUES (1599288066458386434, 1599288041217064962, '0
 INSERT INTO `sys_dict_item` VALUES (1599288094061101058, 1599288041217064962, '1', '锁定', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, NULL, 1);
 INSERT INTO `sys_dict_item` VALUES (1599293037463601154, 1599292998100058114, '1', '已读', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, NULL, 1);
 INSERT INTO `sys_dict_item` VALUES (1599293192749318145, 1599292998100058114, '0', '未读', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, NULL, 1);
-INSERT INTO `sys_dict_item` VALUES (1599294372594450433, 1599293985942536193, '1', '部门的用户', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, NULL, 1);
-INSERT INTO `sys_dict_item` VALUES (1599294501808373761, 1599293985942536193, '2', '自定义部门的用户', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, NULL, 1);
 INSERT INTO `sys_dict_item` VALUES (1601793891890614273, 1601793691449020417, 'ALL', '全部', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, NULL, 1);
 INSERT INTO `sys_dict_item` VALUES (1601793991845072897, 1601793691449020417, 'OWN', '自己', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, NULL, 1);
 INSERT INTO `sys_dict_item` VALUES (1601794253766774785, 1601793691449020417, 'DEPT_LEVEL', '部门范围权限', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, NULL, 1);
@@ -188,47 +200,108 @@ INSERT INTO `sys_dict_item` VALUES (1658274604130508801, 1658030824311799809, 'c
 INSERT INTO `sys_dict_item` VALUES (1658274676369006593, 1658030824311799809, 'none', 'none', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, NULL, 1);
 INSERT INTO `sys_dict_item` VALUES (1658274708270882817, 1658030824311799809, 'basic', 'basic', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, NULL, 1);
 INSERT INTO `sys_dict_item` VALUES (1658274853272166402, 1658030824311799809, 'post', 'post', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, NULL, 1);
-INSERT INTO `sys_dict_item` VALUES (1658274975850700801, 1658031007506415617, 'openid', 'openid', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, NULL, 1);
-INSERT INTO `sys_dict_item` VALUES (1658275001364652033, 1658031007506415617, 'profile', 'profile', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, NULL, 1);
-INSERT INTO `sys_dict_item` VALUES (1658275025167327233, 1658031007506415617, 'email', 'email', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, NULL, 1);
-INSERT INTO `sys_dict_item` VALUES (1658275048814813185, 1658031007506415617, 'address', 'address', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, NULL, 1);
-INSERT INTO `sys_dict_item` VALUES (1658275076136509441, 1658031007506415617, 'phone', 'phone', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, NULL, 1);
-INSERT INTO `sys_dict_item` VALUES (1658275140422606849, 1658031007506415617, 'user_info', 'user_info', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, NULL, 1);
-INSERT INTO `sys_dict_item` VALUES (1658275179521908738, 1658031007506415617, 'message.read', 'message.read', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, NULL, 1);
-INSERT INTO `sys_dict_item` VALUES (1658275224136720385, 1658031007506415617, 'message.write', 'message.write', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, NULL, 1);
-INSERT INTO `sys_dict_item` VALUES (1658275335071866882, 1658031392233144321, 'RS256', 'RS256', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, NULL, 1);
-INSERT INTO `sys_dict_item` VALUES (1658275360300605442, 1658031392233144321, 'RS384', 'RS384', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, NULL, 1);
-INSERT INTO `sys_dict_item` VALUES (1658275382203260930, 1658031392233144321, 'RS512', 'RS512', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, NULL, 1);
-INSERT INTO `sys_dict_item` VALUES (1658275403925561345, 1658031392233144321, 'ES256', 'ES256', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, NULL, 1);
-INSERT INTO `sys_dict_item` VALUES (1658275430785884162, 1658031392233144321, 'ES384', 'ES384', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, NULL, 1);
-INSERT INTO `sys_dict_item` VALUES (1658275451379916802, 1658031392233144321, 'ES512', 'ES512', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, NULL, 1);
-INSERT INTO `sys_dict_item` VALUES (1658275473043496962, 1658031392233144321, 'PS256', 'PS256', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, NULL, 1);
-INSERT INTO `sys_dict_item` VALUES (1658275489254481922, 1658031392233144321, 'PS384', 'PS384', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, NULL, 1);
-INSERT INTO `sys_dict_item` VALUES (1658275510104367106, 1658031392233144321, 'PS512', 'PS512', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, NULL, 1);
-INSERT INTO `sys_dict_item` VALUES (1658275743236366338, 1658031447681843201, 'self-contained', 'JWT', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, NULL, 1);
+INSERT INTO `sys_dict_item`
+VALUES (1658274975850700801, 1658031007506415617, 'openid', 'openid', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, NULL,
+        1);
+INSERT INTO `sys_dict_item`
+VALUES (1658275001364652033, 1658031007506415617, 'profile', 'profile', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0,
+        NULL, 1);
+INSERT INTO `sys_dict_item`
+VALUES (1658275025167327233, 1658031007506415617, 'email', 'email', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, NULL,
+        1);
+INSERT INTO `sys_dict_item`
+VALUES (1658275048814813185, 1658031007506415617, 'address', 'address', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0,
+        NULL, 1);
+INSERT INTO `sys_dict_item`
+VALUES (1658275076136509441, 1658031007506415617, 'phone', 'phone', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, NULL,
+        1);
+INSERT INTO `sys_dict_item`
+VALUES (1658275140422606849, 1658031007506415617, 'user_info', 'user_info', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0,
+        NULL, 1);
+INSERT INTO `sys_dict_item`
+VALUES (1658275179521908738, 1658031007506415617, 'read', 'read', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, NULL, 1);
+INSERT INTO `sys_dict_item`
+VALUES (1658275224136720385, 1658031007506415617, 'write', 'write', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, NULL,
+        1);
+INSERT INTO `sys_dict_item`
+VALUES (1658275335071866882, 1658031392233144321, 'RS256', 'RS256', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, NULL,
+        1);
+INSERT INTO `sys_dict_item`
+VALUES (1658275360300605442, 1658031392233144321, 'RS384', 'RS384', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, NULL,
+        1);
+INSERT INTO `sys_dict_item`
+VALUES (1658275382203260930, 1658031392233144321, 'RS512', 'RS512', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, NULL,
+        1);
+INSERT INTO `sys_dict_item`
+VALUES (1658275403925561345, 1658031392233144321, 'ES256', 'ES256', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, NULL,
+        1);
+INSERT INTO `sys_dict_item`
+VALUES (1658275430785884162, 1658031392233144321, 'ES384', 'ES384', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, NULL,
+        1);
+INSERT INTO `sys_dict_item`
+VALUES (1658275451379916802, 1658031392233144321, 'ES512', 'ES512', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, NULL,
+        1);
+INSERT INTO `sys_dict_item`
+VALUES (1658275473043496962, 1658031392233144321, 'PS256', 'PS256', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, NULL,
+        1);
+INSERT INTO `sys_dict_item`
+VALUES (1658275489254481922, 1658031392233144321, 'PS384', 'PS384', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, NULL,
+        1);
+INSERT INTO `sys_dict_item`
+VALUES (1658275510104367106, 1658031392233144321, 'PS512', 'PS512', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, NULL,
+        1);
+INSERT INTO `sys_dict_item`
+VALUES (1658275743236366338, 1658031447681843201, 'self-contained', 'JWT', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0,
+        NULL, 1);
 INSERT INTO `sys_dict_item` VALUES (1658275781895266306, 1658031447681843201, 'reference', '字符串', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, NULL, 1);
 INSERT INTO `sys_dict_item` VALUES (1658276043741470721, 1658031278974353410, 'RS256', 'RS256', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, NULL, 1);
-INSERT INTO `sys_dict_item` VALUES (1658276067271516162, 1658031278974353410, 'RS384', 'RS384', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, NULL, 1);
-INSERT INTO `sys_dict_item` VALUES (1658276093951483906, 1658031278974353410, 'RS512', 'RS512', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, NULL, 1);
-INSERT INTO `sys_dict_item` VALUES (1658276120979578882, 1658031278974353410, 'ES256', 'ES256', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, NULL, 1);
-INSERT INTO `sys_dict_item` VALUES (1658276146409644033, 1658031278974353410, 'ES384', 'ES384', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, NULL, 1);
-INSERT INTO `sys_dict_item` VALUES (1658276164621312002, 1658031278974353410, 'ES512', 'ES512', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, NULL, 1);
-INSERT INTO `sys_dict_item` VALUES (1658276184783331330, 1658031278974353410, 'PS256', 'PS256', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, NULL, 1);
-INSERT INTO `sys_dict_item` VALUES (1658276208971882498, 1658031278974353410, 'PS384', 'PS384', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, NULL, 1);
-INSERT INTO `sys_dict_item` VALUES (1658276255755149313, 1658031278974353410, 'PS512', 'PS512', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, NULL, 1);
-INSERT INTO `sys_dict_item` VALUES (1658303476360396801, 1658303277953040385, 'http://www.baidu.com', 'http://www.baidu.com', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, NULL, 1);
-INSERT INTO `sys_dict_item` VALUES (1658303552222773249, 1658303277953040385, 'http://127.0.0.1:8080/authorized', 'http://127.0.0.1:8080/authorized', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, NULL, 1);
-INSERT INTO `sys_dict_item` VALUES (1658303639636262913, 1658303277953040385, 'http://127.0.0.1:8080/login/oauth2/code/messaging-client-oidc', 'http://127.0.0.1:8080/login/oauth2/code/messaging-client-oidc', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, NULL, 1);
+INSERT INTO `sys_dict_item`
+VALUES (1658276067271516162, 1658031278974353410, 'RS384', 'RS384', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, NULL,
+        1);
+INSERT INTO `sys_dict_item`
+VALUES (1658276093951483906, 1658031278974353410, 'RS512', 'RS512', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, NULL,
+        1);
+INSERT INTO `sys_dict_item`
+VALUES (1658276120979578882, 1658031278974353410, 'ES256', 'ES256', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, NULL,
+        1);
+INSERT INTO `sys_dict_item`
+VALUES (1658276146409644033, 1658031278974353410, 'ES384', 'ES384', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, NULL,
+        1);
+INSERT INTO `sys_dict_item`
+VALUES (1658276164621312002, 1658031278974353410, 'ES512', 'ES512', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, NULL,
+        1);
+INSERT INTO `sys_dict_item`
+VALUES (1658276184783331330, 1658031278974353410, 'PS256', 'PS256', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, NULL,
+        1);
+INSERT INTO `sys_dict_item`
+VALUES (1658276208971882498, 1658031278974353410, 'PS384', 'PS384', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, NULL,
+        1);
+INSERT INTO `sys_dict_item`
+VALUES (1658276255755149313, 1658031278974353410, 'PS512', 'PS512', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, NULL,
+        1);
+INSERT INTO `sys_dict_item`
+VALUES (1658303476360396801, 1658303277953040385, 'http://www.baidu.com', 'http://www.baidu.com', NULL, NULL, NULL,
+        NULL, NULL, NULL, NULL, 0, NULL, 1);
+INSERT INTO `sys_dict_item`
+VALUES (1658303552222773249, 1658303277953040385, 'http://127.0.0.1:8080/authorized',
+        'http://127.0.0.1:8080/authorized', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, NULL, 1);
+INSERT INTO `sys_dict_item`
+VALUES (1658303639636262913, 1658303277953040385, 'http://127.0.0.1:8080/login/oauth2/code/breeze-oidc',
+        'http://127.0.0.1:8080/login/oauth2/code/breeze-oidc', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, NULL, 1);
+INSERT INTO `sys_dict_item`
+VALUES (1659034973417574401, 1658303277953040385, 'http://127.0.0.1:8070/login/oauth2/code/breeze-pkce',
+        'http://127.0.0.1:8070/login/oauth2/code/breeze-pkce', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, NULL, 1);
 
 -- ----------------------------
 -- Table structure for sys_file
 -- ----------------------------
 DROP TABLE IF EXISTS `sys_file`;
-CREATE TABLE `sys_file`  (
-  `id` bigint(22) NOT NULL COMMENT '主键ID',
-  `title` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '文件标题',
+CREATE TABLE `sys_file`
+(
+  `id`                 bigint(22) NOT NULL COMMENT '主键ID',
+  `title`              varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '文件标题',
   `original_file_name` varchar(128) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '原文件名称',
-  `content_type` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '格式',
+  `content_type`       varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '格式',
   `new_file_name` varchar(128) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '新文件名字',
   `path` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '文件存放路径',
   `oss_style` tinyint(1) NOT NULL COMMENT '存储方式 0 本地 1 minio',
@@ -570,45 +643,73 @@ INSERT INTO `sys_post` VALUES (1637420262796746753, 'HR', '人力总监', NULL, 
 -- ----------------------------
 DROP TABLE IF EXISTS `sys_registered_client`;
 CREATE TABLE `sys_registered_client`  (
-  `id` bigint(22) NOT NULL COMMENT '主键',
-  `client_id` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '客户端ID',
-  `client_id_issued_at` datetime(0) NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '客户端发布日期',
-  `client_secret` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '客户端访问密钥',
-  `client_secret_expires_at` datetime(0) NULL DEFAULT NULL COMMENT '客户端加密到期时间',
-  `client_name` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '客户端名称',
-  `client_authentication_methods` varchar(1000) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '客户端使用的身份验证方法；[client_secret_basic, client_secret_post, private_key_jwt, client_secret_jwt, none]',
-  `authorization_grant_types` varchar(1000) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '客户端支持的授权许可类型(grant_type)，可选值包括authorization_code,password,refresh_token,client_credentials,注意：password在auth2.1弃用了，我们自定义了【password】【sms_code】，若支持多个授权许可类型用逗号,分隔',
-  `redirect_uris` varchar(1000) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '客户端重定向URI，当grant_type为authorization_code时, 在Oauth2.0流程中会使用并检查，不在此列将被拒绝，使用IP或者域名，不能使用localhost',
-  `scopes` varchar(1000) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '客户端申请的权限范围，若有多个权限范围用逗号【,】分隔',
-  `json_client_settings` json NOT NULL COMMENT '客户端自定义设置，包括验证密钥或者是否需要授权页面',
-  `json_token_settings` json NOT NULL COMMENT '发布给客户端的 OAuth2 令牌的自定义设置',
-  `create_by` varchar(16) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '创建人编码',
-  `create_name` varchar(16) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '创建人姓名',
-  `create_time` datetime(0) NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
-  `update_by` varchar(16) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '修改人编码',
-  `update_name` varchar(16) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '修改人姓名',
-  `update_time` datetime(0) NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP(0) COMMENT '修改时间',
-  `is_delete` tinyint(1) NULL DEFAULT 0 COMMENT '是否删除 0 未删除 1 已删除',
-  `delete_by` varchar(16) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '删除人编码',
-  `tenant_id` bigint(22) NOT NULL COMMENT '租户ID',
-  PRIMARY KEY (`id`) USING BTREE
+                                        `id` bigint(22) NOT NULL COMMENT '主键',
+                                        `client_id` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '客户端ID',
+                                        `client_id_issued_at` datetime(0) NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '客户端发布日期',
+                                        `client_secret` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '客户端访问密钥',
+                                        `client_secret_expires_at` datetime(0) NULL DEFAULT NULL COMMENT '客户端加密到期时间',
+                                        `client_name` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '客户端名称',
+                                        `client_authentication_methods` varchar(1000) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '客户端使用的身份验证方法；[client_secret_basic, client_secret_post, private_key_jwt, client_secret_jwt, none]',
+                                        `authorization_grant_types`     varchar(1000) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '客户端支持的授权许可类型(grant_type)，可选值包括authorization_code,password,refresh_token,client_credentials,注意：password在auth2.1弃用了，我们自定义了【password】【sms_code】，若支持多个授权许可类型用逗号,分隔',
+                                        `redirect_uris`                 varchar(1000) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '客户端重定向URI，当grant_type为authorization_code时, 在Oauth2.0流程中会使用并检查，不在此列将被拒绝，使用IP或者域名，不能使用localhost',
+                                        `scopes`                        varchar(1000) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '客户端申请的权限范围，若有多个权限范围用逗号【,】分隔',
+                                        `json_client_settings`          json NOT NULL COMMENT '客户端自定义设置，包括验证密钥或者是否需要授权页面',
+                                        `json_token_settings`           json NOT NULL COMMENT '发布给客户端的 OAuth2 令牌的自定义设置',
+                                        `create_by`                     varchar(16) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '创建人编码',
+                                        `create_name`                   varchar(16) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '创建人姓名',
+                                        `create_time`                   datetime(0) NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+                                        `update_by`                     varchar(16) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '修改人编码',
+                                        `update_name`                   varchar(16) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '修改人姓名',
+                                        `update_time`                   datetime(0) NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP (0) COMMENT '修改时间',
+                                        `is_delete`                     tinyint(1) NULL DEFAULT 0 COMMENT '是否删除 0 未删除 1 已删除',
+                                        `delete_by`                     varchar(16) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '删除人编码',
+                                        PRIMARY KEY (`id`) USING BTREE
 ) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of sys_registered_client
 -- ----------------------------
-INSERT INTO `sys_registered_client` VALUES (1657300982050701313, 'pkce-client', '2023-05-13 10:25:00', NULL, NULL, 'pkce-client', 'none', 'authorization_code', 'http://www.baidu.com,http://127.0.0.1:8070/login/oauth2/code/messaging-client-pkce', 'message.read', '{\"settings.client.jwk-set-url\": null, \"settings.client.require-proof-key\": true, \"settings.client.require-authorization-consent\": true, \"settings.client.token-endpoint-authentication-signing-algorithm\": null}', '{\"settings.token.access-token-format\": \"self-contained\", \"settings.token.reuse-refresh-tokens\": true, \"settings.token.access-token-time-to-live\": 18, \"settings.token.refresh-token-time-to-live\": 360, \"settings.token.id-token-signature-algorithm\": \"RS256\", \"settings.token.authorization-code-time-to-live\": 30}', NULL, NULL, NULL, NULL, NULL, NULL, 0, NULL, 1);
-INSERT INTO `sys_registered_client` VALUES (1657300993757003778, 'messaging-client', '2023-05-13 10:25:00', '{bcrypt}$2a$10$zmgQCbGROXPedB/UpGsIM.iHenlCzk0bWy4X8eRlTfZFMBAlySyAS', '2023-12-30 00:00:00', 'messaging-client', 'client_secret_post,client_secret_basic', 'refresh_token,email_code,password,client_credentials,sms_code,authorization_code', 'http://127.0.0.1:8080/authorized,http://www.baidu.com,http://127.0.0.1:8080/login/oauth2/code/messaging-client-oidc', 'user_info,openid,profile,message.read,message.write', '{\"settings.client.jwk-set-url\": null, \"settings.client.require-proof-key\": false, \"settings.client.require-authorization-consent\": true, \"settings.client.token-endpoint-authentication-signing-algorithm\": \"RS256\"}', '{\"settings.token.access-token-format\": \"self-contained\", \"settings.token.reuse-refresh-tokens\": true, \"settings.token.access-token-time-to-live\": 60, \"settings.token.refresh-token-time-to-live\": 120, \"settings.token.id-token-signature-algorithm\": \"RS256\", \"settings.token.authorization-code-time-to-live\": 1}', NULL, NULL, NULL, NULL, NULL, NULL, 0, NULL, 1);
+INSERT INTO `sys_registered_client`
+VALUES (1657300982050701313, 'breeze-pkce', '2023-05-13 10:25:00',
+        '{bcrypt}$2a$10$nEey4sGLDrp5oAOOJBY9GOlyuHt/30emUvRbBeiOHOUkNLTtGIJUi', NULL, 'breeze-pkce', 'none',
+        'authorization_code', 'http://127.0.0.1:8070/login/oauth2/code/breeze-pkce,http://www.baidu.com',
+        'read,openid,profile,write', '{
+    \"settings.client.jwk-set-url\": null, \"settings.client.require-proof-key\": true, \"settings.client.require-authorization-consent\": true, \"settings.client.token-endpoint-authentication-signing-algorithm\": null}',
+        '{
+          \"settings.token.access-token-format\": \"self-contained\", \"settings.token.reuse-refresh-tokens\": true, \"settings.token.access-token-time-to-live\": 60, \"settings.token.refresh-token-time-to-live\": 120, \"settings.token.id-token-signature-algorithm\": \"RS256\", \"settings.token.authorization-code-time-to-live\": 1}',
+        NULL, NULL, NULL, NULL, NULL, NULL, 0, NULL);
+INSERT INTO `sys_registered_client`
+VALUES (1657300993757003778, 'breeze', '2023-05-13 10:25:00',
+        '{bcrypt}$2a$10$9J/nj7YRmFFhUXJgQtlV5e7qsIS7wqts.zracnPv47FthwAb95G2y', '2023-12-30 00:00:00', 'breeze',
+        'client_secret_post,client_secret_basic',
+        'refresh_token,email_code,password,client_credentials,sms_code,authorization_code',
+        'http://127.0.0.1:8080/authorized,http://www.baidu.com,http://127.0.0.1:8080/login/oauth2/code/breeze-oidc',
+        'read,address,user_info,phone,openid,profile,write,email', '{
+    \"settings.client.jwk-set-url\": null, \"settings.client.require-proof-key\": false, \"settings.client.require-authorization-consent\": true, \"settings.client.token-endpoint-authentication-signing-algorithm\": \"RS256\"}',
+        '{
+          \"settings.token.access-token-format\": \"self-contained\", \"settings.token.reuse-refresh-tokens\": true, \"settings.token.access-token-time-to-live\": 60, \"settings.token.refresh-token-time-to-live\": 120, \"settings.token.id-token-signature-algorithm\": \"RS256\", \"settings.token.authorization-code-time-to-live\": 1}',
+        NULL, NULL, NULL, NULL, NULL, NULL, 0, NULL);
+INSERT INTO `sys_registered_client`
+VALUES (1657300993757003779, 'breeze-opaque', '2023-05-13 10:25:00',
+        '{bcrypt}$2a$10$3D0xLRPAKSehDMMI.FobI.IQwOmUFYKwJJu6vjieQ26N5NVVCpdjm', NULL, 'breeze-opaque',
+        'client_secret_post,client_secret_basic', 'refresh_token,client_credentials,authorization_code',
+        'http://www.baidu.com,http://127.0.0.1:8050/login/oauth2/code/breeze-oidc,http://127.0.0.1:8050/authorized',
+        'address,read,user_info,phone,openid,profile,write,email', '{
+    \"settings.client.jwk-set-url\": null, \"settings.client.require-proof-key\": false, \"settings.client.require-authorization-consent\": true, \"settings.client.token-endpoint-authentication-signing-algorithm\": null}',
+        '{
+          \"settings.token.access-token-format\": \"reference\", \"settings.token.reuse-refresh-tokens\": false, \"settings.token.access-token-time-to-live\": 60, \"settings.token.refresh-token-time-to-live\": 120, \"settings.token.id-token-signature-algorithm\": null, \"settings.token.authorization-code-time-to-live\": 10}',
+        NULL, NULL, NULL, NULL, NULL, NULL, 0, NULL);
 
 -- ----------------------------
 -- Table structure for sys_role
 -- ----------------------------
 DROP TABLE IF EXISTS `sys_role`;
-CREATE TABLE `sys_role`  (
-  `id` bigint(22) NOT NULL COMMENT '主键ID',
-  `role_code` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '角色编码',
-  `role_name` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '角色名称',
-  `create_by` varchar(16) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '创建人编码',
+CREATE TABLE `sys_role`
+(
+  `id`          bigint(22) NOT NULL COMMENT '主键ID',
+  `role_code`   varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '角色编码',
+  `role_name`   varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '角色名称',
+  `create_by`   varchar(16) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '创建人编码',
   `create_name` varchar(16) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '创建人姓名',
   `create_time` datetime(0) NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   `update_by` varchar(16) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '修改人编码',

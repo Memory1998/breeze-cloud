@@ -18,7 +18,7 @@ package com.breeze.cloud.system.controller;
 
 import com.breeze.cloud.security.annotation.JumpAuth;
 import com.breeze.cloud.system.service.OnlineLoginUserService;
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -33,7 +33,7 @@ import java.util.List;
  * @date 2023/05/14
  */
 @RestController
-@AllArgsConstructor
+@RequiredArgsConstructor
 @RequestMapping("/online")
 public class OnlineLoginUserController {
 

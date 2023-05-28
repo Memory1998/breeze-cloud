@@ -26,7 +26,7 @@ import com.breeze.cloud.flow.service.IProcessDefinitionService;
 import com.breeze.cloud.flow.vo.DeploymentVO;
 import com.breeze.cloud.flow.vo.ProcessDefinitionVO;
 import com.breeze.cloud.security.utils.SecurityUtils;
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.IOUtils;
@@ -47,7 +47,7 @@ import java.util.List;
  */
 @Slf4j
 @Service
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class ProcessDefinitionServiceImpl implements IProcessDefinitionService {
 
     /**

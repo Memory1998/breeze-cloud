@@ -1,1 +1,1 @@
-com.breeze.cloud.security.config.RedisConfiguration
+com.breeze.cloud.redis.config.RedisConfiguration

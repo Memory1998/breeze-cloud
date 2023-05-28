@@ -17,7 +17,7 @@
 package com.breeze.cloud.auth.config;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.redis.serializer.GenericJackson2JsonRedisSerializer;
@@ -38,7 +38,7 @@ import org.springframework.session.data.redis.config.annotation.web.http.EnableR
  * @date 2023/05/14
  */
 @Configuration
-@AllArgsConstructor
+@RequiredArgsConstructor
 @EnableRedisHttpSession
 public class RedisHttpSessionConfig {
 

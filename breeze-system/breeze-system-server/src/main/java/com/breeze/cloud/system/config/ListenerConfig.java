@@ -22,7 +22,7 @@ import com.breeze.cloud.system.service.SysLogService;
 import com.breeze.cloud.system.service.SysMsgUserService;
 import com.breeze.cloud.websocket.dto.UserMsgDTO;
 import com.breeze.cloud.websocket.events.MsgSaveEventListener;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -33,19 +33,18 @@ import org.springframework.context.annotation.Configuration;
  * @date 2022-08-31
  */
 @Configuration
+@RequiredArgsConstructor
 public class ListenerConfig {
 
     /**
      * 系统日志服务
      */
-    @Autowired
-    private SysLogService sysLogService;
+    private final SysLogService sysLogService;
 
     /**
      * 用户消息服务
      */
-    @Autowired
-    private SysMsgUserService sysMsgUserService;
+    private final SysMsgUserService sysMsgUserService;
 
     /**
      * 日志保存侦听器

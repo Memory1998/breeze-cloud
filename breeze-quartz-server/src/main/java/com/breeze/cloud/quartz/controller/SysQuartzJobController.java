@@ -24,7 +24,7 @@ import com.breeze.cloud.quartz.domain.SysQuartzJob;
 import com.breeze.cloud.quartz.query.JobQuery;
 import com.breeze.cloud.quartz.service.SysQuartzJobService;
 import io.swagger.v3.oas.annotations.Operation;
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
@@ -40,7 +40,7 @@ import java.util.Objects;
  * @date 2023-03-16
  */
 @RestController
-@AllArgsConstructor
+@RequiredArgsConstructor
 @RequestMapping("/job")
 public class SysQuartzJobController {
 

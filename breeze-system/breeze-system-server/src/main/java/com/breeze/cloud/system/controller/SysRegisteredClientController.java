@@ -30,7 +30,7 @@ import com.breeze.cloud.system.vo.RegisteredClientVO;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
@@ -46,7 +46,7 @@ import java.util.Arrays;
  * @date 2023/05/06
  */
 @RestController
-@AllArgsConstructor
+@RequiredArgsConstructor
 @SecurityRequirement(name = "Bearer")
 @RequestMapping("/client")
 @Tag(name = "auth客户端注册模块", description = "AuthRegisteredClientController")

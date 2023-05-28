@@ -16,7 +16,7 @@
 
 package com.breeze.cloud.log.events;
 
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.event.EventListener;
 import org.springframework.scheduling.annotation.Async;
@@ -30,7 +30,7 @@ import java.util.function.Consumer;
  * @date 2022-10-19
  */
 @Slf4j
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class LocalSysLogSaveEventListener {
 
     /**
@@ -38,7 +38,7 @@ public class LocalSysLogSaveEventListener {
      * <p>
      * 去执行保存逻辑
      */
-    private Consumer<SysLogSaveEvent> consumer;
+    private final Consumer<SysLogSaveEvent> consumer;
 
     /**
      * 应用程序事件

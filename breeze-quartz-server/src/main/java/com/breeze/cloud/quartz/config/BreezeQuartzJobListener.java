@@ -21,7 +21,7 @@ import com.breeze.cloud.core.constants.QuartzConstants;
 import com.breeze.cloud.quartz.domain.SysQuartzJob;
 import com.breeze.cloud.quartz.domain.SysQuartzJobLog;
 import com.breeze.cloud.quartz.service.SysQuartzJobLogService;
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.quartz.*;
 
@@ -40,7 +40,7 @@ import java.util.Objects;
  * @date 2023-03-16
  */
 @Slf4j
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class BreezeQuartzJobListener implements JobListener {
 
     /**

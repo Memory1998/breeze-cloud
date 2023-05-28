@@ -20,7 +20,7 @@ import com.breeze.cloud.log.bo.SysLogBO;
 import com.breeze.cloud.log.events.LocalSysLogSaveEventListener;
 import com.breeze.cloud.log.events.RemoteSysLogSaveEventListener;
 import com.breeze.cloud.system.client.SysLogFeign;
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -31,7 +31,7 @@ import org.springframework.context.annotation.Configuration;
  * @date 2023/05/15
  */
 @Configuration
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class SysLogConfiguration {
 
     /**

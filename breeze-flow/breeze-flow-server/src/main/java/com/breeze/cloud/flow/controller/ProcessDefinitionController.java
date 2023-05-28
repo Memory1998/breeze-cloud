@@ -24,11 +24,10 @@ import com.breeze.cloud.flow.query.ProcessDeploymentQuery;
 import com.breeze.cloud.flow.service.IProcessDefinitionService;
 import com.breeze.cloud.flow.vo.DeploymentVO;
 import com.breeze.cloud.flow.vo.ProcessDefinitionVO;
-import com.breeze.cloud.xss.annotation.JumpXss;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
@@ -41,9 +40,8 @@ import javax.validation.constraints.NotBlank;
  * @author gaoweixuan
  * @date 2023-03-01
  */
-@JumpXss
 @RestController
-@AllArgsConstructor
+@RequiredArgsConstructor
 @RequestMapping("/definition")
 @Tag(name = "流程定义管理模块", description = "ProcessDefinitionController")
 public class ProcessDefinitionController {

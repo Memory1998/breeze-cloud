@@ -16,11 +16,11 @@
 
 package com.breeze.cloud.core.enums;
 
-import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 
 @Getter
-@AllArgsConstructor
+@RequiredArgsConstructor
 public enum DataRole {
     DEPT_ID("dept_id"),
     USER_ID("user_id");

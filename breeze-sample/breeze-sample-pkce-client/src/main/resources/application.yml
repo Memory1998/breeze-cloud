@@ -1,0 +1,51 @@
+spring:
+  security:
+    oauth2:
+      client:
+        registration:
+          breeze-pkce:
+            provider: sas
+            client-id: breeze-pkce
+            client-secret: breeze-pkce
+            authorization-grant-type: authorization_code
+            client-authentication-method: none
+            redirect-uri: "http://127.0.0.1:8070/login/oauth2/code/{registrationId}"
+            scope:
+              - read
+              - write
+              - openid   # 由于授权服务器开启了oidc,openid 必填
+              - profile
+            client-name: breeze-pkce
+          breeze-authorization-code:
+            provider: sas
+            client-id: breeze
+            client-secret: breeze
+            authorization-grant-type: authorization_code
+            redirect-uri: "http://127.0.0.1:8070/authorized"
+            scope:
+              - read
+              - write
+            client-name: breeze-authorization-code
+          breeze-client-credentials:
+            provider: sas
+            client-id: breeze
+            client-secret: breeze
+            authorization-grant-type: client_credentials
+            scope:
+              - read
+              - write
+            client-name: breeze-client-credentials
+        provider: # 授权服务器提供的元信息
+          sas: # 对应了 registration 中的 provider,授权服务器的唯一标识
+            # ======================= 可以简化下面的配置 ======================
+            authorization-uri: http://localhost:9000/oauth2/authorize # 请求授权码地址
+            token-uri: http://localhost:9000/oauth2/token # 客户端获取token的端点
+            user-info-uri: http://localhost:9000/userinfo # 客户端获取用户信息的端点
+            user-info-authentication-method: GET
+            user-name-attribute: sub # 客户端使用 user-info-uri 获取用户信息后，解析用户名的key
+            jwk-set-uri: http://localhost:9000/oauth2/jwks # 客户端获取授权服务器提供的公钥信息，jwkSet的请求端点
+            # ======================= 可以简化上面的配置 ======================
+            issuer-uri: http://localhost:9000 # 授权服务器提供的元信息端点服务，配置项都可以从该端点读取，或者直接配置这一项
+
+messages:
+  base-uri: http://127.0.0.1:8090

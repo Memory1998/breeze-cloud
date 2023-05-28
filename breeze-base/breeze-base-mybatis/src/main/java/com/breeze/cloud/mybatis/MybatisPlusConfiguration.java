@@ -23,13 +23,14 @@ import com.baomidou.mybatisplus.extension.plugins.inner.PaginationInnerIntercept
 import com.baomidou.mybatisplus.extension.plugins.inner.TenantLineInnerInterceptor;
 import com.breeze.cloud.core.utils.BreezeThreadLocal;
 import com.breeze.cloud.mybatis.config.BreezeLogicSqlInjector;
+import com.breeze.cloud.mybatis.exception.TenantNotValueException;
 import com.breeze.cloud.mybatis.filters.TenantProperties;
 import com.breeze.cloud.mybatis.plugins.BreezeDataPermissionInterceptor;
 import com.breeze.cloud.mybatis.plugins.BreezeSqlLogInnerInterceptor;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import net.sf.jsqlparser.expression.Expression;
 import net.sf.jsqlparser.expression.LongValue;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 
 import java.util.Objects;
@@ -41,10 +42,10 @@ import java.util.Objects;
  * @date 2021-12-06 22:03:39
  */
 @Slf4j
+@RequiredArgsConstructor
 public class MybatisPlusConfiguration {
 
-    @Autowired
-    private TenantProperties tenantProperties;
+    private final TenantProperties tenantProperties;
 
     /**
      * 自定义 SqlInjector 包含自定义的全局方法
@@ -83,8 +84,7 @@ public class MybatisPlusConfiguration {
                 log.info("[当前租户]： {}", tenantId);
 
                 if (Objects.isNull(tenantId)) {
-                    tenantId = 1L;
-//                    throw new TenantNotValueException("租户信息未获取到");
+                    throw new TenantNotValueException("租户信息未获取到");
                 }
                 return new LongValue(tenantId);
             }

@@ -24,7 +24,7 @@ import com.breeze.cloud.quartz.manager.QuartzManager;
 import com.breeze.cloud.quartz.mapper.SysQuartzJobMapper;
 import com.breeze.cloud.quartz.query.JobQuery;
 import com.breeze.cloud.quartz.service.SysQuartzJobService;
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
@@ -38,8 +38,9 @@ import static com.breeze.cloud.core.constants.QuartzConstants.JOB_NAME;
  *
  * @author gaoweixuan
  */
+
 @Service
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class SysQuartzJobServiceImpl extends ServiceImpl<SysQuartzJobMapper, SysQuartzJob> implements SysQuartzJobService {
 
     /**

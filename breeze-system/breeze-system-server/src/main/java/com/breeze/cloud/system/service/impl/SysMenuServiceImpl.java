@@ -34,7 +34,7 @@ import com.breeze.cloud.system.query.MenuQuery;
 import com.breeze.cloud.system.service.SysMenuService;
 import com.breeze.cloud.system.service.SysRoleMenuService;
 import com.google.common.collect.Maps;
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
@@ -51,7 +51,7 @@ import static com.breeze.cloud.core.constants.CoreConstants.ROOT;
  */
 @Slf4j
 @Service
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class SysMenuServiceImpl extends ServiceImpl<SysMenuMapper, SysMenu> implements SysMenuService {
 
     /**

@@ -35,7 +35,7 @@ import com.breeze.cloud.system.params.*;
 import com.breeze.cloud.system.query.UserQuery;
 import com.breeze.cloud.system.service.*;
 import com.google.common.collect.Lists;
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -59,7 +59,7 @@ import static com.breeze.cloud.core.constants.CacheConstants.LOGIN_USER;
  * @date 2021-12-06 22:03:39
  */
 @Service
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> implements SysUserService {
 
     /**
@@ -315,7 +315,6 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
     }
 
     /**
-     * 加载用户用户名
      * 加载用户通过用户名
      *
      * @param username 用户名

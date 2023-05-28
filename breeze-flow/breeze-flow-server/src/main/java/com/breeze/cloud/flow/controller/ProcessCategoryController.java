@@ -26,7 +26,7 @@ import com.breeze.cloud.log.annotation.BreezeSysLog;
 import com.breeze.cloud.log.enums.LogType;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
@@ -43,7 +43,7 @@ import java.util.Objects;
  * @date 2023-03-01
  */
 @RestController
-@AllArgsConstructor
+@RequiredArgsConstructor
 @RequestMapping("/category")
 @Tag(name = "流程分类管理模块", description = "ProcessCategoryController")
 public class ProcessCategoryController {

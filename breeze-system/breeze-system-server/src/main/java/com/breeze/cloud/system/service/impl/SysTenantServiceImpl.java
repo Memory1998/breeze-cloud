@@ -30,7 +30,7 @@ import com.breeze.cloud.system.mapper.SysTenantMapper;
 import com.breeze.cloud.system.query.TenantQuery;
 import com.breeze.cloud.system.service.SysTenantService;
 import com.breeze.cloud.system.service.SysUserService;
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -42,7 +42,7 @@ import java.util.List;
  * @date 2022-11-06
  */
 @Service
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class SysTenantServiceImpl extends ServiceImpl<SysTenantMapper, SysTenant> implements SysTenantService {
 
     /**

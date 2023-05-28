@@ -26,7 +26,7 @@ import com.breeze.cloud.system.service.SysMenuService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
@@ -41,7 +41,7 @@ import java.util.List;
  * @date 2021-12-06 22:03:39
  */
 @RestController
-@AllArgsConstructor
+@RequiredArgsConstructor
 @SecurityRequirement(name = "Bearer")
 @RequestMapping("/menu")
 @Tag(name = "系统菜单管理模块", description = "SysMenuController")

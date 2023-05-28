@@ -69,5 +69,5 @@ public class SysMsg extends BaseModel<SysMsg> implements Serializable {
      */
     @Schema(description = "内容")
     private String content;
-    
+
 }

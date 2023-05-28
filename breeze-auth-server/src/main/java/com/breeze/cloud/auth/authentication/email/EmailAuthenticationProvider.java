@@ -20,20 +20,18 @@ import cn.hutool.core.util.StrUtil;
 import com.breeze.cloud.auth.domain.UserPrincipal;
 import com.breeze.cloud.auth.service.impl.UserDetailService;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.context.support.MessageSourceAccessor;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.InternalAuthenticationServiceException;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
-import org.springframework.security.core.SpringSecurityMessageSource;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
 import static com.breeze.cloud.core.constants.CacheConstants.VALIDATE_EMAIL_CODE;
 
 /**
- * 短信密码身份验证提供者
+ * 邮箱身份验证提供者
  * <p>
  * 参考：
  * {@link  org.springframework.security.authentication.dao.DaoAuthenticationProvider}
@@ -58,8 +56,6 @@ public class EmailAuthenticationProvider implements AuthenticationProvider {
      * 用户详细信息服务
      */
     private final UserDetailService userDetailsService;
-
-    protected MessageSourceAccessor messages = SpringSecurityMessageSource.getAccessor();
 
     /**
      * 电子邮件密码身份验证提供者
@@ -91,8 +87,7 @@ public class EmailAuthenticationProvider implements AuthenticationProvider {
             String code = authentication.getCredentials().toString();
             if (!StrUtil.equals(validateCode, String.valueOf(code))) {
                 log.debug("Failed to authenticate since code does not match stored value");
-                throw new BadCredentialsException(this.messages
-                        .getMessage("AbstractUserDetailsAuthenticationProvider.badCredentials", "Bad credentials"));
+                throw new BadCredentialsException("Bad credentials");
             }
             EmailAuthenticationToken emailAuthenticationToken = new EmailAuthenticationToken(loadedUser, code, loadedUser.getAuthorities());
             emailAuthenticationToken.setDetails(loadedUser);

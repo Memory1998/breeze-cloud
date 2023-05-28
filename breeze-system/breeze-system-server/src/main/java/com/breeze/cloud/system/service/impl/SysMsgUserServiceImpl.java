@@ -29,7 +29,7 @@ import com.breeze.cloud.system.query.UserMsgQuery;
 import com.breeze.cloud.system.service.SysMsgUserService;
 import com.breeze.cloud.system.vo.SysMsgUserVO;
 import com.breeze.cloud.websocket.dto.UserMsgDTO;
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -42,7 +42,7 @@ import java.util.stream.Collectors;
  * @date 2022-11-26
  */
 @Service
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class SysMsgUserServiceImpl extends ServiceImpl<SysMsgUserMapper, SysMsgUser> implements SysMsgUserService {
 
     /**

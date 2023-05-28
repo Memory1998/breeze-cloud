@@ -53,15 +53,15 @@ public class BreezeFeignClientsConfiguration {
                 HttpServletRequest request = requestAttributes.getRequest();
                 String token = request.getHeader(HttpHeaders.AUTHORIZATION);
                 templates.header(HttpHeaders.AUTHORIZATION, token);
-                String tenantIdHeader = request.getHeader("TENANT_ID");
+                String tenantIdHeader = request.getHeader("tenantId");
                 log.debug("[租户ID header]： {}", tenantIdHeader);
                 if (StrUtil.isAllNotBlank(tenantIdHeader)) {
-                    templates.header("TENANT_ID", tenantIdHeader);
+                    templates.header("tenantId", tenantIdHeader);
                 }
-                String tenantIdParam = request.getParameter("TENANT_ID");
+                String tenantIdParam = request.getParameter("tenantId");
                 log.debug("[租户ID param]： {}", tenantIdParam);
                 if (StrUtil.isAllNotBlank(tenantIdParam)) {
-                    templates.header("TENANT_ID", tenantIdParam);
+                    templates.header("tenantId", tenantIdParam);
                 }
             }
         };

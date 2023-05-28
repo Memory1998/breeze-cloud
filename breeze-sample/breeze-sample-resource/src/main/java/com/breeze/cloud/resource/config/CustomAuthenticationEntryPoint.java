@@ -66,8 +66,8 @@ public class CustomAuthenticationEntryPoint implements AuthenticationEntryPoint 
                 return;
             }
             if (cause instanceof BadJwtException) {
-                log.error("[JWT 签名异常]", cause);
-                ResponseUtil.response(response, ResultCode.exception("JWT 签名异常"));
+                log.error("[登录已过期]", cause);
+                ResponseUtil.response(response, ResultCode.exception("登录已过期"));
                 return;
             }
             if (cause instanceof AccountExpiredException) {

@@ -17,7 +17,7 @@
 package com.breeze.cloud.auth.controller;
 
 import cn.hutool.json.JSONUtil;
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -33,7 +33,7 @@ import java.util.Map;
  * @date 2023-04-24
  */
 @Controller
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class UserController {
 
     @RequestMapping("/userInfo")

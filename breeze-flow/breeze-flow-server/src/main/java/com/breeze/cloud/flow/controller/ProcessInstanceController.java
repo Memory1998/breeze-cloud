@@ -24,7 +24,7 @@ import com.breeze.cloud.flow.service.IProcessInstanceService;
 import com.breeze.cloud.flow.vo.ProcessInstanceVO;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -40,7 +40,7 @@ import javax.validation.Valid;
  * @date 2023-03-01
  */
 @RestController
-@AllArgsConstructor
+@RequiredArgsConstructor
 @RequestMapping("/instance")
 @Tag(name = "流程实例管理模块", description = "ProcessInstanceController")
 public class ProcessInstanceController {

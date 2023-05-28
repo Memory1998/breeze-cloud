@@ -50,7 +50,7 @@ public class UserDetailService implements IUserDetailService {
      */
     @Override
     public UserPrincipal loadUserByUsername(String username) {
-        Result<BaseLoginUser> loginUserResult = this.userFeign.loadUserByUsername(username, this.getRequestTenantIdParam());
+        Result<BaseLoginUser> loginUserResult = this.userFeign.loadUserByUsername(username, this.getTenantId());
         return getLoginUserInfo(loginUserResult);
     }
 
@@ -62,7 +62,7 @@ public class UserDetailService implements IUserDetailService {
      */
     @Override
     public UserPrincipal loadUserByPhone(String phone) {
-        Result<BaseLoginUser> loginUserResult = this.userFeign.loadUserByPhone(phone, this.getRequestTenantIdParam());
+        Result<BaseLoginUser> loginUserResult = this.userFeign.loadUserByPhone(phone, this.getTenantId());
         return this.getLoginUserInfo(loginUserResult);
     }
 
@@ -74,7 +74,7 @@ public class UserDetailService implements IUserDetailService {
      */
     @Override
     public UserPrincipal loadUserByEmail(String email) {
-        Result<BaseLoginUser> loginUserResult = this.userFeign.loadUserByEmail(email, this.getRequestTenantIdParam());
+        Result<BaseLoginUser> loginUserResult = this.userFeign.loadUserByEmail(email, this.getTenantId());
         return this.getLoginUserInfo(loginUserResult);
     }
 

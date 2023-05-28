@@ -24,7 +24,7 @@ import com.breeze.cloud.system.domain.SysPlatform;
 import com.breeze.cloud.system.mapper.SysPlatformMapper;
 import com.breeze.cloud.system.query.PlatformQuery;
 import com.breeze.cloud.system.service.SysPlatformService;
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -36,7 +36,7 @@ import java.util.List;
  * @date 2021-12-06 22:03:39
  */
 @Service
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class SysPlatformServiceImpl extends ServiceImpl<SysPlatformMapper, SysPlatform> implements SysPlatformService {
 
     /**

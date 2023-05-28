@@ -18,7 +18,7 @@ package com.breeze.cloud.mail.service;
 
 import cn.hutool.core.collection.CollUtil;
 import com.breeze.cloud.mail.config.MailProperties;
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.mail.SimpleMailMessage;
@@ -45,7 +45,7 @@ import java.util.Set;
  */
 @Slf4j
 @Component
-@AllArgsConstructor
+@RequiredArgsConstructor
 @EnableConfigurationProperties(MailProperties.class)
 public class MailSenderService {
 

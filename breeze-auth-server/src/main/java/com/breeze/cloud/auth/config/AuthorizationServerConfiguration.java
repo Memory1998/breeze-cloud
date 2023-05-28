@@ -32,7 +32,7 @@ import com.nimbusds.jose.jwk.JWKSet;
 import com.nimbusds.jose.jwk.RSAKey;
 import com.nimbusds.jose.jwk.source.JWKSource;
 import com.nimbusds.jose.proc.SecurityContext;
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.config.AutowireCapableBeanFactory;
 import org.springframework.context.annotation.Bean;
@@ -80,9 +80,9 @@ import static org.springframework.security.oauth2.core.oidc.endpoint.OidcParamet
  * @author gaoweixuan
  * @date 2023-04-10
  */
-@SuppressWarnings("ALL")
 @Slf4j
-@AllArgsConstructor
+@SuppressWarnings("ALL")
+@RequiredArgsConstructor
 @Configuration(proxyBeanMethods = false)
 public class AuthorizationServerConfiguration {
 
@@ -274,17 +274,17 @@ public class AuthorizationServerConfiguration {
         OAuth2TokenGenerator<? extends OAuth2Token> tokenGenerator = http.getSharedObject(OAuth2TokenGenerator.class);
 
         OAuth2ResourceOwnerPasswordAuthenticationProvider resourceOwnerPasswordAuthenticationProvider
-                = new OAuth2ResourceOwnerPasswordAuthenticationProvider(authenticationManager, authorizationService, tokenGenerator);
+                = new OAuth2ResourceOwnerPasswordAuthenticationProvider(authorizationService, tokenGenerator, authenticationManager);
         http.authenticationProvider(resourceOwnerPasswordAuthenticationProvider);
 
         OAuth2ResourceOwnerSmsAuthenticationProvider resourceOwnerSmsAuthenticationProvider
-                = new OAuth2ResourceOwnerSmsAuthenticationProvider(authenticationManager, authorizationService, tokenGenerator);
+                = new OAuth2ResourceOwnerSmsAuthenticationProvider(authorizationService,tokenGenerator,authenticationManager);
         http.authenticationProvider(resourceOwnerSmsAuthenticationProvider);
         SmsAuthenticationProvider smsAuthenticationProvider = new SmsAuthenticationProvider(userDetailsService, redisTemplate);
         http.authenticationProvider(smsAuthenticationProvider);
 
         OAuth2ResourceOwnerEmailAuthenticationProvider resourceOwnerEmailAuthenticationProvider
-                = new OAuth2ResourceOwnerEmailAuthenticationProvider(authenticationManager, authorizationService, tokenGenerator);
+                = new OAuth2ResourceOwnerEmailAuthenticationProvider(authorizationService, tokenGenerator, authenticationManager);
         http.authenticationProvider(resourceOwnerEmailAuthenticationProvider);
         EmailAuthenticationProvider emailAuthenticationProvider = new EmailAuthenticationProvider(userDetailsService, redisTemplate);
         http.authenticationProvider(emailAuthenticationProvider);

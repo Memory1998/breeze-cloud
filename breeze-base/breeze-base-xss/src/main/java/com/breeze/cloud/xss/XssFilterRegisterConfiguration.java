@@ -18,7 +18,7 @@ package com.breeze.cloud.xss;
 
 import com.breeze.cloud.xss.config.XssProperties;
 import com.breeze.cloud.xss.filters.XssFilter;
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.ApplicationContext;
@@ -36,7 +36,7 @@ import javax.servlet.Filter;
  * @date 2022-10-21
  */
 @Configuration
-@AllArgsConstructor
+@RequiredArgsConstructor
 @EnableConfigurationProperties(XssProperties.class)
 public class XssFilterRegisterConfiguration {
 

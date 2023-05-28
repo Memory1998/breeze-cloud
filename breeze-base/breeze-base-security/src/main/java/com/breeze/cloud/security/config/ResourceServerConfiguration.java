@@ -16,15 +16,12 @@
 
 package com.breeze.cloud.security.config;
 
-import com.breeze.cloud.security.exception.CustomAccessDeniedHandler;
-import com.breeze.cloud.security.exception.CustomAuthenticationEntryPoint;
 import com.breeze.cloud.security.init.BreezeJumpAuthPathInit;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.annotation.web.configurers.ExpressionUrlAuthorizationConfigurer;
 import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationConverter;
 import org.springframework.security.oauth2.server.resource.authentication.JwtGrantedAuthoritiesConverter;
 import org.springframework.security.web.SecurityFilterChain;

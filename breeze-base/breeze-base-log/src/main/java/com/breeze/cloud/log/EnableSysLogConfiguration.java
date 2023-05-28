@@ -18,7 +18,7 @@ package com.breeze.cloud.log;
 
 import com.breeze.cloud.log.aspect.SysLogAspect;
 import com.breeze.cloud.log.events.PublisherSaveSysLogEvent;
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnWebApplication;
@@ -32,9 +32,9 @@ import org.springframework.context.annotation.EnableAspectJAutoProxy;
  * @author gaoweixuan
  * @date 2021/10/20
  **/
-@AllArgsConstructor
 @Configuration(proxyBeanMethods = false)
 @EnableAspectJAutoProxy
+@RequiredArgsConstructor
 @ConditionalOnWebApplication
 @ConditionalOnProperty(prefix = "breeze.log", value = "enable", havingValue = "true")
 public class EnableSysLogConfiguration {

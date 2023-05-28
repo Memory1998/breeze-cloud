@@ -16,7 +16,7 @@
 
 package com.breeze.cloud.auth.controller;
 
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.security.oauth2.core.endpoint.OAuth2ParameterNames;
 import org.springframework.security.oauth2.server.authorization.OAuth2AuthorizationConsent;
 import org.springframework.security.oauth2.server.authorization.OAuth2AuthorizationConsentService;
@@ -39,7 +39,7 @@ import java.util.stream.Collectors;
  * @date 2023-04-14
  */
 @Controller
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class AuthorizationConsentController {
 
     /**

@@ -21,7 +21,7 @@ import com.breeze.cloud.system.domain.SysRole;
 import com.breeze.cloud.system.domain.SysUserRole;
 import com.breeze.cloud.system.mapper.SysUserRoleMapper;
 import com.breeze.cloud.system.service.SysUserRoleService;
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -33,7 +33,7 @@ import java.util.List;
  * @date 2021-12-06 22:03:39
  */
 @Service
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class SysUserRoleServiceImpl extends ServiceImpl<SysUserRoleMapper, SysUserRole> implements SysUserRoleService {
 
     /**

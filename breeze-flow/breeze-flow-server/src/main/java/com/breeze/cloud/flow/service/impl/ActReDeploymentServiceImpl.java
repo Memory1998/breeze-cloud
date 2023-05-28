@@ -23,7 +23,7 @@ import com.breeze.cloud.flow.mapper.ActReDeploymentMapper;
 import com.breeze.cloud.flow.query.ProcessDeploymentQuery;
 import com.breeze.cloud.flow.service.ActReDeploymentService;
 import com.breeze.cloud.flow.vo.DeploymentVO;
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 /**
@@ -33,7 +33,7 @@ import org.springframework.stereotype.Service;
  * @date 2023-03-08
  */
 @Service
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class ActReDeploymentServiceImpl extends ServiceImpl<ActReDeploymentMapper, ActReDeployment> implements ActReDeploymentService {
 
     /**

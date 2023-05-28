@@ -27,7 +27,11 @@ public class UrlThreadLocal {
     private static final ThreadLocal<String> URL = new ThreadLocal<>();
 
     public static String get() {
-        return URL.get();
+        try {
+            return URL.get();
+        } finally {
+            UrlThreadLocal.remove();
+        }
     }
 
     public static void remove() {

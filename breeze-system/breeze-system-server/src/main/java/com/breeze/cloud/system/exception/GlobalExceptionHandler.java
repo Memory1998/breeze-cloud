@@ -55,7 +55,7 @@ public class GlobalExceptionHandler {
     }
 
     /**
-     * 空指针统一异常处理
+     * feign超时
      *
      * @param ex 异常
      * @return {@link Result}<{@link ?}>

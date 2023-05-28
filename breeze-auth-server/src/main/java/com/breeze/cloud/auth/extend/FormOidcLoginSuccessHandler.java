@@ -16,11 +16,11 @@
 
 package com.breeze.cloud.auth.extend;
 
-import com.breeze.cloud.auth.utils.UrlThreadLocal;
+import cn.hutool.core.util.StrUtil;
 import com.breeze.cloud.log.bo.SysLogBO;
 import com.breeze.cloud.log.events.PublisherSaveSysLogEvent;
 import com.breeze.cloud.log.events.SysLogSaveEvent;
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
@@ -34,7 +34,7 @@ import javax.servlet.http.HttpServletResponse;
  * @author gaoweixuan
  * @date 2023/05/11
  */
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class FormOidcLoginSuccessHandler implements AuthenticationSuccessHandler {
 
     /**
@@ -56,12 +56,12 @@ public class FormOidcLoginSuccessHandler implements AuthenticationSuccessHandler
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) {
         SysLogBO sysLogBO = this.buildLog(request);
         try {
-            // 由于RequestCache只保存了上一次的请求地址，自定义登录页使用controller【/login】中转了一下页面导致oidc的请求路径地址被覆盖，
             // 从线程本地获取
-            String url = UrlThreadLocal.get();
-            response.sendRedirect(url);
+            String redirect = request.getParameter("redirect");
+            if (StrUtil.isNotBlank(redirect)) {
+                response.sendRedirect(redirect);
+            }
         } finally {
-            UrlThreadLocal.remove();
             // 保存日志
             this.publisherSaveSysLogEvent.publisherEvent(new SysLogSaveEvent(sysLogBO));
         }

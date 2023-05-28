@@ -26,7 +26,7 @@ import com.breeze.cloud.system.domain.SysPost;
 import com.breeze.cloud.system.mapper.SysPostMapper;
 import com.breeze.cloud.system.query.PostQuery;
 import com.breeze.cloud.system.service.SysPostService;
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -38,7 +38,7 @@ import java.util.List;
  * @date 2022-11-06
  */
 @Service
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class SysPostServiceImpl extends ServiceImpl<SysPostMapper, SysPost> implements SysPostService {
 
     /**

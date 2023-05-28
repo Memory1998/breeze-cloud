@@ -34,7 +34,7 @@ import com.breeze.cloud.system.params.FileParam;
 import com.breeze.cloud.system.query.FileQuery;
 import com.breeze.cloud.system.service.SysFileService;
 import com.google.common.collect.Maps;
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.joda.time.LocalDate;
@@ -59,7 +59,7 @@ import static com.breeze.cloud.core.constants.StorageConstants.SYSTEM_BUCKET_NAM
  */
 @Slf4j
 @Service
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class SysFileServiceImpl extends ServiceImpl<SysFileMapper, SysFile> implements SysFileService {
 
     /**

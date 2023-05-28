@@ -16,7 +16,9 @@
 
 package com.breeze.cloud.auth.service;
 
+import cn.hutool.core.util.StrUtil;
 import com.breeze.cloud.auth.domain.UserPrincipal;
+import com.breeze.cloud.auth.exception.NotSupportException;
 import com.breeze.cloud.core.base.BaseLoginUser;
 import com.breeze.cloud.core.utils.Result;
 import com.google.common.collect.Lists;
@@ -115,11 +117,19 @@ public interface IUserDetailService extends UserDetailsService {
      *
      * @return {@link String}
      */
-    default String getRequestTenantIdParam() {
+    default String getTenantId() {
         ServletRequestAttributes requestAttributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
         assert requestAttributes != null;
         HttpServletRequest contextRequest = requestAttributes.getRequest();
-        return contextRequest.getParameter("tenantId");
+        String tenantIdHeader = contextRequest.getHeader("tenantId");
+        if (StrUtil.isAllNotBlank(tenantIdHeader)) {
+            return tenantIdHeader;
+        }
+        String tenantIdParam = contextRequest.getParameter("tenantId");
+        if (StrUtil.isAllNotBlank(tenantIdParam)) {
+            return tenantIdParam;
+        }
+        throw new NotSupportException("tenantId Not Found");
     }
 
     /**

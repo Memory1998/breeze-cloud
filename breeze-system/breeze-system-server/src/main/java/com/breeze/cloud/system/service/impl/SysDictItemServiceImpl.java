@@ -22,7 +22,7 @@ import com.breeze.cloud.system.domain.SysDictItem;
 import com.breeze.cloud.system.mapper.SysDictItemMapper;
 import com.breeze.cloud.system.query.DictQuery;
 import com.breeze.cloud.system.service.SysDictItemService;
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.stereotype.Service;
 
@@ -37,7 +37,7 @@ import java.util.stream.Collectors;
  * @date 2022-09-02
  */
 @Service
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class SysDictItemServiceImpl extends ServiceImpl<SysDictItemMapper, SysDictItem> implements SysDictItemService, InitializingBean {
 
     /**

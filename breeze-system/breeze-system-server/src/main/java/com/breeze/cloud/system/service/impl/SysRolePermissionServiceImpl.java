@@ -23,7 +23,7 @@ import com.breeze.cloud.system.domain.SysPermission;
 import com.breeze.cloud.system.domain.SysRolePermission;
 import com.breeze.cloud.system.mapper.SysRolePermissionMapper;
 import com.breeze.cloud.system.service.SysRolePermissionService;
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -37,7 +37,7 @@ import java.util.stream.Collectors;
  * @date 2022-10-30
  */
 @Service
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class SysRolePermissionServiceImpl extends ServiceImpl<SysRolePermissionMapper, SysRolePermission> implements SysRolePermissionService {
 
     /**

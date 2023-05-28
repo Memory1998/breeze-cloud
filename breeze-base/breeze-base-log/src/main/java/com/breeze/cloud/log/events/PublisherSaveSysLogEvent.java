@@ -16,7 +16,7 @@
 
 package com.breeze.cloud.log.events;
 
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.context.ApplicationEvent;
 import org.springframework.context.ApplicationEventPublisher;
 
@@ -26,7 +26,7 @@ import org.springframework.context.ApplicationEventPublisher;
  * @author gaoweixuan
  * @date 2022-10-19
  */
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class PublisherSaveSysLogEvent {
 
     /**

@@ -17,7 +17,7 @@
 package com.breeze.cloud.system.service.impl;
 
 import com.breeze.cloud.system.service.OnlineLoginUserService;
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Service;
 
@@ -28,7 +28,7 @@ import java.util.List;
  * @date 2023/05/14
  */
 @Service
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class OnlineLoginUserServiceImpl implements OnlineLoginUserService {
 
     /**

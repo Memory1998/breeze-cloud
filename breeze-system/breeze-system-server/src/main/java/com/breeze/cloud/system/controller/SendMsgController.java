@@ -22,7 +22,7 @@ import com.breeze.cloud.websocket.service.WebSocketMsgService;
 import com.breeze.cloud.websocket.vo.MsgVO;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.Payload;
@@ -39,7 +39,7 @@ import java.security.Principal;
  * @date 2022-10-08
  */
 @Slf4j
-@AllArgsConstructor
+@RequiredArgsConstructor
 @RestController
 @Tag(name = "发送消息模块", description = "SendMsgController")
 public class SendMsgController {

@@ -16,9 +16,10 @@
 
 package com.breeze.cloud.auth.controller;
 
+import com.breeze.cloud.auth.utils.UrlThreadLocal;
 import com.breeze.cloud.core.utils.Result;
 import com.breeze.cloud.system.client.SysTenantFeign;
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -26,9 +27,11 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import javax.servlet.http.HttpServletRequest;
 import java.net.URLDecoder;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 /**
  * 路由控制器
@@ -37,7 +40,7 @@ import java.util.Map;
  * @date 2023-04-24
  */
 @Controller
-@AllArgsConstructor
+@RequiredArgsConstructor
 @RequestMapping("/auth")
 public class RouteController {
 
@@ -49,11 +52,12 @@ public class RouteController {
     /**
      * 登录
      *
-     * @param model 模型
+     * @param model   模型
+     * @param request 请求
      * @return {@link String}
      */
     @RequestMapping("/login")
-    public String login(Model model) {
+    public String login(Model model, HttpServletRequest request) {
         Result<List<Map<String, Object>>> mapResult = this.tenantFeign.selectTenant();
         List<Map<String, Object>> tenantMap = mapResult.getData();
         if (tenantMap == null) {
@@ -62,6 +66,11 @@ public class RouteController {
         }
         // 给login页面赋值
         model.addAttribute("tenant", tenantMap);
+        Object redirect = request.getAttribute("redirect");
+        if (Objects.isNull(redirect)) {
+            redirect = UrlThreadLocal.get();
+        }
+        model.addAttribute("redirect", redirect);
         return "login";
     }
 
@@ -75,7 +84,7 @@ public class RouteController {
     @SneakyThrows
     @GetMapping("/error")
     public String error(Model model, @RequestParam(required = false) String error) {
-        model.addAttribute("error",URLDecoder.decode(error, "UTF-8"));
+        model.addAttribute("error", URLDecoder.decode(error, "UTF-8"));
         return "error";
     }
 

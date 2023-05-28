@@ -32,6 +32,12 @@
                            type="password">
                 </div>
                 <div class="col text-center">
+                    <label class="form-label" for="redirect"></label>
+                    <input class="form-control" hidden id="redirect" name="redirect" placeholder="重定向地址" required
+                           th:value="${redirect}"
+                           type="text">
+                </div>
+                <div class="col text-center">
                     <label class="form-label" for="tenantId"></label>
                     <select class="form-select" id="tenantId" name="tenantId">
                         <option th:each="item:${tenant}"

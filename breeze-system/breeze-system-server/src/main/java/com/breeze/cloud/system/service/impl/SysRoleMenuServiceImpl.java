@@ -23,7 +23,7 @@ import com.breeze.cloud.system.domain.SysRoleMenu;
 import com.breeze.cloud.system.mapper.SysRoleMenuMapper;
 import com.breeze.cloud.system.params.MenuPermissionParam;
 import com.breeze.cloud.system.service.SysRoleMenuService;
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -36,7 +36,7 @@ import java.util.stream.Collectors;
  * @date 2021-12-06 22:03:39
  */
 @Service
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class SysRoleMenuServiceImpl extends ServiceImpl<SysRoleMenuMapper, SysRoleMenu> implements SysRoleMenuService {
 
     /**

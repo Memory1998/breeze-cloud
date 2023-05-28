@@ -17,7 +17,6 @@
 package com.breeze.cloud.system.mapper;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.breeze.cloud.core.utils.Result;
 import com.breeze.cloud.mybatis.mapper.BreezeBaseMapper;
 import com.breeze.cloud.system.domain.SysRole;
 import com.breeze.cloud.system.query.RoleQuery;
@@ -64,7 +63,7 @@ public interface SysRoleMapper extends BreezeBaseMapper<SysRole> {
      * 获取用户角色列表
      *
      * @param userId 用户id
-     * @return {@link Result}<{@link List}<{@link Long}>>
+     * @return {@link List}<{@link Long}>
      */
     List<Long> listUserRoles(@Param("userId") Long userId);
 

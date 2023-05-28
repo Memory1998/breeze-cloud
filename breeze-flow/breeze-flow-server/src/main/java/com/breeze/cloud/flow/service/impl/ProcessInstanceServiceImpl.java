@@ -23,7 +23,7 @@ import com.breeze.cloud.flow.service.ActRuExecutionService;
 import com.breeze.cloud.flow.service.IProcessInstanceService;
 import com.breeze.cloud.flow.vo.ProcessInstanceVO;
 import com.breeze.cloud.security.utils.SecurityUtils;
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.flowable.common.engine.impl.identity.Authentication;
 import org.flowable.engine.RuntimeService;
@@ -37,7 +37,7 @@ import org.springframework.stereotype.Service;
  */
 @Slf4j
 @Service
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class ProcessInstanceServiceImpl implements IProcessInstanceService {
 
     /**

@@ -16,8 +16,8 @@
 
 package com.breeze.cloud.core.constants;
 
-import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 
 /**
  * Quartz常量
@@ -43,7 +43,7 @@ public class QuartzConstants {
     public static final String TRIGGER_NAME = "TRIGGER_NAME";
 
     @Getter
-    @AllArgsConstructor
+    @RequiredArgsConstructor
     public enum Status {
 
         /**
@@ -76,7 +76,7 @@ public class QuartzConstants {
      * @date 2023-03-16
      */
     @Getter
-    @AllArgsConstructor
+    @RequiredArgsConstructor
     public enum MisfirePolicy {
 
         /**

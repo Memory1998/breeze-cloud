@@ -25,7 +25,7 @@ import com.breeze.cloud.system.domain.SysMsg;
 import com.breeze.cloud.system.mapper.SysMsgMapper;
 import com.breeze.cloud.system.query.MsgQuery;
 import com.breeze.cloud.system.service.SysMsgService;
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 /**
@@ -35,7 +35,7 @@ import org.springframework.stereotype.Service;
  * @date 2022-11-20
  */
 @Service
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class SysMsgServiceImpl extends ServiceImpl<SysMsgMapper, SysMsg> implements SysMsgService {
 
     /**

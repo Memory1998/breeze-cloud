@@ -23,7 +23,7 @@ import com.breeze.cloud.flow.domain.ProcessCategory;
 import com.breeze.cloud.flow.mapper.ProcessCategoryMapper;
 import com.breeze.cloud.flow.query.ProcessCategoryQuery;
 import com.breeze.cloud.flow.service.IProcessCategoryService;
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 /**
@@ -33,7 +33,7 @@ import org.springframework.stereotype.Service;
  * @date 2023-03-06
  */
 @Service
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class ProcessCategoryServiceImpl extends ServiceImpl<ProcessCategoryMapper, ProcessCategory> implements IProcessCategoryService {
 
     /**

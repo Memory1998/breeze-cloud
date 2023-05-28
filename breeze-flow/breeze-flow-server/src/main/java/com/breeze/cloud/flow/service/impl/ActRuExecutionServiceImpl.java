@@ -23,7 +23,7 @@ import com.breeze.cloud.flow.mapper.ActRuExecutionMapper;
 import com.breeze.cloud.flow.query.ProcessInstanceQuery;
 import com.breeze.cloud.flow.service.ActRuExecutionService;
 import com.breeze.cloud.flow.vo.ProcessInstanceVO;
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 /**
@@ -33,7 +33,7 @@ import org.springframework.stereotype.Service;
  * @date 2023-03-08
  */
 @Service
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class ActRuExecutionServiceImpl extends ServiceImpl<ActRuExecutionMapper, ActRuExecution> implements ActRuExecutionService {
 
     /**

@@ -16,6 +16,8 @@
 
 package com.breeze.cloud.auth.extend;
 
+import cn.hutool.core.util.StrUtil;
+import com.breeze.cloud.auth.exception.NotSupportException;
 import com.breeze.cloud.auth.utils.UrlThreadLocal;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -44,6 +46,16 @@ public class OidcLoginBeforeStoreProcessorFilter extends OncePerRequestFilter {
         this.httpSecurity = http;
     }
 
+    private static void setRedirectUrl(HttpServletRequest request) {
+        // 由于RequestCache只保存了上一次的请求地址，自定义登录页使用controller【/login】中转了一下页面导致oidc的请求路径地址被覆盖，
+        // 从线程本地获取
+        String redirect = UrlThreadLocal.get();
+        if (StrUtil.isBlank(redirect)) {
+            throw new NotSupportException("没有重定向URL");
+        }
+        request.setAttribute("redirect", redirect);
+    }
+
     /**
      * 进行拦截，存放地址 【/oauth2/authorize?response_type=code&client_id=messaging-test&scope=openid%20profile&state=WY06QMNukJogMcy3nU87Ilog82JHK_L_aPTCDNIRt60%
      * &redirect_uri=http://127.0.0.1:8080/login/oauth2/code/messaging-client-oidc&nonce=fJ-9NwHGPH2dDVsoicQaheBggqOzQeYuQOwKQS36mSM'】
@@ -62,12 +74,17 @@ public class OidcLoginBeforeStoreProcessorFilter extends OncePerRequestFilter {
                 return;
             }
             String url = savedRequest.getRedirectUrl();
-            if (savedRequest.getRedirectUrl().contains("/oauth2/authorize?response_type=code") && url.contains("openid")) {
+            if (!url.endsWith("/login")) {
+                log.info("[存放 URL ThreadLocal]");
                 UrlThreadLocal.set(url);
+            } else if (request.getRequestURL().toString().endsWith("/login")) {
+                log.info("[取出 URL ThreadLocal]");
+                setRedirectUrl(request);
             }
             filterChain.doFilter(request, response);
         } catch (IOException | ServletException e) {
             log.error("[暂存异常]", e);
         }
     }
+
 }

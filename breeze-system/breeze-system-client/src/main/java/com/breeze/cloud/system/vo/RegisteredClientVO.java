@@ -16,8 +16,6 @@
 
 package com.breeze.cloud.system.vo;
 
-import com.baomidou.mybatisplus.annotation.TableName;
-import com.breeze.cloud.core.base.BaseModel;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.*;
@@ -36,9 +34,8 @@ import java.util.Set;
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode(callSuper = false)
-@TableName("sys_registered_client")
 @Schema(description = "注册客户端实体")
-public class RegisteredClientVO extends BaseModel<RegisteredClientVO> {
+public class RegisteredClientVO {
 
     /**
      * 客户机id

@@ -25,7 +25,7 @@ import com.breeze.cloud.core.enums.ResultCode;
 import com.breeze.cloud.core.utils.Result;
 import com.breeze.cloud.gateway.exception.ParamsNotFoundException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -48,7 +48,7 @@ import static com.breeze.cloud.core.enums.ResultCode.HTTP_MESSAGE_CONVERSION_EXC
  */
 @Slf4j
 @Configuration
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class CaptchaRoutingHandler {
 
     /**

@@ -29,7 +29,7 @@ import com.breeze.cloud.system.mapper.SysDeptMapper;
 import com.breeze.cloud.system.query.DeptQuery;
 import com.breeze.cloud.system.service.SysDeptService;
 import com.google.common.collect.Maps;
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.apache.commons.compress.utils.Lists;
 import org.springframework.stereotype.Service;
 
@@ -47,7 +47,7 @@ import static com.breeze.cloud.core.constants.CoreConstants.ROOT;
  * @date 2021-12-06 22:03:39
  */
 @Service
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class SysDeptServiceImpl extends ServiceImpl<SysDeptMapper, SysDept> implements SysDeptService {
 
     /**

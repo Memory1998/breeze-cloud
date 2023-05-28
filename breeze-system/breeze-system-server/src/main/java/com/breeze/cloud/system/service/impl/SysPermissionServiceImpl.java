@@ -31,7 +31,7 @@ import com.breeze.cloud.system.params.DataPermissionParam;
 import com.breeze.cloud.system.query.DataPermissionQuery;
 import com.breeze.cloud.system.service.SysPermissionService;
 import com.breeze.cloud.system.service.SysRolePermissionService;
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -45,7 +45,7 @@ import static com.breeze.cloud.core.enums.DataPermissionCode.DEPT_LEVEL;
  * @date 2022-10-30
  */
 @Service
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class SysPermissionServiceImpl extends ServiceImpl<SysPermissionMapper, SysPermission> implements SysPermissionService {
 
     /**
@@ -74,7 +74,8 @@ public class SysPermissionServiceImpl extends ServiceImpl<SysPermissionMapper, S
     public Result<Boolean> savePermission(DataPermissionParam permissionParam) {
         SysPermission sysPermission = SysPermission.builder().build();
         BeanUtil.copyProperties(permissionParam, sysPermission);
-        if (StrUtil.equals(DEPT_LEVEL.name(), permissionParam.getPermissionCode()) && CollUtil.isEmpty(permissionParam.getPermissions())) {
+        if (StrUtil.equals(DEPT_LEVEL.name(), permissionParam.getPermissionCode())
+                && CollUtil.isEmpty(permissionParam.getPermissions())) {
             return Result.warning("请选择部门查看的范围");
         }
         sysPermission.setPermissions(String.join(",", permissionParam.getPermissions()));
