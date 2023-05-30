@@ -34,6 +34,12 @@ import java.util.ArrayList;
 
 import static io.swagger.v3.oas.models.security.SecurityScheme.In.HEADER;
 
+/**
+ * 开放api配置
+ *
+ * @author gaoweixuan
+ * @date 2023/05/30
+ */
 @Slf4j
 @Configuration
 @RequiredArgsConstructor

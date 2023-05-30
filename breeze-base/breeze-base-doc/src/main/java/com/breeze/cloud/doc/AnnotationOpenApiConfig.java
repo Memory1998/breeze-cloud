@@ -24,6 +24,12 @@ import io.swagger.v3.oas.annotations.security.*;
 import io.swagger.v3.oas.annotations.servers.Server;
 import org.springframework.context.annotation.Configuration;
 
+/**
+ * 注释开放api配置
+ *
+ * @author gaoweixuan
+ * @date 2023/05/30
+ */
 @OpenAPIDefinition(
 		info = @Info(
 				title = "RBAC管理系统",

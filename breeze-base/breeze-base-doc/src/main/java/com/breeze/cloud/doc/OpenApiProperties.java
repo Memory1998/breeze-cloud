@@ -19,6 +19,12 @@ package com.breeze.cloud.doc;
 import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
+/**
+ * 开放api特性
+ *
+ * @author gaoweixuan
+ * @date 2023/05/30
+ */
 @Data
 @ConfigurationProperties(prefix = "springdoc")
 public class OpenApiProperties {
