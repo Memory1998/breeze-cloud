@@ -21,6 +21,7 @@ spring:
     import:
       - nacos:application-${spring.profiles.active}.${spring.cloud.nacos.config.file-extension}
       - nacos:breeze-redis-standalone-${spring.profiles.active}.${spring.cloud.nacos.config.file-extension}
+      - nacos:breeze-gateway-doc-${spring.profiles.active}.${spring.cloud.nacos.config.file-extension}
 
 logging:
   file:

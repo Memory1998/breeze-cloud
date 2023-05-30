@@ -93,8 +93,8 @@
         </dependency>
 
         <dependency>
-            <groupId>org.springdoc</groupId>
-            <artifactId>springdoc-openapi-webmvc-core</artifactId>
+            <groupId>com.breeze</groupId>
+            <artifactId>breeze-base-doc</artifactId>
         </dependency>
 
         <dependency>

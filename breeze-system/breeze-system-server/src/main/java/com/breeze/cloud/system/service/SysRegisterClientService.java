@@ -94,7 +94,7 @@ public interface SysRegisterClientService extends IService<SysRegisteredClient> 
     /**
      * 信息
      *
-     * @param clientId 客户机id
+     * @param clientId 客户端ID
      * @return {@link RegisteredClientVO}
      */
     RegisteredClientVO info(Long clientId);

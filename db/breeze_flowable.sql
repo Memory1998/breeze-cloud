@@ -1,22 +1,13 @@
-/*
- Navicat Premium Data Transfer
-
- Source Server         : 本机开发-localhost-breeze
- Source Server Type    : MySQL
- Source Server Version : 50741
- Source Host           : localhost:3366
- Source Schema         : breeze_flowable
-
- Target Server Type    : MySQL
- Target Server Version : 50741
- File Encoding         : 65001
-
- Date: 11/04/2023 23:29:37
-*/
+DROP
+DATABASE IF EXISTS `breeze_flowable`;
+CREATE
+DATABASE  `breeze_flowable` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;
 
 SET NAMES utf8mb4;
 SET
 FOREIGN_KEY_CHECKS = 0;
+
+USE `breeze_flowable`;
 
 -- ----------------------------
 -- Table structure for act_adm_databasechangelog

@@ -16,6 +16,12 @@
 
 package com.breeze.cloud.auth.authentication;
 
+/**
+ * oauth函数
+ *
+ * @author gaoweixuan
+ * @date 2023/05/29
+ */
 @FunctionalInterface
 public interface OAuthFunction<T, W, E, R> {
 

@@ -14,8 +14,8 @@ import org.springframework.cache.annotation.EnableCaching;
  * @date 2023-04-11
  */
 @EnableCaching
-@EnableFastValidator
 @EnableResourceServer
+@EnableFastValidator
 @EnableBreezeFeignClients
 @SpringBootApplication
 public class BreezeFlowApplication {

@@ -64,8 +64,6 @@ public class ResourceServerConfiguration {
                 .authenticationEntryPoint(customAuthenticationEntryPoint)
                 .jwt()
                 .jwtAuthenticationConverter(jwtAuthenticationConverter())
-
-
         ;
         return http.build();
     }

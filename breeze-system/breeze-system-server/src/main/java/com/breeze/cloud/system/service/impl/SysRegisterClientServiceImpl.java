@@ -219,7 +219,7 @@ public class SysRegisterClientServiceImpl extends ServiceImpl<SysRegisterClientM
     /**
      * 信息
      *
-     * @param clientId 客户机id
+     * @param clientId 客户端ID
      * @return {@link RegisteredClientVO}
      */
     @SneakyThrows

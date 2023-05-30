@@ -26,4 +26,6 @@ public class ContextConstants {
 
     public static final String SYSTEM = "breeze-system-server";
 
+    public static final String FLOWABLE = "breeze-flow-server";
+
 }

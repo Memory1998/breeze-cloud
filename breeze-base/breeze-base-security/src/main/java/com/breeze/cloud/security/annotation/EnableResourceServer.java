@@ -34,7 +34,7 @@ import java.lang.annotation.RetentionPolicy;
  */
 @Documented
 @Retention(RetentionPolicy.RUNTIME)
-@EnableWebSecurity(debug = false)
+@EnableWebSecurity(debug = true)
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 @Import({ResourceServerConfiguration.class, BreezeJumpAuthPathInit.class})
 public @interface EnableResourceServer {

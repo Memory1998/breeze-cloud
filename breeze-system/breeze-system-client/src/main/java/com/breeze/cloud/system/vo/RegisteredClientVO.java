@@ -38,7 +38,12 @@ import java.util.Set;
 public class RegisteredClientVO {
 
     /**
-     * 客户机id
+     * ID
+     */
+    private Long id;
+
+    /**
+     * 客户端ID
      */
     private String clientId;
 

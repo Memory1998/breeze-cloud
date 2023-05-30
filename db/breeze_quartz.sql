@@ -1,22 +1,14 @@
-/*
- Navicat Premium Data Transfer
+DROP
+DATABASE IF EXISTS `breeze_quartz`;
+CREATE
+DATABASE  `breeze_quartz` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;
 
- Source Server         : 本机开发-localhost-breeze
- Source Server Type    : MySQL
- Source Server Version : 50741
- Source Host           : localhost:3366
- Source Schema         : breeze_quartz
-
- Target Server Type    : MySQL
- Target Server Version : 50741
- File Encoding         : 65001
-
- Date: 11/04/2023 23:29:30
-*/
 
 SET NAMES utf8mb4;
 SET
 FOREIGN_KEY_CHECKS = 0;
+
+USE `breeze_quartz`
 
 -- ----------------------------
 -- Table structure for qrtz_blob_triggers

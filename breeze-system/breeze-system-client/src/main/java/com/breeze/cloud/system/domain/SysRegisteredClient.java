@@ -39,7 +39,7 @@ import java.time.LocalDateTime;
 public class SysRegisteredClient extends BaseModel<SysRegisteredClient> {
 
     /**
-     * 客户机id
+     * 客户端ID
      */
     private String clientId;
 

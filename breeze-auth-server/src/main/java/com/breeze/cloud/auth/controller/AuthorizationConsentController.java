@@ -67,7 +67,7 @@ public class AuthorizationConsentController {
      *
      * @param principal 主要
      * @param model     模型
-     * @param clientId  客户机id
+     * @param clientId  客户端ID
      * @param scope     范围
      * @param state     状态
      * @return {@link String}

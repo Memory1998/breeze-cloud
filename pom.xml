@@ -49,8 +49,8 @@
         <spring-cloud-alibaba.version>2021.0.5.0</spring-cloud-alibaba.version>
 
         <!--Swagger Resources-->
-        <swagger.version>2.2.4</swagger.version>
-        <springdoc.version>1.6.9</springdoc.version>
+        <swagger.version>2.2.9</swagger.version>
+        <springdoc.version>1.7.0</springdoc.version>
         <knife4j.version>3.0.3</knife4j.version>
 
         <oss-s3.version>1.12.445</oss-s3.version>
@@ -60,7 +60,6 @@
         <guava.version>31.1-jre</guava.version>
         <spring-boot-monitor.version>2.7.3</spring-boot-monitor.version>
         <captcha.version>1.3.0</captcha.version>
-        <velocity.version>2.0</velocity.version>
         <easyexcel.version>3.1.1</easyexcel.version>
         <minio.version>8.3.9</minio.version>
 
@@ -194,17 +193,25 @@
             </dependency>
 
             <dependency>
-                <groupId>org.springdoc</groupId>
-                <artifactId>springdoc-openapi-webflux-ui</artifactId>
-                <version>${springdoc.version}</version>
-            </dependency>
-
-            <dependency>
                 <groupId>com.github.xiaoymin</groupId>
                 <artifactId>knife4j-springdoc-ui</artifactId>
                 <version>${knife4j.version}</version>
             </dependency>
 
+            <!-- OpenAPI 3 -->
+            <dependency>
+                <groupId>org.springdoc</groupId>
+                <artifactId>springdoc-openapi-ui</artifactId>
+                <version>${springdoc.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.springdoc</groupId>
+                <artifactId>springdoc-openapi-security</artifactId>
+                <version>${springdoc.version}</version>
+            </dependency>
+
+            <!-- OpenAPI 3 -->
             <dependency>
                 <groupId>org.springdoc</groupId>
                 <artifactId>springdoc-openapi-webmvc-core</artifactId>
@@ -215,12 +222,6 @@
                 <groupId>io.swagger.core.v3</groupId>
                 <artifactId>swagger-annotations</artifactId>
                 <version>${swagger.version}</version>
-            </dependency>
-
-            <dependency>
-                <groupId>org.apache.velocity</groupId>
-                <artifactId>velocity-engine-core</artifactId>
-                <version>${velocity.version}</version>
             </dependency>
 
             <dependency>
@@ -300,6 +301,12 @@
             <dependency>
                 <groupId>com.breeze</groupId>
                 <artifactId>breeze-base-security</artifactId>
+                <version>${breeze.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.breeze</groupId>
+                <artifactId>breeze-base-doc</artifactId>
                 <version>${breeze.version}</version>
             </dependency>
 
