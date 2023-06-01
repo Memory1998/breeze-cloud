@@ -14,21 +14,38 @@
  * limitations under the License.
  */
 
-package com.breeze.cloud.core.constants;
+package com.breeze.cloud.core.enums;
 
 /**
- * 缓存常量
+ * 敏感类型
  *
  * @author gaoweixuan
- * @date 2021/10/1
+ * @date 2023/06/01
  */
-public class CoreConstants {
-
-    public static final Long ROOT = 1111111111111111111L;
+public enum SensitiveType {
 
     /**
-     * 系统bucket名称
+     * 真实名称
      */
-    public static final String SYSTEM_BUCKET_NAME = "system";
-
+    REAL_NAME,
+    /**
+     * 电子邮件
+     */
+    EMAIL,
+    /**
+     * 手机号
+     */
+    PHONE,
+    /**
+     * 身份证号
+     */
+    ID_CARD,
+    /**
+     * 地址
+     */
+    ADDRESS,
+    /**
+     * 银行卡
+     */
+    BANK_CARD,
 }

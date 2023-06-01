@@ -179,9 +179,10 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
      */
     @Override
     public Boolean open(UserOpenParam userOpenParam) {
-        return this.update(Wrappers.<SysUser>lambdaUpdate()
+        boolean update = this.update(Wrappers.<SysUser>lambdaUpdate()
                 .set(SysUser::getIsLock, userOpenParam.getIsLock())
                 .eq(SysUser::getUsername, userOpenParam.getUsername()));
+        return update;
     }
 
     /**
@@ -191,11 +192,10 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
      * @return {@link Boolean}
      */
     @Override
-    @Transactional(rollbackFor = Exception.class)
-    public Boolean resetPass(UserResetPasswordParam userResetPasswordParam) {
-        userResetPasswordParam.setPassword(this.passwordEncoder.encode(userResetPasswordParam.getPassword()));
+    public Boolean reset(UserResetParam userResetParam) {
+        userResetParam.setPassword(this.passwordEncoder.encode(userResetParam.getPassword()));
         return this.update(Wrappers.<SysUser>lambdaUpdate()
-                .set(SysUser::getPassword, userResetPasswordParam.getPassword()).eq(SysUser::getId, userResetPasswordParam.getId()));
+                .set(SysUser::getPassword, userResetParam.getPassword()).eq(SysUser::getId, userResetParam.getId()));
     }
 
     /**
@@ -206,7 +206,6 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
      */
     @Override
     @CacheEvict(cacheNames = LOGIN_USER, key = "#sysUser.username")
-    @Transactional(rollbackFor = Exception.class)
     public Result<Boolean> removeUser(SysUser sysUser) {
         boolean remove = this.remove(Wrappers.<SysUser>lambdaQuery().eq(SysUser::getId, sysUser.getId()));
         if (remove) {
@@ -224,8 +223,7 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
      * @return {@link Result}<{@link Boolean}>
      */
     @Override
-    @Transactional(rollbackFor = Exception.class)
-    public Result<Boolean> userAddRole(UserRolesParam userRolesParam) {
+    public Result<Boolean> setRole(UserRolesParam userRolesParam) {
         SysUser sysUser = this.getOne(Wrappers.<SysUser>lambdaQuery().eq(SysUser::getUsername, userRolesParam.getUsername()));
         if (Objects.isNull(sysUser)) {
             return Result.fail(Boolean.FALSE, "用户不存在");
@@ -268,7 +266,6 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
      * @return {@link SysUser}
      */
     @Override
-    @Transactional(rollbackFor = Exception.class)
     public SysUser registerUser(SysUser registerUser, String roleCode) {
         SysUser sysUser = SysUser.builder()
                 .username(registerUser.getUsername())
@@ -313,7 +310,6 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
             e.printStackTrace();
         }
     }
-
     /**
      * 加载用户通过用户名
      *

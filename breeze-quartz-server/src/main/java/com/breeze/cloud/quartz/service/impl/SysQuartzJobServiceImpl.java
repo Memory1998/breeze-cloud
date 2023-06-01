@@ -38,7 +38,6 @@ import static com.breeze.cloud.core.constants.QuartzConstants.JOB_NAME;
  *
  * @author gaoweixuan
  */
-
 @Service
 @RequiredArgsConstructor
 public class SysQuartzJobServiceImpl extends ServiceImpl<SysQuartzJobMapper, SysQuartzJob> implements SysQuartzJobService {

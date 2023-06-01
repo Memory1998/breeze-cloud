@@ -26,11 +26,13 @@ import io.swagger.v3.oas.models.security.*;
 import io.swagger.v3.oas.models.servers.Server;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springdoc.core.GroupedOpenApi;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 import static io.swagger.v3.oas.models.security.SecurityScheme.In.HEADER;
 
@@ -47,6 +49,36 @@ import static io.swagger.v3.oas.models.security.SecurityScheme.In.HEADER;
 public class OpenApiConfig {
 
     private final OpenApiProperties openApiProperties;
+
+    @Bean
+    public GroupedOpenApi groupOpenApi() {
+        return GroupedOpenApi.builder()
+                .group("source")
+                // 增加自定义装备，这儿增加了一个用户认证的 header，否则 knife4j 里会没有 header
+                .addOperationCustomizer((operation, handlerMethod) -> operation.security(
+                        Collections.singletonList(getSecurityItem()))
+                )
+                .build();
+    }
+
+    @Bean
+    public OpenAPI openAPI() {
+        // @formatter:off
+        OpenAPI openAPI = new OpenAPI()
+                .info(getInfo())
+                .addServersItem(getServer())
+                .addSecurityItem(getSecurityItem())
+                .externalDocs(getExternalDocumentation());
+        if (StrUtil.equals(openApiProperties.getType(), "password")) {
+            openAPI.schemaRequirement("OAuth2 Password Flow", this.buildPasswordSecurityScheme());
+        }
+        if (StrUtil.equals(openApiProperties.getType(), "accessCode")) {
+            openAPI.schemaRequirement("OAuth2 AccessCode Flow", this.buildAuthorizationCodeSecurityScheme());
+        }
+        openAPI.schemaRequirement("Bearer access_token", this.buildBearerSecurityScheme());
+        return openAPI;
+        // @formatter:on
+    }
 
     private Info getInfo() {
         // @formatter:off
@@ -71,25 +103,6 @@ public class OpenApiConfig {
         return new ExternalDocumentation()
                 .description(openApiProperties.getExternalDocumentationDescription())
                 .url(openApiProperties.getExternalDocumentationDescriptionUrl());
-        // @formatter:on
-    }
-
-    @Bean
-    public OpenAPI openAPI() {
-        // @formatter:off
-        OpenAPI openAPI = new OpenAPI()
-                .info(getInfo())
-                .addServersItem(getServer())
-                .addSecurityItem(getSecurityItem())
-                .externalDocs(getExternalDocumentation());
-        if (StrUtil.equals(openApiProperties.getType(), "password")) {
-            openAPI.schemaRequirement("OAuth2 Password Flow", this.buildPasswordSecurityScheme());
-        }
-        if (StrUtil.equals(openApiProperties.getType(), "accessCode")) {
-            openAPI.schemaRequirement("OAuth2 AccessCode Flow", this.buildAuthorizationCodeSecurityScheme());
-        }
-        openAPI.schemaRequirement("Bearer access_token", this.buildBearerSecurityScheme());
-        return openAPI;
         // @formatter:on
     }
 

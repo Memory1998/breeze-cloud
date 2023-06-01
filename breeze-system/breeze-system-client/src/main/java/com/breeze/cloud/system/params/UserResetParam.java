@@ -34,7 +34,7 @@ import javax.validation.constraints.NotNull;
 @AllArgsConstructor
 @EqualsAndHashCode(callSuper = false)
 @Schema(description = "用户重置密码参数")
-public class UserResetPasswordParam {
+public class UserResetParam {
 
     /**
      * 用户Id

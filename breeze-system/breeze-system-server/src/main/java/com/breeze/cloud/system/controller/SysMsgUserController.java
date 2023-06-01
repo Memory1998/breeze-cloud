@@ -59,9 +59,9 @@ public class SysMsgUserController {
      * @return {@link Result}<{@link IPage}<{@link SysMsgUserVO}>>
      */
     @Operation(summary = "列表")
-    @PostMapping("/list")
+    @GetMapping
     @PreAuthorize("hasAnyAuthority('sys:msgUser:list')")
-    public Result<IPage<SysMsgUserVO>> list(@RequestBody UserMsgQuery userMsgQuery) {
+    public Result<IPage<SysMsgUserVO>> list(UserMsgQuery userMsgQuery) {
         return Result.ok(this.sysMsgUserService.listPage(userMsgQuery));
     }
 
@@ -73,6 +73,7 @@ public class SysMsgUserController {
      */
     @Operation(summary = "获取消息列表通过用户名")
     @GetMapping("/listMsgByUsername")
+    @PreAuthorize("hasAnyAuthority('sys:msgUser:list')")
     public Result<List<SysMsgUserVO>> listMsgByUsername(@RequestParam String username) {
         return Result.ok(this.sysMsgUserService.listMsgByUsername(username));
     }
@@ -108,7 +109,7 @@ public class SysMsgUserController {
      * @return {@link Result}<{@link Boolean}>
      */
     @Operation(summary = "删除")
-    @DeleteMapping("/delete")
+    @DeleteMapping
     @PreAuthorize("hasAnyAuthority('sys:msgUser:delete')")
     @BreezeSysLog(description = "消息信息删除", type = LogType.DELETE)
     public Result<Boolean> delete(@NotNull(message = "参数不能为空") @RequestBody Long[] ids) {

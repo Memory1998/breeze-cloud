@@ -54,9 +54,9 @@ public class SysQuartzJobLogController {
      * @return {@link Result}<{@link Page}<{@link SysQuartzJobLog}>>
      */
     @Operation(summary = "列表")
-    @PostMapping("/list")
+    @GetMapping
     @PreAuthorize("hasAnyAuthority('sys:jLog:list')")
-    public Result<Page<SysQuartzJobLog>> listPage(@RequestBody JobQuery jobQuery) {
+    public Result<Page<SysQuartzJobLog>> listPage(JobQuery jobQuery) {
         return Result.ok(this.quartzJobLogService.listPage(jobQuery));
     }
 
@@ -67,7 +67,7 @@ public class SysQuartzJobLogController {
      * @return {@link Result}<{@link Boolean}>
      */
     @Operation(summary = "删除")
-    @DeleteMapping("/delete")
+    @DeleteMapping
     @PreAuthorize("hasAnyAuthority('sys:jLog:delete')")
     @BreezeSysLog(description = "删除任务日志", type = LogType.DELETE)
     public Result<Boolean> delete(@NotNull(message = "参数不能为空") @RequestBody List<Long> logIds) {

@@ -31,7 +31,7 @@ import org.apache.ibatis.annotations.Param;
  * @date 2023/05/10
  */
 @Mapper
-public interface SysRegisterClientMapper extends BreezeBaseMapper<SysRegisteredClient> {
+public interface SysRegisteredClientMapper extends BreezeBaseMapper<SysRegisteredClient> {
 
     /**
      * 列表页面

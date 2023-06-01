@@ -14,21 +14,32 @@
  * limitations under the License.
  */
 
-package com.breeze.cloud.core.constants;
+package com.breeze.cloud.sms.config;
+
+import lombok.Data;
+import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.context.annotation.Configuration;
 
 /**
- * 缓存常量
+ * 短信属性
  *
  * @author gaoweixuan
- * @date 2021/10/1
+ * @date 2023/05/31
  */
-public class CoreConstants {
+@Data
+@Configuration
+@ConfigurationProperties("spring.sms")
+public class SmsProperties {
 
-    public static final Long ROOT = 1111111111111111111L;
+    private String accessKeyId;
 
-    /**
-     * 系统bucket名称
-     */
-    public static final String SYSTEM_BUCKET_NAME = "system";
+    private String regionId;
 
+    private String accessKeySecret;
+
+    private String templateCode;
+
+    private String templateParam;
+
+    private String signName;
 }

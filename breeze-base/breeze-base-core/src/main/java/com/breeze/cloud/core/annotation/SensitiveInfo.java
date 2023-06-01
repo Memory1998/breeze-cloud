@@ -14,21 +14,27 @@
  * limitations under the License.
  */
 
-package com.breeze.cloud.core.constants;
+package com.breeze.cloud.core.annotation;
+
+import com.breeze.cloud.core.enums.SensitiveType;
+import com.breeze.cloud.core.jackson.SensitiveInfoSerialize;
+import com.fasterxml.jackson.annotation.JacksonAnnotationsInside;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
 
 /**
- * 缓存常量
+ * 敏感信息
  *
  * @author gaoweixuan
- * @date 2021/10/1
+ * @date 2023/06/01
  */
-public class CoreConstants {
+@Retention(RetentionPolicy.RUNTIME)
+@JacksonAnnotationsInside // 表示自定义自己的注解PrivacyEncrypt
+@JsonSerialize(using = SensitiveInfoSerialize.class)// 该注解使用序列化的方式
+public @interface SensitiveInfo {
 
-    public static final Long ROOT = 1111111111111111111L;
-
-    /**
-     * 系统bucket名称
-     */
-    public static final String SYSTEM_BUCKET_NAME = "system";
+    SensitiveType value();
 
 }

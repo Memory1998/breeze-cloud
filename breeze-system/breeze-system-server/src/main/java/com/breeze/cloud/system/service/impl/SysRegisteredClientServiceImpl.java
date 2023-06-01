@@ -22,10 +22,11 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.breeze.cloud.core.utils.Result;
 import com.breeze.cloud.system.domain.SysRegisteredClient;
-import com.breeze.cloud.system.mapper.SysRegisterClientMapper;
+import com.breeze.cloud.system.mapper.SysRegisteredClientMapper;
 import com.breeze.cloud.system.params.RegisteredClientParam;
 import com.breeze.cloud.system.params.ResetClientSecretParam;
 import com.breeze.cloud.system.query.RegisterClientQuery;
+import com.breeze.cloud.system.service.SysRegisteredClientService;
 import com.breeze.cloud.system.vo.ClientSettingsVO;
 import com.breeze.cloud.system.vo.RegisteredClientVO;
 import com.breeze.cloud.system.vo.TokenSettingsVO;
@@ -49,7 +50,7 @@ import java.util.stream.Collectors;
  */
 @Slf4j
 @Service
-public class SysRegisterClientServiceImpl extends ServiceImpl<SysRegisterClientMapper, SysRegisteredClient> implements com.breeze.cloud.system.service.SysRegisterClientService {
+public class SysRegisteredClientServiceImpl extends ServiceImpl<SysRegisteredClientMapper, SysRegisteredClient> implements SysRegisteredClientService {
 
     /**
      * 密码编码器
@@ -58,7 +59,7 @@ public class SysRegisterClientServiceImpl extends ServiceImpl<SysRegisterClientM
 
     private final ObjectMapper mapper = new ObjectMapper();
 
-    public SysRegisterClientServiceImpl(PasswordEncoder passwordEncoder) {
+    public SysRegisteredClientServiceImpl(PasswordEncoder passwordEncoder) {
         this.passwordEncoder = passwordEncoder;
     }
 

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="com.breeze.cloud.system.mapper.SysRegisterClientMapper">
+<mapper namespace="com.breeze.cloud.system.mapper.SysRegisteredClientMapper">
 
     <select id="listPage"
             resultType="com.breeze.cloud.system.vo.RegisteredClientVO">

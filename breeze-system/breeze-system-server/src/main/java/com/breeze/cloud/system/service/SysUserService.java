@@ -70,10 +70,10 @@ public interface SysUserService extends IService<SysUser> {
     /**
      * 重置密码
      *
-     * @param userResetPasswordParam 用户重置密码参数
+     * @param userResetParam 用户重置密码参数
      * @return {@link Boolean}
      */
-    Boolean resetPass(UserResetPasswordParam userResetPasswordParam);
+    Boolean reset(UserResetParam userResetParam);
 
     /**
      * 删除用户
@@ -89,7 +89,7 @@ public interface SysUserService extends IService<SysUser> {
      * @param userRolesParam 用户角色参数
      * @return {@link Result}<{@link Boolean}>
      */
-    Result<Boolean> userAddRole(UserRolesParam userRolesParam);
+    Result<Boolean> setRole(UserRolesParam userRolesParam);
 
     /**
      * 通过ID查询用户

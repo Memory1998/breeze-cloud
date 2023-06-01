@@ -24,6 +24,7 @@ import com.breeze.cloud.quartz.domain.SysQuartzJob;
 import com.breeze.cloud.quartz.service.SysQuartzJobLogService;
 import com.google.common.collect.Maps;
 import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.quartz.*;
 import org.quartz.impl.matchers.GroupMatcher;
@@ -43,7 +44,7 @@ import static com.breeze.cloud.core.constants.QuartzConstants.MisfirePolicy.*;
  */
 @Slf4j
 @Component
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class QuartzManager {
 
     private final SysQuartzJobLogService quartzJobLogService;
