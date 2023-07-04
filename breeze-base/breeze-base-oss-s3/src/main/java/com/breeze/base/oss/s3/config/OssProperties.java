@@ -40,14 +40,14 @@ public class OssProperties {
     private String region;
 
     /**
-     * Access key
+     * minio连接用户名
      */
-    private String accessKey;
+    private String minioRootUser;
 
     /**
-     * Secret key
+     * minio连接密码
      */
-    private String secretKey;
+    private String minioRootPassword;
 
     /**
      * 最大线程数

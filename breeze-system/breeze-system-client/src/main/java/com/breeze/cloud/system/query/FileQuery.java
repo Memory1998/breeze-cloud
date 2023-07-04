@@ -35,21 +35,27 @@ import lombok.*;
 public class FileQuery extends PageQuery {
 
     /**
-     * 新文件名称
+     * 标题
      */
-    @Schema(description = "新文件名称")
-    private String newFileName;
+    @Schema(description = "标题")
+    private String title;
 
     /**
-     * 原文件名字
+     * 文件名称
      */
-    @Schema(description = "原文件名称")
-    private String originalFileName;
+    @Schema(description = "文件名称")
+    private String fileName;
 
     /**
-     * 用户id
+     * 业务类型
      */
-    @Schema(description = "用户ID")
-    private String userId;
+    @Schema(description = "业务类型")
+    private String bizType;
+
+    /**
+     * 用户名称
+     */
+    @Schema(description = "用户名称")
+    private String createName;
 
 }

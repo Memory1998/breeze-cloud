@@ -16,7 +16,7 @@ RUN echo 'Asia/Shanghai' >/etc/timezone
 WORKDIR /usr/local/cloud
 
 # 复制jar文件到路径
-COPY ./target/breeze-gateway-server.jar /usr/local/cloud/breeze-gateway-server.jar
+COPY ./target/breeze-sample-pkce-client.jar /usr/local/cloud/breeze-sample-pkce-client.jar
 
 # 启动应用
-ENTRYPOINT ["java","-jar","-Xms1024m","-Xmx1024m","-Duser.timezone=GMT+08","breeze-gateway-server.jar","--spring.profiles.active=dev"]
+ENTRYPOINT ["java","-jar","-Xms1024m","-Xmx1024m","-Duser.timezone=GMT+08","breeze-sample-pkce-client.jar","--spring.profiles.active=dev"]

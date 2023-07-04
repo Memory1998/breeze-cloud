@@ -19,4 +19,4 @@ WORKDIR /usr/local/cloud
 COPY ./target/breeze-auth-server.jar /usr/local/cloud/breeze-auth-server.jar
 
 # 启动应用
-ENTRYPOINT ["java","-jar","-Duser.timezone=GMT+08","breeze-auth-server.jar"]
+ENTRYPOINT ["java","-jar","-Xms1024m","-Xmx1024m","-Duser.timezone=GMT+08","breeze-auth-server.jar","--spring.profiles.active=dev"]
